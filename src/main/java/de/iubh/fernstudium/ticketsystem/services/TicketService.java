@@ -29,7 +29,7 @@ public interface TicketService {
     /**
      * Erzeugt ein neues Ticket im System
      * @param ticketDTO
-     * @return
+     * @return TicketDTO incl. ID of Ticket
      */
     public TicketDTO createTicket(TicketDTO ticketDTO);
 

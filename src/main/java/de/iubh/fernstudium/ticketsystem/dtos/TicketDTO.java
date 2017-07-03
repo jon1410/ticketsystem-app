@@ -9,6 +9,7 @@ import java.util.List;
 public class TicketDTO {
 
     private Long id;
+    private String title;
     private String reporter; //evtl. eigenes UserDTO
     private Calendar creationTime;
     private String category;
@@ -21,6 +22,14 @@ public class TicketDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getReporter() {
