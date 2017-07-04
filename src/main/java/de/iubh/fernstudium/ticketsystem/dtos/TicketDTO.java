@@ -12,7 +12,7 @@ public class TicketDTO {
     private String title;
     private String reporter; //evtl. eigenes UserDTO
     private Calendar creationTime;
-    private String category;
+    private String category; //evtl. ReferenzID auf Kategorie
     private String assignee;
     private List<?> comments;
 

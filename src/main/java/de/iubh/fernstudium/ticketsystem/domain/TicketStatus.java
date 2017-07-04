@@ -6,12 +6,12 @@ package de.iubh.fernstudium.ticketsystem.domain;
 public enum TicketStatus {
 
     NEW("neu"),
-    IN_PROGRESS_IUBH("in Bearbeitung durch IUBH"),
-    IN_PROGRESS_STUDENT("in Bearbeitung durch Student"),
-    RESOLVED("gelöst"),
-    CLOSED("geschlossen"),
-    DELETED("gelöscht"),
-    DELETED_SYSTEM("automatisch durch System gelöscht");
+    IPU("in Bearbeitung durch IUBH"),
+    IPS("in Bearbeitung durch Student"),
+    RES("gelöst"),
+    CLO("geschlossen"),
+    DEL("gelöscht"),
+    DLS("automatisch durch System gelöscht");
 
     private String resolvedText;
 

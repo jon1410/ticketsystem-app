@@ -13,11 +13,11 @@ public class TicketStatusTest {
     @Test
     public void testEnumTicketStatus(){
         assertEquals("neu", TicketStatus.NEW.getResolvedText());
-        assertEquals("in Bearbeitung durch IUBH", TicketStatus.IN_PROGRESS_IUBH.getResolvedText());
-        assertEquals("in Bearbeitung durch Student", TicketStatus.IN_PROGRESS_STUDENT.getResolvedText());
-        assertEquals("gelöst", TicketStatus.RESOLVED.getResolvedText());
-        assertEquals("geschlossen", TicketStatus.CLOSED.getResolvedText());
-        assertEquals("gelöscht", TicketStatus.DELETED.getResolvedText());
-        assertEquals("automatisch durch System gelöscht", TicketStatus.DELETED_SYSTEM.getResolvedText());
+        assertEquals("in Bearbeitung durch IUBH", TicketStatus.IPU.getResolvedText());
+        assertEquals("in Bearbeitung durch Student", TicketStatus.IPS.getResolvedText());
+        assertEquals("gelöst", TicketStatus.RES.getResolvedText());
+        assertEquals("geschlossen", TicketStatus.CLO.getResolvedText());
+        assertEquals("gelöscht", TicketStatus.DEL.getResolvedText());
+        assertEquals("automatisch durch System gelöscht", TicketStatus.DLS.getResolvedText());
     }
 }
