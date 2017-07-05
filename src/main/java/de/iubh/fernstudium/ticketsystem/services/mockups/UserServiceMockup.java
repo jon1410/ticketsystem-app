@@ -6,8 +6,10 @@ import de.iubh.fernstudium.ticketsystem.domain.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
+import de.iubh.fernstudium.ticketsystem.util.PasswordUtil;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,9 @@ import java.util.Map;
  */
 public class UserServiceMockup implements UserService {
 
+    @Inject
+    private PasswordUtil passwordUtil;
+
     private Map<String, UserDTO> users;
 
     @PostConstruct
@@ -23,15 +28,16 @@ public class UserServiceMockup implements UserService {
         if (users == null) {
             users = new HashMap<>();
         }
-        users.put("admin", createUserDTO("admin", "admin", "admin", "admin", "AD", "admin@ticketsystem.de"));
+        users.put("admin", createUserDTO("admin", "admin", "admin", passwordUtil.hashPw("admin"), "AD", "admin@ticketsystem.de"));
     }
 
     @Override
     public boolean createUser(String userId, String firstName, String lastName, String password, String role, String mailAdress) throws UserAlreadyExistsException {
-        if(!users.containsKey(userId)){
+        if(users.containsKey(userId)){
             throw new UserAlreadyExistsException(String.format("User mit UserID: %s existiert bereits", userId));
         }
-        users.put(userId, createUserDTO(userId, firstName, lastName, password, role, mailAdress));
+        String hashedPw = passwordUtil.hashPw(password);
+        users.put(userId, createUserDTO(userId, firstName, lastName, hashedPw, role, mailAdress));
         return true;
     }
 
@@ -42,11 +48,23 @@ public class UserServiceMockup implements UserService {
         }
 
         UserDTO user = users.get(userId);
-        return false;
+        return passwordUtil.authentificate(password, user.getPassword());
     }
 
     @Override
-    public boolean changePassword(String userName, String altesPw, String neuesPw) {
+    public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException {
+
+        if(!users.containsKey(userId)){
+            throw new UserNotExistsException(String.format("User mit UserID: %s existiert nicht", userId));
+        }
+        UserDTO user = users.get(userId);
+
+        if(user.getPassword().equals(passwordUtil.hashPw(altesPw))){
+            String hashedPwNew = passwordUtil.hashPw(neuesPw);
+            user.setPassword(hashedPwNew);
+            users.put(userId, user);
+            return true;
+        }
         return false;
     }
 

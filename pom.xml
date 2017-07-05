@@ -71,6 +71,19 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.needle4j</groupId>
+            <artifactId>needle4j</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

@@ -19,6 +19,7 @@ public interface UserService {
      * @param password
      * @param role
      * @param mailAdress
+     * @throws UserAlreadyExistsException
      * @return boolean, wenn User korrekt erzeugt werden konnte
      */
     public boolean createUser(String userId, String firstName, String lastName, String password, String role, String mailAdress) throws UserAlreadyExistsException;
@@ -28,6 +29,7 @@ public interface UserService {
      *
      * @param userId
      * @param password
+     * @throws InvalidPasswordException, {@link UserNotExistsException}
      * @return boolean, wenn Credentials korrekt
      */
     public boolean login(String userId, String password) throws UserNotExistsException, InvalidPasswordException;
@@ -39,9 +41,10 @@ public interface UserService {
      * @param userId
      * @param altesPw
      * @param neuesPw
+     * @throws UserNotExistsException
      * @return boolean, wenn PW erfolgreich geändert wurde
      */
-    public boolean changePassword(String userId, String altesPw, String neuesPw);
+    public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException;
 
 
 }
