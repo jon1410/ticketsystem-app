@@ -44,7 +44,7 @@ public interface UserService {
      * @throws UserNotExistsException
      * @return boolean, wenn PW erfolgreich geändert wurde
      */
-    public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException;
+    public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException, InvalidPasswordException;
 
 
 }

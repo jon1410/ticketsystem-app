@@ -52,19 +52,20 @@ public class UserServiceMockup implements UserService {
     }
 
     @Override
-    public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException {
+    public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException, InvalidPasswordException {
 
         if(!users.containsKey(userId)){
             throw new UserNotExistsException(String.format("User mit UserID: %s existiert nicht", userId));
         }
         UserDTO user = users.get(userId);
 
-        if(user.getPassword().equals(passwordUtil.hashPw(altesPw))){
+        if(passwordUtil.authentificate(altesPw, user.getPassword())){
             String hashedPwNew = passwordUtil.hashPw(neuesPw);
             user.setPassword(hashedPwNew);
             users.put(userId, user);
             return true;
         }
+
         return false;
     }
 
