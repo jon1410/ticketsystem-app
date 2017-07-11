@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xhtml.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:hf="http://highfaces.org">
+
+<h:head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<h:outputStylesheet library="css" name="style.login.css"></h:outputStylesheet>
+
+
+	<title>IUBH | Login</title>
+
+
+</h:head>
+<h:body>
+	<b:container>
+
+		<!-- Logo -->
+		<b:row>
+			<b:column col-md="12" styleClass="iubhLogo center-block">
+				<b:image library="img" name="iubh-logo.jpg"
+					styleClass="logo"></b:image>
+			</b:column>
+		</b:row>
+
+		<!-- Login Panel Settings -->
+		<b:row styleClass="loginRow">
+			<h:form id="loginForm">
+				<b:column col-md="12" col-xs="12"
+					styleClass="loginPanel center-block">
+					<h3 class="loginHeader">Anmelden</h3>
+					<b:inputText placeholder="Deine EMail"
+						tooltip="Gib hier deine IUBH EMail Adresse ein"
+						styleClass="inputHover" tooltip-position="right"></b:inputText>
+					<b:inputSecret placeholder="Dein Passwort"
+						tooltip="Dein persönliches Passwort" styleClass="inputHover" tooltip-position="right"></b:inputSecret>
+					<p:separator></p:separator>
+					<b:commandButton styleClass="loginButton"
+						tooltip-position="right" tooltip="Melde dich beim IUBH-Ticketssystem an">
+						<span>Anmelden </span>
+					</b:commandButton>
+					<p:commandLink value="Passwort vergessen ?"
+						styleClass="linkForgottPw" ajax="false" update="@none" global="false"/>
+				</b:column>
+			</h:form>
+		</b:row>
+	</b:container>
+
+	<h:outputScript library="js" name="script.login.js"></h:outputScript>
+</h:body>
+</html>

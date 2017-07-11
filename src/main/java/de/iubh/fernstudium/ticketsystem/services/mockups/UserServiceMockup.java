@@ -28,11 +28,16 @@ public class UserServiceMockup implements UserService {
         if (users == null) {
             users = new HashMap<>();
         }
-        users.put("admin", createUserDTO("admin", "admin", "admin", passwordUtil.hashPw("admin"), "AD", "admin@ticketsystem.de"));
+        users.put("admin", createUserDTO("admin", "admin", "admin", passwordUtil.hashPw("admin"), UserRole.AD, "admin@ticketsystem.de"));
     }
 
     @Override
-    public boolean createUser(String userId, String firstName, String lastName, String password, String role, String mailAdress) throws UserAlreadyExistsException {
+    public UserDTO getUserByUserId(String userId) throws UserNotExistsException {
+        return users.get(userId);
+    }
+
+    @Override
+    public boolean createUser(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) throws UserAlreadyExistsException {
         if(users.containsKey(userId)){
             throw new UserAlreadyExistsException(String.format("User mit UserID: %s existiert bereits", userId));
         }
@@ -69,7 +74,7 @@ public class UserServiceMockup implements UserService {
         return false;
     }
 
-    private UserDTO createUserDTO(String admin, String firstName, String lastName, String passwort, String role, String mailAdress) {
-        return new UserDTO(admin, firstName, lastName, passwort, UserRole.valueOf(role), mailAdress);
+    private UserDTO createUserDTO(String admin, String firstName, String lastName, String passwort, UserRole role, String mailAdress) {
+        return new UserDTO(admin, firstName, lastName, passwort, role, mailAdress);
     }
 }

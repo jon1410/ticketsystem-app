@@ -38,10 +38,11 @@ public interface TicketService {
     /**
      * Fügt einen Kommentar zum Ticket hinzu
      *
+     * @param ticketId
      * @param comment
      * @return boolean, wenn erfolgreich
      */
-    public boolean addComment(String comment);
+    public boolean addComment(long ticketId, String comment);
 
     /**
      * Erzeugt ein neues Ticket im System

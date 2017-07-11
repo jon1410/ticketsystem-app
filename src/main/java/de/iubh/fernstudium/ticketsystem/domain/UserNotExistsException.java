@@ -5,8 +5,7 @@ package de.iubh.fernstudium.ticketsystem.domain;
  */
 public class UserNotExistsException extends Exception {
 
-    public UserNotExistsException() {
-    }
+    public UserNotExistsException() {}
 
     public UserNotExistsException(String message) {
         super(message);

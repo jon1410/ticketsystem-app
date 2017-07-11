@@ -18,10 +18,18 @@
     </properties>
 
     <dependencies>
+        <!-- JavaEE Components-->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>2.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -54,6 +62,31 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mySql.version}</version>
+        </dependency>
+
+        <!-- Frontend -->
+        <dependency>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.highfaces</groupId>
+            <artifactId>highfaces</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>primefaces-extensions</artifactId>
+            <version>6.1.1</version>
         </dependency>
 
         <!-- Test Dependencies-->

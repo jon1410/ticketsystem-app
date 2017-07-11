@@ -1,0 +1,113 @@
+@CHARSET "UTF-8";
+
+body {
+	padding-top: 6%;
+}
+
+.iubhLogo {
+	margin: auto !important;
+	float: none !important;
+	width: 100% !important;
+	float: none !important;
+}
+
+.logo {
+	margin-left: 22% !important;
+	width: 25%;
+}
+
+.loginHeader {
+	text-decoration: underline;
+	margin-bottom: 8%;
+}
+
+.inputHover {
+	box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.3) !important;
+	transition: box-shadow 0.8s;
+}
+
+.inputHover:hover {
+	box-shadow: 0px 0px 8px #515151 !important;
+	transition: box-shadow 0.8s;
+}
+
+.loginPanel {
+	width: 45% !important;
+	float: none !important;
+}
+
+.loginButton {
+	width: 100% !important;
+	background-color: rgb(0, 148, 146, 0.8) !important;
+	border: 0px !important;
+	font-size: 2em !important;
+	letter-spacing: 1px;
+	margin-bottom: 5% !important;
+}
+
+.loginButton span {
+	cursor: pointer !important;
+	display: inline-block !important;
+	position: relative !important;
+	transition: 2.5s !important;
+}
+
+.loginButton span:after {
+	font-family: FontAwesome !important;
+	content: "\f101" !important;
+	position: absolute !important;
+	opacity: 0 !important;
+	top: 0 !important;
+	right: -20px !important;
+	transition: 0.5s !important;
+}
+
+.loginButton:hover {
+	border-color: rgb(31, 153, 214) !important;
+	padding-right: 30px !important;
+	color: #ffffff !important;
+	transition: all 0.9s ease !important;
+}
+
+.loginButton:hover span {
+	padding-right: 30px !important;
+	color: #ffffff !important;
+	letter-spacing: 3px !important;
+	transition: all 0.9s ease !important;
+}
+
+.loginButton:hover span:after {
+	opacity: 1 !important;
+	right: 0px !important;
+}
+
+.loginButton:after {
+	width: 100% !important;
+	background-color: white !important;
+	border: 0px !important;
+	font-size: 2em !important;
+}
+
+.panelPW {
+	display: none;
+}
+
+/*Media Screen for Mobile Devices*/
+@media screen and (max-width: 480px) {
+	.loginPanel {
+		width: 65% !important;
+	}
+	.loginButton {
+		letter-spacing: 0px;
+	}
+	.loginButton:hover span {
+		letter-spacing: 1px !important;
+	}
+	.loginButton span:after {
+		right: 0px !important;
+	}
+	.logo {
+		margin-left: 0% !important;
+		width: 100% !important;
+	}
+}

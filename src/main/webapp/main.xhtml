@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xhtml.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:hf="http://highfaces.org">
+
+<h:head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+
+	<title>IUBH | Ticketsystem</title>
+</h:head>
+<h:body>
+
+	<b:navBar brand="IUBH" brandHref="#" inverse="true">
+		<!-- Following line is needed for TBS 3.0.1 (panel content overflow issue) -->
+		<b:navbarLinks pull="left">
+			<b:navbarLinks>
+				<b:dropMenu value="Menü">
+					<b:navLink value="Neues Ticket"></b:navLink>
+					<b:navLink value="Tickets anzeigen"></b:navLink>
+					<b:navLink value="Ticket  bearbeiten"></b:navLink>
+					<b:navLink value="Tutor benachrichtigen"></b:navLink>
+				</b:dropMenu>
+				<b:dropMenu value="Profil">
+					<b:navLink value="Profil bearbeiten"></b:navLink>
+					<b:navLink value="Passwort ändern"></b:navLink>
+				</b:dropMenu>
+				<b:navLink value="Abmelden" styleClass="abmeldenLink"></b:navLink>
+			</b:navbarLinks>
+		</b:navbarLinks>
+		<b:navbarLinks pull="right">
+			<b:navLink value="    " href="#"></b:navLink>
+		</b:navbarLinks>
+		<b:navbarLinks pull="right">
+			<h:form styleClass="navbar-form navbar-left" role="search">
+				<div class="form-group">
+					<b:inputText styleClass="form-control suchfeldNavbar"
+						placeholder="Sucheingabe" />
+				</div>
+				<b:commandButton look="success" value="Suchen!"
+					style="margin-left:2px;" styleClass="btnSuchenNavbar"></b:commandButton>
+			</h:form>
+		</b:navbarLinks>
+	</b:navBar>
+
+	<!-- The settings Panel -->
+	<div id="myNav" class="overlay">
+		<!-- Button to close the overlay navigation -->
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<!-- Overlay content -->
+		<div class="overlay-content">
+			<h:form>
+				<b:tabView activeIndex="0">
+					<b:tab title="Passwort">
+						<p>Whatever</p>
+					</b:tab>
+					<b:tab title="Persönliches">
+						<p>Persönliches etc.</p>
+					</b:tab>
+					<!-- The next tab shows tabs aren't limited to text. You can put anything in a tab. -->
+					<b:tab title="Einstellungen">
+						<p>Einstellungs Tab etc.</p>
+					</b:tab>
+				</b:tabView>
+			</h:form>
+		</div>
+	</div>
+
+	<b:container styleClass="bodyContainer">
+		<b:row>
+			<b:column col-md="6" col-xs="12" styleClass="columnLogoFirst">
+				<b:panel styleClass="logoIubh">
+					<b:image library="img" name="iubh-logo.jpg"
+						styleClass="imageLogoIubh"></b:image>
+				</b:panel>
+			</b:column>
+			<b:column col-md="6" col-xs="12" styleClass="logoPanel">
+			</b:column>
+		</b:row>
+
+		<b:row>
+			<b:column col-md="6" col-xs="12">
+				<b:panel styleClass="panelMessages color noBorder">
+					<b:panelGrid colSpans="2,10" styleClass="panelQuick"
+						tooltip="Deine aktuellen ungelesenen Nachrichten">
+						<h:outputText
+							style="font-size:5.0em;  margin:auto auto;display: inline-block;z-index:10000;"
+							value="1"></h:outputText>
+						<h:outputText
+							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							value="Nachricht(en) vorhanden" />
+					</b:panelGrid>
+					<b:iconAwesome name="fa-envelope" size="5x"
+						style="position:relative;margin-top:-90px;margin-right:20px;float:right;opacity:0.3;"
+						styleClass="imageMessages" hidden="xs"></b:iconAwesome>
+				</b:panel>
+			</b:column>
+			<b:column col-md="6" col-xs="12">
+				<b:panel styleClass="panelTickets color noBorder">
+					<b:panelGrid colSpans="2,10" styleClass="panelQuick"
+						tooltip="Deine bisher eingereichten Tickets">
+						<h:outputText
+							style="font-size:5.0em;  margin:auto auto;display: inline-block;"
+							value="4"></h:outputText>
+						<h:outputText
+							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							value="Deine Tickets" />
+					</b:panelGrid>
+					<b:iconAwesome name="fa-cubes" size="5x"
+						style="position:relative;margin-top:-90px;margin-right:20px;float:right;opacity:0.3;"
+						styleClass="imageTicket" hidden="xs"></b:iconAwesome>
+				</b:panel>
+			</b:column>
+		</b:row>
+
+		<b:row>
+			<b:column col-md="6" col-xs="12">
+				<b:panel styleClass="panelStatus color noBorder">
+					<b:panelGrid colSpans="2,10" styleClass="panelQuick"
+						tooltip="Dein letztes Ticket befindet sich aktuell in Bearbeitung">
+						<h:outputText
+							style="font-size:5.0em;  margin:auto auto;display: inline-block;"
+							value="50%"></h:outputText>
+						<h:outputText
+							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							value="Ticket ist in Bearbeitung" />
+					</b:panelGrid>
+					<b:iconAwesome name="fa-pie-chart" size="5x"
+						style="position:relative;margin-top:-90px;margin-right:20px;float:right;opacity:0.3;"
+						styleClass="imageStatus" hidden="xs"></b:iconAwesome>
+				</b:panel>
+
+			</b:column>
+			<b:column col-md="6" col-xs="12" styleClass="ticket">
+				<b:panel styleClass="profilPanel color noBorder" onclick="openNav()">
+					<b:panelGrid colSpans="2,10" styleClass="panelProfil"
+						tooltip="Dein Profil">
+						<b:iconAwesome name="fa-user" styleClass="iconProfil"></b:iconAwesome>
+						<h:outputText id="txtDeinProfil"
+							style="margin-top:20px;font-size:1.8em;margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							value="Dein Profil" />
+					</b:panelGrid>
+
+				</b:panel>
+			</b:column>
+		</b:row>
+
+		<!-- No task panel -->
+		<b:row>
+			<b:column col-md="6" col-xs="12">
+				<b:panel styleClass="hiding"></b:panel>
+			</b:column>
+
+
+			<b:column col-md="6" col-xs="12" styleClass="neuesTicketSpalte">
+				<b:panel styleClass="panelNeuesTicket">
+					<b:panelGrid colSpans="12" styleClass="panelNeu"
+						tooltip="Erstelle schnell ein neues Ticket">
+						<h:outputText styleClass="textNeuesTicket"
+							style="font-size:5.0em;  margin:auto auto;display: inline-block;"
+							value="Neues Ticket"></h:outputText>
+					</b:panelGrid>
+				</b:panel>
+			</b:column>
+		</b:row>
+	</b:container>
+
+	<!-- Include Script -->
+	<h:outputScript library="js" name="script.js"></h:outputScript>
+</h:body>
+</html>

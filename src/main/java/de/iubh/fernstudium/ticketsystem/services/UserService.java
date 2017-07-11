@@ -3,11 +3,22 @@ package de.iubh.fernstudium.ticketsystem.services;
 import de.iubh.fernstudium.ticketsystem.domain.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 /**
  * Created by ivanj on 03.07.2017.
  */
 public interface UserService {
+
+    /**
+     * Ermittelt die Userdaten zu einer UserID
+     *
+     * @param userId
+     * @return UserDTO
+     * @throws UserNotExistsException
+     */
+    public UserDTO getUserByUserId(String userId) throws UserNotExistsException;
 
     /**
      * Erzeugt einen neuen User im System.
@@ -22,7 +33,7 @@ public interface UserService {
      * @throws UserAlreadyExistsException
      * @return boolean, wenn User korrekt erzeugt werden konnte
      */
-    public boolean createUser(String userId, String firstName, String lastName, String password, String role, String mailAdress) throws UserAlreadyExistsException;
+    public boolean createUser(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) throws UserAlreadyExistsException;
 
     /**
      * Login des Users mit seinen Credentials.

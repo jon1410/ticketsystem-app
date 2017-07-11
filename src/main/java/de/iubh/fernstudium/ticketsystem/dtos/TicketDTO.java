@@ -1,5 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.dtos;
 
+import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -10,11 +12,28 @@ public class TicketDTO {
 
     private Long id;
     private String title;
-    private String reporter; //evtl. eigenes UserDTO
+    private String description;
+    private TicketStatus ticketStatus;
+    private UserDTO reporter;
     private Calendar creationTime;
     private String category; //evtl. ReferenzID auf Kategorie
-    private String assignee;
-    private List<?> comments;
+    private UserDTO assignee;
+    private List<CommentDTO> comments;
+
+    public TicketDTO() {
+    }
+
+    public TicketDTO(Long id, String title, String description, UserDTO reporter, Calendar creationTime, String category, UserDTO assignee, List<CommentDTO> comments) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        ticketStatus = TicketStatus.NEW;
+        this.reporter = reporter;
+        this.creationTime = creationTime;
+        this.category = category;
+        this.assignee = assignee;
+        this.comments = comments;
+    }
 
     public Long getId() {
         return id;
@@ -32,11 +51,28 @@ public class TicketDTO {
         this.title = title;
     }
 
-    public String getReporter() {
-        return reporter;
+    public String getDescription() {
+        return description;
     }
 
-    public void setReporter(String reporter) {
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public TicketStatus getTicketStatus() {
+        return ticketStatus;
+    }
+
+    public void setTicketStatus(TicketStatus ticketStatus) {
+        this.ticketStatus = ticketStatus;
+    }
+
+    public String getReporter() {
+        return reporter.getUserId();
+    }
+
+    public void setReporter(UserDTO reporter) {
+        //TODO: getUserFromDB
         this.reporter = reporter;
     }
 
@@ -57,18 +93,19 @@ public class TicketDTO {
     }
 
     public String getAssignee() {
-        return assignee;
+        return assignee.getUserId();
     }
 
-    public void setAssignee(String assignee) {
+    public void setAssignee(UserDTO assignee) {
+        //TODO: getFromDB
         this.assignee = assignee;
     }
 
-    public List<?> getComments() {
+    public List<CommentDTO> getComments() {
         return comments;
     }
 
-    public void setComments(List<?> comments) {
+    public void setComments(List<CommentDTO> comments) {
         this.comments = comments;
     }
 
@@ -87,6 +124,10 @@ public class TicketDTO {
         TicketDTO ticketDTO = (TicketDTO) o;
 
         if (id != null ? !id.equals(ticketDTO.id) : ticketDTO.id != null) return false;
+        if (title != null ? !title.equals(ticketDTO.title) : ticketDTO.title != null) return false;
+        if (reporter != null ? !reporter.equals(ticketDTO.reporter) : ticketDTO.reporter != null) return false;
+        if (creationTime != null ? !creationTime.equals(ticketDTO.creationTime) : ticketDTO.creationTime != null)
+            return false;
         if (category != null ? !category.equals(ticketDTO.category) : ticketDTO.category != null) return false;
         if (assignee != null ? !assignee.equals(ticketDTO.assignee) : ticketDTO.assignee != null) return false;
         return comments != null ? comments.equals(ticketDTO.comments) : ticketDTO.comments == null;
@@ -95,6 +136,9 @@ public class TicketDTO {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (reporter != null ? reporter.hashCode() : 0);
+        result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (assignee != null ? assignee.hashCode() : 0);
         result = 31 * result + (comments != null ? comments.hashCode() : 0);

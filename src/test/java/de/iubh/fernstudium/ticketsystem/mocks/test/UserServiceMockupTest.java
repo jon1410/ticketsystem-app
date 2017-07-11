@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.mocks.test;
 import de.iubh.fernstudium.ticketsystem.domain.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.services.mockups.UserServiceMockup;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtil;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtilImpl;
@@ -32,7 +33,7 @@ public class UserServiceMockupTest {
 
         userServiceMockup.createUser("admin",
                 "admin", "admin",
-                "admin", "AD", "admin@ticketsystem.de");
+                "admin", UserRole.AD, "admin@ticketsystem.de");
     }
 
     @Test
