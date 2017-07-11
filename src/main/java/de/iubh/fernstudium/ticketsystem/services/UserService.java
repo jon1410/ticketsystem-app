@@ -18,7 +18,7 @@ public interface UserService {
      * @return UserDTO
      * @throws UserNotExistsException
      */
-    public UserDTO getUserByUserId(String userId) throws UserNotExistsException;
+    UserDTO getUserByUserId(String userId) throws UserNotExistsException;
 
     /**
      * Erzeugt einen neuen User im System.
@@ -33,7 +33,7 @@ public interface UserService {
      * @throws UserAlreadyExistsException
      * @return boolean, wenn User korrekt erzeugt werden konnte
      */
-    public boolean createUser(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) throws UserAlreadyExistsException;
+    boolean createUser(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) throws UserAlreadyExistsException;
 
     /**
      * Login des Users mit seinen Credentials.
@@ -43,7 +43,7 @@ public interface UserService {
      * @throws InvalidPasswordException, {@link UserNotExistsException}
      * @return boolean, wenn Credentials korrekt
      */
-    public boolean login(String userId, String password) throws UserNotExistsException, InvalidPasswordException;
+    boolean login(String userId, String password) throws UserNotExistsException, InvalidPasswordException;
 
     /**
      * Ändert das Passwort des User. Hierfür muss das alte Passwort mitgeschickt werden.
@@ -55,7 +55,7 @@ public interface UserService {
      * @throws UserNotExistsException
      * @return boolean, wenn PW erfolgreich geändert wurde
      */
-    public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException, InvalidPasswordException;
+    boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException, InvalidPasswordException;
 
 
 }

@@ -15,7 +15,7 @@ public interface PasswordUtil {
      * @return boolean
      * @throws InvalidPasswordException
      */
-    public boolean authentificate(String password, String storedHash) throws InvalidPasswordException;
+    boolean authentificate(String password, String storedHash) throws InvalidPasswordException;
 
     /**
      * Hashed das PW mit BCrypt
@@ -23,6 +23,6 @@ public interface PasswordUtil {
      * @param password
      * @return
      */
-    public String hashPw(String password);
+    String hashPw(String password);
 
 }

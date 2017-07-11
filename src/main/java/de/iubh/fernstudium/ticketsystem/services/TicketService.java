@@ -16,7 +16,7 @@ public interface TicketService {
      * @param userId
      * @return java.util.List von {@link TicketDTO}
      */
-    public List<TicketDTO> getOpenTicketsForUserId(String userId);
+    List<TicketDTO> getOpenTicketsForUserId(String userId);
 
     /**
      * Ermittelt alle historischen Tickets zu einem User
@@ -24,7 +24,7 @@ public interface TicketService {
      * @param userId
      * @return java.util.List von {@link TicketDTO}
      */
-    public List<TicketDTO> getHistoricTicketsByUserId(String userId);
+    List<TicketDTO> getHistoricTicketsByUserId(String userId);
 
     /**
      * Ändert den Status eines Tickets
@@ -33,7 +33,7 @@ public interface TicketService {
      * @param newStatus
      * @return boolean, wenn Statusänderung erfolgreich
      */
-    public boolean changeStatus(Long ticketId, String newStatus);
+    boolean changeStatus(Long ticketId, String newStatus);
 
     /**
      * Fügt einen Kommentar zum Ticket hinzu
@@ -42,7 +42,7 @@ public interface TicketService {
      * @param comment
      * @return boolean, wenn erfolgreich
      */
-    public boolean addComment(long ticketId, String comment);
+    boolean addComment(long ticketId, String comment);
 
     /**
      * Erzeugt ein neues Ticket im System
@@ -50,6 +50,6 @@ public interface TicketService {
      * @param ticketDTO
      * @return TicketDTO incl. ID des Tickets
      */
-    public TicketDTO createTicket(TicketDTO ticketDTO);
+    TicketDTO createTicket(TicketDTO ticketDTO);
 
 }
