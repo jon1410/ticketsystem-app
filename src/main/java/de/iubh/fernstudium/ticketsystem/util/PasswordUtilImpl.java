@@ -19,7 +19,7 @@ public class PasswordUtilImpl implements PasswordUtil {
             throw new InvalidPasswordException("Invalid hash provided for comparison");
         }
         return BCrypt.checkpw(password, storedHash);
-    };
+    }
 
     public String hashPw(String password) {
         String salt = BCrypt.gensalt(13);
