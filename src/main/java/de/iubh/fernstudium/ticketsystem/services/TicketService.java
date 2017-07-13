@@ -1,5 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.services;
 
+import de.iubh.fernstudium.ticketsystem.domain.NoSuchTicketException;
+import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
+import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import sun.security.krb5.internal.Ticket;
 
@@ -9,6 +12,15 @@ import java.util.List;
  * Created by ivanj on 03.07.2017.
  */
 public interface TicketService {
+
+    /**
+     * Ermittelt ein bestimmtes Ticket mittels ID
+     *
+     * @param ticketId
+     * @return TicketDTO
+     * @throws NoSuchTicketException
+     */
+    TicketDTO getTicketByID(Long ticketId) throws NoSuchTicketException;
 
     /**
      * Ermittelt alle offenen Tickets zu einem User
@@ -31,18 +43,17 @@ public interface TicketService {
      *
      * @param ticketId
      * @param newStatus
-     * @return boolean, wenn Statusänderung erfolgreich
      */
-    boolean changeStatus(Long ticketId, String newStatus);
+    void changeStatus(Long ticketId, TicketStatus newStatus);
 
     /**
      * Fügt einen Kommentar zum Ticket hinzu
      *
      * @param ticketId
      * @param comment
-     * @return boolean, wenn erfolgreich
+     * @throws NoSuchTicketException
      */
-    boolean addComment(long ticketId, String comment);
+    void addComment(long ticketId, CommentDTO comment) throws NoSuchTicketException;
 
     /**
      * Erzeugt ein neues Ticket im System

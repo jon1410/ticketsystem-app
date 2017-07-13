@@ -1,8 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.services.mockups;
 
-import de.iubh.fernstudium.ticketsystem.domain.UserAlreadyExistsException;
-import de.iubh.fernstudium.ticketsystem.domain.UserNotExistsException;
-import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.domain.*;
+import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,29 +33,65 @@ public class TicketServiceMockup implements TicketService {
     }
 
     @Override
-    public List<TicketDTO> getOpenTicketsForUserId(String userId) {
+    public TicketDTO getTicketByID(Long ticketId) throws NoSuchTicketException {
+        TicketDTO dto = defaultDTOs.get(ticketId);
+        if(dto == null){
+            throw new NoSuchTicketException("Could not find Ticket with ID: " + ticketId);
+        }
+        return dto;
+    }
 
-        return defaultDTOs.values().stream().filter(t -> t.getAssignee().equals(userId)).collect(Collectors.toList());
+    @Override
+    public List<TicketDTO> getOpenTicketsForUserId(String userId) {
+        return defaultDTOs.values().stream().filter(t -> t.getAssignee().equals(userId))
+                .filter(t -> {
+                    TicketStatus ts = t.getTicketStatus();
+                    if(ts == TicketStatus.NEW || ts == TicketStatus.IPS || ts == TicketStatus.IPU || ts == TicketStatus.RES){
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
     }
 
     @Override
     public List<TicketDTO> getHistoricTicketsByUserId(String userId) {
-        return null;
+        return defaultDTOs.values().stream().filter(t -> t.getAssignee().equals(userId))
+                .filter(t -> {
+                    TicketStatus ts = t.getTicketStatus();
+                    if(ts == TicketStatus.CLO || ts == TicketStatus.DEL || ts == TicketStatus.DLS){
+                        return true;
+                    }
+                    return false;
+                } ).collect(Collectors.toList());
     }
 
     @Override
-    public boolean changeStatus(Long ticketId, String newStatus) {
-        return false;
+    public void changeStatus(Long ticketId, TicketStatus newStatus) {
+
+        TicketDTO tDto = defaultDTOs.get(ticketId);
+        tDto.setTicketStatus(newStatus);
+        defaultDTOs.put(ticketId, tDto);
     }
 
     @Override
-    public boolean addComment(long ticketId, String comment) {
-        return false;
+    public void addComment(long ticketId, CommentDTO comment) throws NoSuchTicketException{
+
+        TicketDTO tDto = this.getTicketByID(ticketId);
+        List<CommentDTO> comments = tDto.getComments();
+        if(comments == null) {
+            comments = new ArrayList<>();
+        }
+        comments.add(comment);
+        tDto.setComments(comments);
+        defaultDTOs.put(ticketId, tDto);
     }
 
     @Override
     public TicketDTO createTicket(TicketDTO ticketDTO) {
-        return null;
+        long nextVal = defaultDTOs.size() + 1;
+        ticketDTO.setId(nextVal);
+        defaultDTOs.put(nextVal, ticketDTO);
+        return ticketDTO;
     }
 
     private Map<Long, TicketDTO> createDefaultList() {
