@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.dtos;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 /**
@@ -8,15 +9,15 @@ import java.util.Calendar;
 public class CommentDTO {
 
     private Long id;
-    private Calendar creationDate;
+    private LocalDateTime creationDate;
     private UserDTO author;
     private String comment;
-    private Calendar changeDate;
+    private LocalDateTime changeDate;
 
     public CommentDTO() {
     }
 
-    public CommentDTO(Calendar creationDate, UserDTO author, String comment, Calendar changeDate) {
+    public CommentDTO(LocalDateTime creationDate, UserDTO author, String comment, LocalDateTime changeDate) {
         this.creationDate = creationDate;
         this.author = author;
         this.comment = comment;
@@ -31,11 +32,11 @@ public class CommentDTO {
         this.id = id;
     }
 
-    public Calendar getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Calendar creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -55,11 +56,11 @@ public class CommentDTO {
         this.comment = comment;
     }
 
-    public Calendar getChangeDate() {
+    public LocalDateTime getChangeDate() {
         return changeDate;
     }
 
-    public void setChangeDate(Calendar changeDate) {
+    public void setChangeDate(LocalDateTime changeDate) {
         this.changeDate = changeDate;
     }
 

@@ -1,24 +1,41 @@
-package de.iubh.fernstudium.ticketsystem.dtos;
+package de.iubh.fernstudium.ticketsystem.entities;
 
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
-import de.iubh.fernstudium.ticketsystem.entities.UserEntity;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
+
+import javax.persistence.*;
 
 /**
- * Created by ivanj on 04.07.2017.
+ * Created by ivanj on 16.07.2017.
  */
-public class UserDTO {
+@Entity
+@Table(name = "TICKET_USER")
+public class UserEntity {
 
+    @Id
+    @Column(name = "USERID", nullable = false, length = 32, unique = true)
     private String userId;
+
+    @Column(name = "FIRST_NAME", nullable = false, length = 64)
     private String firstName;
+
+    @Column(name = "LAST_NAME", nullable = false, length = 64)
     private String lastName;
+
+    @Column(name = "PW", nullable = false)
     private String password;
+
+    @Column(name = "ROLE", nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @Column(name = "MAILADDR", nullable = false)
     private String mailAdress;
 
-    public UserDTO() {
+    public UserEntity() {
     }
 
-    public UserDTO(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) {
+    public UserEntity(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,12 +76,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getRole() {
-        return role.getResolvedRoleText();
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setRole(String role) {
-        this.role = UserRole.valueOf(role);
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public String getMailAdress() {
@@ -75,19 +92,23 @@ public class UserDTO {
         this.mailAdress = mailAdress;
     }
 
+    public UserDTO toDto(){
+        return new UserDTO(userId, firstName, lastName, password, role, mailAdress);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserDTO userDTO = (UserDTO) o;
+        UserEntity that = (UserEntity) o;
 
-        if (userId != null ? !userId.equals(userDTO.userId) : userDTO.userId != null) return false;
-        if (firstName != null ? !firstName.equals(userDTO.firstName) : userDTO.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(userDTO.lastName) : userDTO.lastName != null) return false;
-        if (password != null ? !password.equals(userDTO.password) : userDTO.password != null) return false;
-        if (role != null ? !role.equals(userDTO.role) : userDTO.role != null) return false;
-        return mailAdress != null ? mailAdress.equals(userDTO.mailAdress) : userDTO.mailAdress == null;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (role != null ? !role.equals(that.role) : that.role != null) return false;
+        return mailAdress != null ? mailAdress.equals(that.mailAdress) : that.mailAdress == null;
     }
 
     @Override
@@ -103,7 +124,7 @@ public class UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "UserEntity{" +
                 "userId='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -111,13 +132,5 @@ public class UserDTO {
                 ", role='" + role + '\'' +
                 ", mailAdress='" + mailAdress + '\'' +
                 '}';
-    }
-
-    /**
-     * Erzeugt die entsprechende Entity zum DTO
-     * @return UserEntity
-     */
-    public UserEntity toEntity(){
-        return new UserEntity(userId, firstName, lastName, password, role, mailAdress);
     }
 }

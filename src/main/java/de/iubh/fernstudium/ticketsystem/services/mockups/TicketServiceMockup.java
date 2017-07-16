@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -106,19 +107,19 @@ public class TicketServiceMockup implements TicketService {
                     "system@ticketsystem.de");
 
             defaultList.put(1L, new TicketDTO(1L, "Test-Ticket 1", "Erstes Test-Ticket",
-                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), Calendar.getInstance(), null,
+                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), LocalDateTime.now(), null,
                     userServiceMockup.getUserByUserId("admin"), null));
             defaultList.put(2L, new TicketDTO(2L, "Test-Ticket 2", "Zweites Test-Ticket",
-                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), Calendar.getInstance(), null,
+                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), LocalDateTime.now(), null,
                     userServiceMockup.getUserByUserId("admin"), null));
             defaultList.put(3L, new TicketDTO(3L, "Test-Ticket 3", "Drittes Test-Ticket",
-                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), Calendar.getInstance(), null,
+                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), LocalDateTime.now(), null,
                     userServiceMockup.getUserByUserId("admin"), null));
             defaultList.put(4L, new TicketDTO(4L, "Test-Ticket 4", "Viertes Test-Ticket",
-                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), Calendar.getInstance(), null,
+                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), LocalDateTime.now(), null,
                     userServiceMockup.getUserByUserId("admin"), null));
             defaultList.put(5L, new TicketDTO(5L, "Test-Ticket 5", "Fünftes Test-Ticket",
-                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), Calendar.getInstance(), null,
+                    userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), LocalDateTime.now(), null,
                     userServiceMockup.getUserByUserId("admin"), null));
         } catch (UserAlreadyExistsException | UserNotExistsException ex) {
             //TODO: Exception Handling

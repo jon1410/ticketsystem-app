@@ -2,6 +2,7 @@ package de.iubh.fernstudium.ticketsystem.dtos;
 
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class TicketDTO {
     private String description;
     private TicketStatus ticketStatus;
     private UserDTO reporter;
-    private Calendar creationTime;
+    private LocalDateTime creationTime;
     private String category; //evtl. ReferenzID auf Kategorie
     private UserDTO assignee;
     private List<CommentDTO> comments;
@@ -23,7 +24,7 @@ public class TicketDTO {
     public TicketDTO() {
     }
 
-    public TicketDTO(Long id, String title, String description, UserDTO reporter, Calendar creationTime, String category, UserDTO assignee, List<CommentDTO> comments) {
+    public TicketDTO(Long id, String title, String description, UserDTO reporter, LocalDateTime creationTime, String category, UserDTO assignee, List<CommentDTO> comments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -76,11 +77,11 @@ public class TicketDTO {
         this.reporter = reporter;
     }
 
-    public Calendar getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Calendar creationTime) {
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
 

@@ -23,6 +23,7 @@ import org.needle4j.junit.NeedleRule;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
@@ -89,8 +90,8 @@ public class TicketServiceMockupTest {
     @Test
     public void addCommentTest() throws UserNotExistsException, NoSuchTicketException {
 
-        CommentDTO commentDTO = new CommentDTO(Calendar.getInstance(),
-                userServiceMockup.getUserByUserId("admin"), "A comment", Calendar.getInstance());
+        CommentDTO commentDTO = new CommentDTO(LocalDateTime.now(),
+                userServiceMockup.getUserByUserId("admin"), "A comment", LocalDateTime.now());
         ticketServiceMockup.addComment(1L, commentDTO);
         TicketDTO dto = ticketServiceMockup.getTicketByID(1L);
         assertNotNull(dto);
@@ -103,7 +104,7 @@ public class TicketServiceMockupTest {
         UserDTO reporter = userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER);
         UserDTO assignee = userServiceMockup.getUserByUserId("admin");
         TicketDTO dto = new TicketDTO(0L, "A Title", "Test-Ticket", reporter,
-                Calendar.getInstance(), "Test-Category", assignee, null);
+                LocalDateTime.now(), "Test-Category", assignee, null);
         dto = ticketServiceMockup.createTicket(dto);
         assertTrue(dto.getId() > 0);
         assertNotNull(ticketServiceMockup.getTicketByID(dto.getId()));
