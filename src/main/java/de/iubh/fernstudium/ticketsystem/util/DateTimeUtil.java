@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.util;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
