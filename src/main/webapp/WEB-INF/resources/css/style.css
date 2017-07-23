@@ -1,0 +1,264 @@
+@CHARSET "UTF-8";
+
+/*The Navbar Settings*/
+.btnSuchenNavbar {
+	color: #fff !important;
+	background-color: transparent !important;
+	border: 1px solid #009091 !important;
+	transition: background-color 1s ease;
+}
+
+.btnSuchenNavbar:hover {
+	color: #fff !important;
+	border: 1px solid #63BBBA !important;
+	background-color: #63BBBA !important;
+	transition: background-color 1s ease;
+}
+
+.navbar-brand {
+	color: #63BBBA !important;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: white !important;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover {
+	background: #BDE0DE !important;
+	color: #000000 !important;
+}
+
+.navbar-inverse .navbar-nav>.abmeldenLink {
+	color: red !important;
+}
+
+.bodyContainer {
+	padding-top: 1%;
+}
+
+.logo {
+	position: relative;
+	width: 200px;
+	height: 50px;
+}
+/*Navbar Settings End*/
+
+/*
+* Panel Settings
+* ##############
+*/
+.panelQuick {
+	transition: all 1s ease;
+	border: 0px;
+}
+
+.imageMessages {
+	transition: all 1.3s ease;
+}
+
+.imageTicket {
+	transition: all 1.3s ease;
+}
+
+.imageStatus {
+	transition: all 1.3s ease;
+}
+
+.noBorder {
+	border: 0px !important;
+}
+
+.panelMessages {
+	letter-spacing: 0px;
+	transition: all 1.3s ease;
+}
+
+.panelMessages:hover .imageMessages {
+	transform: scale(1.25) !important;
+	transition: all 1.3s ease;
+}
+
+.panelMessages:hover .panelQuick {
+	color: #ffffff;
+	letter-spacing: 1px;
+	cursor: pointer;
+	transition: all 1s ease;
+	cursor: pointer;
+}
+
+.panelTickets {
+	letter-spacing: 0px;
+}
+
+.panelTickets:hover .imageTicket {
+	transform: scale(1.25) !important;
+	transition: all 1.3s ease;
+}
+
+.panelTickets:hover .panelQuick {
+	letter-spacing: 1px;
+	color: #ffffff;
+	transition: all 1s ease;
+	cursor: pointer;
+}
+
+.panelStatus {
+	letter-spacing: 0px;
+}
+
+.panelStatus:hover .imageStatus {
+	transform: scale(1.25) !important;
+	transition: all 1.3s ease;
+}
+
+.panelStatus:hover .panelQuick {
+	letter-spacing: 1px;
+	color: #ffffff;
+	transition: all 1s ease;
+	cursor: pointer;
+}
+
+.panel-body {
+	text-align: center !important;
+}
+
+.panel .logoIubh {
+	border: 1px solid black !important;
+}
+
+.imageLogoIubh {
+	width: 55% !important;
+}
+
+.navbar-inverse .navbar-nav>.abmeldenLink {
+	background: rgba(255, 0, 0, 0.5);
+}
+
+.navbar-inverse .navbar-nav>.abmeldenLink:hover {
+	background: FF0000 !important;
+}
+
+.ticket {
+	letter-spacing: 0px;
+}
+
+.ticket .panelProfil {
+	transition: all 1s ease;
+	cursor: pointer;
+}
+
+.ticket:hover .panelProfil {
+	letter-spacing: 1px;
+	color: white !important;
+	transition: all 1s ease;
+}
+
+.neuesTicketSpalte  .panelNeu {
+	transition: border-left 1s ease;
+	box-sizing: border-box;
+	border-top: 70px solid transparent;
+	border-left: 0px solid transparent;
+	border-bottom: 70px solid transparent;
+	font-size: 0.3em;
+	line-height: 0.3em;
+	cursor: default;
+}
+
+.neuesTicketSpalte:hover .panelNeu {
+	box-sizing: border-box;
+	border-top: 70px solid transparent;
+	border-left: 40px solid rgba(46, 143, 143, 1);
+	border-bottom: 70px solid transparent;
+	font-size: 0.3em;
+	cursor: pointer;
+}
+
+.hiding, .logoPanel {
+	display: none;
+}
+
+.iconProfil {
+	font-size: 7em !important;
+}
+/*End Panel Settings*/
+
+/*Media Screen for Mobile Devices*/
+@media screen and (max-width: 480px) {
+	.btnSuchenNavbar {
+		width: 90% !important;
+		text-align: center;
+		margin: auto 5% !important;
+	}
+	.suchfeldNavbar {
+		width: 90% !important;
+		margin: auto 5% !important;
+	}
+	.navbar-inverse .navbar-nav>li {
+		margin-left: 5% !important;
+	}
+}
+
+.color {
+	box-shadow: 4px 5px 15px #4b4b4b !important;
+	background: #bbded8;
+	background: -moz-linear-gradient(top, #bbded8 0%, #66baba 43%, #078c93 84%);
+	background: -webkit-linear-gradient(top, #bbded8 0%, #66baba 43%, #078c93 84%);
+	background: linear-gradient(to bottom, #bbded8 0%, #66baba 43%, #078c93 84%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bbded8',
+		endColorstr='#078c93', GradientType=0);
+}
+
+.overlay {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 900000;
+	left: 0;
+	top: 0;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.9);
+	overflow-x: hidden;
+	transition: 0.5s;
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+	position: relative;
+	top: 10%;
+	width: 100%;
+	color: white;
+	text-align: center;
+	margin-top: 30px;
+}
+
+/* The navigation links inside the overlay */
+.overlay a {
+	padding: 8px;
+	text-decoration: none;
+	font-size: 1.2em;
+	color: #818181;
+	display: block;
+	transition: 0.3s;
+}
+
+.overlay a:hover, .overlay a:focus {
+	color: #f1f1f1;
+}
+
+.overlay .closebtn {
+	position: absolute;
+	top: 20px;
+	right: 45px;
+	font-size: 60px;
+}
+
+@media screen and (max-height: 450px) {
+	.overlay a {
+		font-size: 10px
+	}
+	.overlay .closebtn {
+		font-size: 1.0em;
+		top: 15px;
+		right: 35px;
+	}
+}

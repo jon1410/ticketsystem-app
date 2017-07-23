@@ -66,27 +66,36 @@
 
         <!-- Frontend -->
         <dependency>
-            <groupId>net.bootsfaces</groupId>
-            <artifactId>bootsfaces</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>6.1</version>
         </dependency>
-
         <dependency>
-            <groupId>org.highfaces</groupId>
-            <artifactId>highfaces</artifactId>
-            <version>1.2</version>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>4.2.2</version>
+            <type>pom</type>
         </dependency>
-
+        <dependency>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>all-themes</artifactId>
+            <version>1.0.8</version>
+            <type>pom</type>
+        </dependency>
         <dependency>
             <groupId>org.primefaces.extensions</groupId>
             <artifactId>primefaces-extensions</artifactId>
             <version>6.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.highfaces</groupId>
+            <artifactId>highfaces</artifactId>
+            <version>1.2</version>
         </dependency>
 
         <!-- Test Dependencies-->

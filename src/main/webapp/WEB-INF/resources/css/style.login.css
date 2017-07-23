@@ -1,0 +1,116 @@
+@CHARSET "UTF-8";
+
+body {
+	padding-top: 6%;
+}
+
+.iubhLogo {
+	margin: auto !important;
+	float: none !important;
+	width: 100% !important;
+	float: none !important;
+}
+
+.logo {
+	margin-left: 22% !important;
+	width: 25%;
+}
+
+.loginHeader {
+	text-decoration: underline;
+	margin-bottom: 8%;
+}
+
+.inputHover {
+	box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.3) !important;
+	transition: box-shadow 0.8s;
+}
+
+.inputHover:hover {
+	box-shadow: 0px 0px 8px #515151 !important;
+	transition: box-shadow 0.8s;
+}
+
+.loginPanel {
+	width: 45% !important;
+	float: none !important;
+}
+
+.loginButton {
+	width: 100%;
+	background-color: rgba(0, 148, 146, 0.8) !important;
+	border: 0px;
+	font-size: 2em !important;
+	letter-spacing: 1px;
+	border: 0px;
+	margin-bottom: 5%;
+	filter: none;
+	overflow: hidden;
+}
+
+.loginButton span {
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	transition: 2.5s;
+}
+
+.loginButton span:after {
+	font-family: FontAwesome;
+	content: "\f101";
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	right: -20px;
+	transition: 0.5s;
+}
+
+.loginButton:hover {
+	border-color: rgb(31, 153, 214);
+	padding-right: 30px!;
+	color: #ffffff;
+	transition: all 0.9s ease;
+}
+
+.loginButton:hover span {
+	padding-right: 30px;
+	color: #ffffff;
+	letter-spacing: 3px;
+	transition: all 0.9s ease;
+}
+
+.loginButton:hover span:after {
+	opacity: 1;
+	right: 0px;
+}
+
+.loginButton:after {
+	width: 100%;
+	background-color: white;
+	border: 0px;
+	font-size: 2em;
+}
+
+.panelPW {
+	display: none;
+}
+
+/*Media Screen for Mobile Devices*/
+@media screen and (max-width: 480px) {
+	.loginPanel {
+		width: 65% !important;
+	}
+	.loginButton {
+		letter-spacing: 0px;
+	}
+	.loginButton:hover span {
+		letter-spacing: 1px !important;
+	}
+	.loginButton span:after {
+		right: 0px !important;
+	}
+	.logo {
+		margin-left: 0% !important;
+		width: 100% !important;
+	}
+}
