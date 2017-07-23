@@ -1,8 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.services;
 
-import de.iubh.fernstudium.ticketsystem.domain.InvalidPasswordException;
-import de.iubh.fernstudium.ticketsystem.domain.UserAlreadyExistsException;
-import de.iubh.fernstudium.ticketsystem.domain.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 

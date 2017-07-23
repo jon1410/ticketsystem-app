@@ -1,4 +1,4 @@
-package de.iubh.fernstudium.ticketsystem.domain;
+package de.iubh.fernstudium.ticketsystem.domain.exception;
 
 /**
  * Created by ivanj on 13.07.2017.

@@ -1,30 +1,23 @@
 package de.iubh.fernstudium.ticketsystem.mocks.test;
 
-import de.iubh.fernstudium.ticketsystem.domain.NoSuchTicketException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
-import de.iubh.fernstudium.ticketsystem.domain.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
-import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.services.mockups.MockupConstatns;
 import de.iubh.fernstudium.ticketsystem.services.mockups.TicketServiceMockup;
 import de.iubh.fernstudium.ticketsystem.services.mockups.UserServiceMockup;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtil;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtilImpl;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.needle4j.annotation.InjectIntoMany;
 import org.needle4j.annotation.ObjectUnderTest;
 import org.needle4j.junit.NeedleRule;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

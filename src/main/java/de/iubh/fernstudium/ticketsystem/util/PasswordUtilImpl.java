@@ -1,6 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.util;
 
-import de.iubh.fernstudium.ticketsystem.domain.InvalidPasswordException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.enterprise.context.ApplicationScoped;

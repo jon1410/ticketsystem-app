@@ -1,6 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.util;
 
-import de.iubh.fernstudium.ticketsystem.domain.InvalidPasswordException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 
 /**
  * Created by ivanj on 04.07.2017.

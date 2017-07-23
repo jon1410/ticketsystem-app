@@ -1,10 +1,9 @@
 package de.iubh.fernstudium.ticketsystem.services;
 
-import de.iubh.fernstudium.ticketsystem.domain.NoSuchTicketException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
-import sun.security.krb5.internal.Ticket;
 
 import java.util.List;
 

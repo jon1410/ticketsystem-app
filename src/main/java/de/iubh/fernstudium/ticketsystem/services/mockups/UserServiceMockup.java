@@ -1,21 +1,27 @@
 package de.iubh.fernstudium.ticketsystem.services.mockups;
 
-import de.iubh.fernstudium.ticketsystem.domain.InvalidPasswordException;
-import de.iubh.fernstudium.ticketsystem.domain.UserAlreadyExistsException;
-import de.iubh.fernstudium.ticketsystem.domain.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtil;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by ivanj on 04.07.2017.
+ *
+ * Dieser Mock ist ApplicationScoped,
+ * damit die PostConstructMethode nicht ständig aufgerufen wird (simuliert einen Datenbestand).
+ * Das tatsächliche Bean wird dann RequestScope.
  */
+@ApplicationScoped
 public class UserServiceMockup implements UserService {
 
     @Inject

@@ -1,6 +1,9 @@
 package de.iubh.fernstudium.ticketsystem.services.mockups;
 
 import de.iubh.fernstudium.ticketsystem.domain.*;
+import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
@@ -8,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,7 +19,12 @@ import java.util.stream.Collectors;
 
 /**
  * Created by ivanj on 07.07.2017.
+ *
+ * Dieser Mock ist ApplicationScoped,
+ * damit die PostConstructMethode nicht ständig aufgerufen wird (simuliert einen Datenbestand).
+ * Das tatsächliche Bean wird dann RequestScope.
  */
+@ApplicationScoped
 public class TicketServiceMockup implements TicketService {
 
     private static final Logger LOG = LogManager.getLogger(TicketServiceMockup.class);
