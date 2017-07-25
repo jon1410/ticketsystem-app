@@ -1,11 +1,10 @@
-package de.iubh.fernstudium.ticketsystem.db.entities.test;
+package de.iubh.fernstudium.ticketsystem.db.test;
 
 import de.iubh.fernstudium.ticketsystem.db.util.JPAHibernateTestManager;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
-import de.iubh.fernstudium.ticketsystem.entities.UserEntity;
+import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 

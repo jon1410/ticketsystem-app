@@ -7,9 +7,9 @@
     <persistence-unit name="TestPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>de.iubh.fernstudium.ticketsystem.entities.CommentEntity</class>
-        <class>de.iubh.fernstudium.ticketsystem.entities.TicketEntity</class>
-        <class>de.iubh.fernstudium.ticketsystem.entities.UserEntity</class>
+        <class>de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity</class>
+        <class>de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity</class>
+        <class>de.iubh.fernstudium.ticketsystem.db.entities.UserEntity</class>
 
         <properties>
             <!--property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'classpath:create.sql'\;RUNSCRIPT FROM 'classpath:data.sql'"/-->

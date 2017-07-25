@@ -1,4 +1,4 @@
-package de.iubh.fernstudium.ticketsystem.entities;
+package de.iubh.fernstudium.ticketsystem.db.entities;
 
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;

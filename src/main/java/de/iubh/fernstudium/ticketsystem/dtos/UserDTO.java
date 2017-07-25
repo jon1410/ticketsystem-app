@@ -1,7 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.dtos;
 
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
-import de.iubh.fernstudium.ticketsystem.entities.UserEntity;
+import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 
 /**
  * Created by ivanj on 04.07.2017.
