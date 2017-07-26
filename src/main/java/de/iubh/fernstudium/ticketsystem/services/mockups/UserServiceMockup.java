@@ -80,6 +80,11 @@ public class UserServiceMockup implements UserService {
         return false;
     }
 
+    @Override
+    public boolean userIdExists(String userId) {
+        return false;
+    }
+
     private UserDTO createUserDTO(String admin, String firstName, String lastName, String passwort, UserRole role, String mailAdress) {
         return new UserDTO(admin, firstName, lastName, passwort, role, mailAdress);
     }

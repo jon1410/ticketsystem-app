@@ -57,5 +57,13 @@ public interface UserService {
      */
     boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException, InvalidPasswordException;
 
+    /**
+     * Überprüft, ob gewünschte UserId bereits vergeben ist.
+     *
+     * @param userId
+     * @return true, wenn UserId bereits vergeben, sonst false
+     */
+    boolean userIdExists(String userId);
+
 
 }
