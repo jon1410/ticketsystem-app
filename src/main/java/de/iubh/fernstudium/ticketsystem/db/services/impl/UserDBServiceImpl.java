@@ -13,7 +13,6 @@ public class UserDBServiceImpl implements UserDBService{
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
     public void persistUser(UserEntity userEntity) {
         em.persist(userEntity);

@@ -82,7 +82,8 @@ public class UserServiceMockup implements UserService {
 
     @Override
     public boolean userIdExists(String userId) {
-        return false;
+        UserDTO user = users.get(userId);
+        return user != null;
     }
 
     private UserDTO createUserDTO(String admin, String firstName, String lastName, String passwort, UserRole role, String mailAdress) {

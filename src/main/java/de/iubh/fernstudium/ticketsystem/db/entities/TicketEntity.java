@@ -14,9 +14,10 @@ import java.util.List;
  * Created by ivanj on 16.07.2017.
  */
 @Entity
-@Table(name = "TICKET", indexes = {@Index(name="IDX_A", columnList = "userid,ticketStatus")})
+@Table(name = "TICKET", indexes = {@Index(name="IDX_A", columnList = "reporter_USERID,STAUTS")})
 @NamedQueries({
-         @NamedQuery(name = "getTicketsForUserIdAndStatus", query = "select t from TicketEntity t where t.reporter = :userid and t.ticketStatus in :statusList"),
+         @NamedQuery(name = "getTicketsForUserIdAndStatus", query = "select t from TicketEntity t where t.assignee = :userid and t.ticketStatus in :statusList"),
+         @NamedQuery(name = "getTicketsReportedByUserId", query = "select t from TicketEntity t where t.reporter = :userid"),
 })
 public class TicketEntity {
 

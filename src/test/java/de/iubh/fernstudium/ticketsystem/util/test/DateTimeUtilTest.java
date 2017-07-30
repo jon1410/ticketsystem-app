@@ -18,27 +18,27 @@ import static org.junit.Assert.assertTrue;
 public class DateTimeUtilTest {
 
     @Test
-    public void sqlTimestampToLocalDateTest(){
+    public void testSqlTimestampToLocalDate(){
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp ts = DateTimeUtil.localDtToSqlTimestamp(localDateTime);
         assertNotNull(ts);
     }
 
     @Test
-    public void sqlTimestampToLocalDateWithNullValueTest(){
+    public void testSqlTimestampToLocalDateWithNullValue(){
         Timestamp ts = DateTimeUtil.localDtToSqlTimestamp(null);
         assertNull(ts);
     }
 
     @Test
-    public void localDtToSqlTimestampTest(){
+    public void testLocalDtToSqlTimestamp(){
         Timestamp ts = new Timestamp(Calendar.getInstance().getTime().getTime());
         LocalDateTime ldt = DateTimeUtil.sqlTimestampToLocalDate(ts);
         assertNotNull(ldt);
     }
 
     @Test
-    public void localDtToSqlTimestampNullValueTest(){
+    public void testLocalDtToSqlTimestampNullValue(){
         LocalDateTime ldt = DateTimeUtil.sqlTimestampToLocalDate(null);
         assertNull(ldt);
     }

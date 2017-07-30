@@ -29,7 +29,7 @@ public class UserServiceMockupTest {
     private PasswordUtil passwordUtil = new PasswordUtilImpl();
 
     @Test(expected = UserAlreadyExistsException.class)
-    public void adminUserExistsTest() throws UserAlreadyExistsException {
+    public void testAdminUserExists() throws UserAlreadyExistsException {
 
         userServiceMockup.createUser("admin",
                 "admin", "admin",
@@ -42,19 +42,25 @@ public class UserServiceMockupTest {
     }
 
     @Test
-    public void changePwTest() throws UserNotExistsException, InvalidPasswordException {
+    public void testChangePw() throws UserNotExistsException, InvalidPasswordException {
         Assert.assertTrue(userServiceMockup.changePassword("admin", "admin", "admin1"));
         Assert.assertTrue(userServiceMockup.login("admin", "admin1"));
     }
 
     @Test(expected = UserNotExistsException.class)
-    public void changePwTestUserNotExistsException() throws UserNotExistsException, InvalidPasswordException {
+    public void testChangePwTestUserNotExistsException() throws UserNotExistsException, InvalidPasswordException {
         userServiceMockup.changePassword("nouser", "xxx", "xy");
     }
 
     @Test
-    public void changePwInvalidPwTest() throws UserNotExistsException, InvalidPasswordException {
+    public void testChangePwInvalidPw() throws UserNotExistsException, InvalidPasswordException {
         Assert.assertFalse(userServiceMockup.changePassword("admin", "xxx", "yyy"));
+    }
+
+    @Test
+    public void testUserIdExists(){
+        Assert.assertTrue(userServiceMockup.userIdExists("admin"));
+        Assert.assertFalse(userServiceMockup.userIdExists("nouserid"));
     }
 
 }

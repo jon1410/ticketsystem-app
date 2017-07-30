@@ -74,9 +74,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userIdExists(String userId) {
         UserEntity userEntity = userDBService.findById(userId);
-        if(userEntity != null){
-            return false;
-        }
-        return true;
+        return userEntity != null;
     }
 }

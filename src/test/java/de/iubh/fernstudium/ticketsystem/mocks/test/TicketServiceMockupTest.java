@@ -42,31 +42,31 @@ public class TicketServiceMockupTest {
     private PasswordUtil passwordUtil = new PasswordUtilImpl();
 
     @Test
-    public void defaultTicketListTest(){
+    public void testDefaultTicketList(){
         assertNotNull(ticketServiceMockup.getDefaultTestTickets());
         assertTrue(ticketServiceMockup.getDefaultTestTickets().size() == 5);
     }
 
     @Test
-    public void getOpenTicketsForUserIdTest(){
+    public void testGetOpenTicketsForUserId(){
         assertNotNull(ticketServiceMockup.getOpenTicketsForUserId(MockupConstatns.SYSDEF_USER));
         assertTrue(ticketServiceMockup.getOpenTicketsForUserId("admin").size() == 5);
     }
 
     @Test
-    public void getTicketByIDTest() throws NoSuchTicketException {
+    public void testGetTicketByID() throws NoSuchTicketException {
         TicketDTO dto = ticketServiceMockup.getTicketByID(1L);
         assertNotNull(dto);
         assertEquals(1L, (long) dto.getId());
     }
 
     @Test(expected = NoSuchTicketException.class)
-    public void getTicketByIDExceptionTest() throws NoSuchTicketException {
+    public void testGetTicketByIDException() throws NoSuchTicketException {
         ticketServiceMockup.getTicketByID(10000L);
     }
 
     @Test
-    public void changeStatusTest() throws NoSuchTicketException {
+    public void testChangeStatus() throws NoSuchTicketException {
         ticketServiceMockup.changeStatus(1L, TicketStatus.DEL);
         assertEquals(TicketStatus.DEL, ticketServiceMockup.getTicketByID(1L).getTicketStatus());
         ticketServiceMockup.changeStatus(1L, TicketStatus.NEW);
@@ -74,14 +74,14 @@ public class TicketServiceMockupTest {
     }
 
     @Test
-    public void getHistoricTicketsByUserIdTest(){
+    public void testGetHistoricTicketsByUserId(){
         ticketServiceMockup.changeStatus(1L, TicketStatus.CLO);
         assertTrue(ticketServiceMockup.getHistoricTicketsByUserId("admin").size() == 1);
         ticketServiceMockup.changeStatus(1L, TicketStatus.NEW);
     }
 
     @Test
-    public void addCommentTest() throws UserNotExistsException, NoSuchTicketException {
+    public void testAddComment() throws UserNotExistsException, NoSuchTicketException {
 
         CommentDTO commentDTO = new CommentDTO(LocalDateTime.now(),
                 userServiceMockup.getUserByUserId("admin"), "A comment", LocalDateTime.now());
@@ -93,7 +93,7 @@ public class TicketServiceMockupTest {
     }
 
     @Test
-    public void createTicketTest() throws UserNotExistsException, NoSuchTicketException {
+    public void testCreateTicket() throws UserNotExistsException, NoSuchTicketException {
         UserDTO reporter = userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER);
         UserDTO assignee = userServiceMockup.getUserByUserId("admin");
         TicketDTO dto = new TicketDTO(0L, "A Title", "Test-Ticket", reporter,

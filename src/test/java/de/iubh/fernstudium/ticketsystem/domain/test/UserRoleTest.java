@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class UserRoleTest {
 
     @Test
-    public void userRoleTextTest(){
+    public void testUserRoleText(){
         assertEquals("Administrator", UserRole.AD.getResolvedRoleText());
         assertEquals("Tutor", UserRole.TU.getResolvedRoleText());
         assertEquals("Student", UserRole.ST.getResolvedRoleText());

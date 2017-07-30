@@ -2,6 +2,7 @@ package de.iubh.fernstudium.ticketsystem.db.services.impl;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
+import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 
@@ -25,10 +26,10 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
-    public List<TicketEntity> getOpenTicketsForUserId(String userId) {
+    public List<TicketEntity> getOpenTicketsForUserId(UserEntity user) {
         List<TicketStatus> statusList = getStatusListForOpenTickets();
         TypedQuery<TicketEntity> query = em.createNamedQuery("getTicketsForUserIdAndStatus", TicketEntity.class)
-                .setParameter("userid", userId).setParameter("statusList", statusList);
+                .setParameter("userid", user).setParameter("statusList", statusList);
 
         return query.getResultList();
     }

@@ -2,6 +2,7 @@ package de.iubh.fernstudium.ticketsystem.db.services;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
+import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 
 import java.util.List;
@@ -19,10 +20,10 @@ public interface TicketDBService {
     /**
      * Ermittelt zu einer UserID alle offenen Tickets
      *
-     * @param userId
+     * @param user
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> getOpenTicketsForUserId(String userId);
+    public List<TicketEntity> getOpenTicketsForUserId(UserEntity user);
 
     /**
      * Ändert den Status eines Tickets
