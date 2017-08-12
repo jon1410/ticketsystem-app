@@ -11,6 +11,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 	<h:outputStylesheet library="css" name="style.login.css"></h:outputStylesheet>
 
 
@@ -20,36 +21,67 @@
 </h:head>
 <h:body>
 	<b:container>
-		
+
+		<h:form>
+			<b:modal closable="true" backdrop="false" id="modalEmail"
+				styleClass="modalEmail" title="Passwort vergessen">
+				<h:outputText
+					value="Du hast dein Passwort vergessen - kein Problem. Trage im folgendes Feld einfach deine EMail Adresse ein und wir schicken dir dein Passwort an diese EMail Adresse"></h:outputText>
+				
+				<p:spacer height="50"></p:spacer>
+				
+				<b:inputText placeholder="Email Adresse"></b:inputText>
+				<p:separator></p:separator>
+				<b:commandButton look="success" value="Passwort zuschicken" styleClass="btnPasswortVergessenBestätigen"></b:commandButton>
+			</b:modal>
+		</h:form>
+
 		<!-- Logo -->
 		<b:row>
 			<b:column col-md="12" styleClass="iubhLogo center-block">
-				<b:image library="img" name="iubh-logo.jpg"
-					styleClass="logo"></b:image>
+				<b:image library="img" name="iubh-logo.jpg" styleClass="logo"></b:image>
+				<span class="sr-only">IUBH (International University Of
+					Applied Science) Logo</span>
 			</b:column>
 		</b:row>
+		<!--Ende Logo Tag-->
 
 		<!-- Login Panel Settings -->
 		<b:row styleClass="loginRow">
 			<h:form id="loginForm">
+				<b:growl id="msg" placementFrom="top" show-detail="true"></b:growl>
 				<b:column col-md="12" col-xs="12"
 					styleClass="loginPanel center-block">
 					<h3 class="loginHeader">Anmelden</h3>
 					<b:inputText placeholder="Deine EMail"
 						tooltip="Gib hier deine IUBH EMail Adresse ein"
-						styleClass="inputHover" tooltip-position="right"></b:inputText>
+						styleClass="inputHover" tooltip-position="right" id="email"
+						required="true" value="#{loginBean.userEmail}">
+						<span class="sr-only">Email Feld</span>
+					</b:inputText>
 					<b:inputSecret placeholder="Dein Passwort"
-						tooltip="Dein persönliches Passwort" styleClass="inputHover" tooltip-position="right"></b:inputSecret>
+						tooltip="Dein persönliches Passwort" styleClass="inputHover"
+						tooltip-position="right" id="passwort" required="true"
+						value="#{loginBean.userPasswort}">
+						<span class="sr-only">Passwort Feld</span>
+					</b:inputSecret>
 					<p:separator></p:separator>
-					<b:commandButton styleClass="loginButton"
-						tooltip-position="right" tooltip="Melde dich beim IUBH-Ticketssystem an">
+					<b:commandButton styleClass="loginButton" id="loginBtn"
+						tooltip-position="right"
+						tooltip="Melde dich beim IUBH-Ticketssystem an"
+						action="#{loginBean.checkLogin}" update=":loginForm:msg"
+						process="email, passwort">
 						<span>Anmelden </span>
+						<span class="sr-only">Button um sich am System anzumelden</span>
 					</b:commandButton>
-					<p:commandLink value="Passwort vergessen ?"
-						styleClass="linkForgottPw" ajax="false" update="@none" global="false"/>
+					<h:link value="Passwort vergessen ?" styleClass="linkForgottPw"
+						onclick="$('.modalEmail').modal(); return false;" />
 				</b:column>
 			</h:form>
 		</b:row>
+		<!-- Ende Login Panel Settings -->
+
+
 	</b:container>
 
 	<h:outputScript library="js" name="script.login.js"></h:outputScript>

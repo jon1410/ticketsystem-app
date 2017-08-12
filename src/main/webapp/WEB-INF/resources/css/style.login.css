@@ -43,9 +43,16 @@ body {
 	font-size: 2em !important;
 	letter-spacing: 1px;
 	border: 0px;
-	margin-bottom: 5%;
+	margin-bottom: 5% !important;
 	filter: none;
 	overflow: hidden;
+}
+
+.loginButton:hover {
+	border-color: rgb(31, 153, 214);
+	padding-right: 30px!;
+	color: #ffffff;
+	transition: all 0.9s ease;
 }
 
 .loginButton span {
@@ -53,6 +60,13 @@ body {
 	display: inline-block;
 	position: relative;
 	transition: 2.5s;
+}
+
+.loginButton:hover span {
+	padding-right: 30px;
+	color: #ffffff;
+	letter-spacing: 3px;
+	transition: all 0.9s ease;
 }
 
 .loginButton span:after {
@@ -63,20 +77,6 @@ body {
 	top: 0;
 	right: -20px;
 	transition: 0.5s;
-}
-
-.loginButton:hover {
-	border-color: rgb(31, 153, 214);
-	padding-right: 30px!;
-	color: #ffffff;
-	transition: all 0.9s ease;
-}
-
-.loginButton:hover span {
-	padding-right: 30px;
-	color: #ffffff;
-	letter-spacing: 3px;
-	transition: all 0.9s ease;
 }
 
 .loginButton:hover span:after {
@@ -93,6 +93,21 @@ body {
 
 .panelPW {
 	display: none;
+}
+
+.linkForgottPw {
+	margin-left: 35%;
+	float: none !important;
+}
+
+.btnPasswortVergessenBestätigen {
+	width: 100%;
+	background-color: rgba(0, 148, 146, 0.8) !important;
+	border: 0px !important;
+}
+
+.btnPasswortVergessenBestätigen:hover {
+	background-color: rgba(0, 148, 146, 1) !important;
 }
 
 /*Media Screen for Mobile Devices*/
