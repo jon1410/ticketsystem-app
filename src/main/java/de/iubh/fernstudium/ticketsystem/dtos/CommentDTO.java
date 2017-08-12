@@ -1,5 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.dtos;
 
+import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
+import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
+
 import java.time.LocalDateTime;
 import java.util.Calendar;
 
@@ -17,11 +20,12 @@ public class CommentDTO {
     public CommentDTO() {
     }
 
+    public CommentDTO(UserDTO author, String comment) {
+        init(LocalDateTime.now(), author, comment, LocalDateTime.now());
+    }
+
     public CommentDTO(LocalDateTime creationDate, UserDTO author, String comment, LocalDateTime changeDate) {
-        this.creationDate = creationDate;
-        this.author = author;
-        this.comment = comment;
-        this.changeDate = changeDate;
+       init(creationDate, author, comment, changeDate);
     }
 
     public Long getId() {
@@ -64,8 +68,8 @@ public class CommentDTO {
         this.changeDate = changeDate;
     }
 
-    public void toEntity(){
-
+    public CommentEntity toEntity(){
+        return new CommentEntity(DateTimeUtil.localDtToSqlTimestamp(creationDate), author.toEntity(), comment, DateTimeUtil.localDtToSqlTimestamp(changeDate));
     }
 
     @Override
@@ -101,5 +105,12 @@ public class CommentDTO {
                 ", comment='" + comment + '\'' +
                 ", changeDate=" + changeDate +
                 '}';
+    }
+
+    private void init(LocalDateTime now, UserDTO author, String comment, LocalDateTime now1) {
+        this.creationDate = creationDate;
+        this.author = author;
+        this.comment = comment;
+        this.changeDate = changeDate;
     }
 }

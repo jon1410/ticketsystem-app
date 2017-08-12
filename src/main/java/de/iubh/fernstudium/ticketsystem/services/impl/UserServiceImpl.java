@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
             LOG.error(ExceptionUtils.getRootCause(ex));
             return false;
         }
-        userDBService.persistUser(userEntity);
         return true;
     }
 

@@ -1,8 +1,12 @@
 package de.iubh.fernstudium.ticketsystem.dtos;
 
+import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
+import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
+import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -113,8 +117,17 @@ public class TicketDTO {
     /**
      * Erzeugt eine Entity aus dem DTO
      */
-    public void toEntity(){
-
+    public TicketEntity toEntity(){
+        List<CommentEntity> commentEntities = null;
+        if(comments != null & comments.size() > 0){
+            commentEntities = new ArrayList<>(comments.size());
+            for(CommentDTO c : comments){
+                commentEntities.add(c.toEntity());
+            }
+        }
+        return new TicketEntity(title, description, ticketStatus,
+                reporter.toEntity(), DateTimeUtil.localDtToSqlTimestamp(creationTime),
+                category, assignee.toEntity(), commentEntities);
     }
 
     @Override
