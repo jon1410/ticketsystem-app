@@ -10,6 +10,7 @@ import de.iubh.fernstudium.ticketsystem.util.PasswordUtil;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.Map;
  * Das tatsächliche Bean wird dann RequestScope.
  */
 @ApplicationScoped
+@Alternative
 public class UserServiceMockup implements UserService {
 
     @Inject

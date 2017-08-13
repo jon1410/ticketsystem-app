@@ -83,9 +83,7 @@ public class TicketServiceMockupTest {
     @Test
     public void testAddComment() throws UserNotExistsException, NoSuchTicketException {
 
-        CommentDTO commentDTO = new CommentDTO(LocalDateTime.now(),
-                userServiceMockup.getUserByUserId("admin"), "A comment", LocalDateTime.now());
-        ticketServiceMockup.addComment(1L, commentDTO);
+        ticketServiceMockup.addComment(1L, "A comment", "admin");
         TicketDTO dto = ticketServiceMockup.getTicketByID(1L);
         assertNotNull(dto);
         assertNotNull(dto.getComments());

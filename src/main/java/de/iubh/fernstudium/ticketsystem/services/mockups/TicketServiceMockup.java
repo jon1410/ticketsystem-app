@@ -6,12 +6,14 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsExcept
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
  * Das tatsächliche Bean wird dann RequestScope.
  */
 @ApplicationScoped
+@Alternative
 public class TicketServiceMockup implements TicketService {
 
     private static final Logger LOG = LogManager.getLogger(TicketServiceMockup.class);
@@ -84,14 +87,16 @@ public class TicketServiceMockup implements TicketService {
     }
 
     @Override
-    public void addComment(long ticketId, CommentDTO comment) throws NoSuchTicketException{
+    public void addComment(long ticketId, String comment, String userId) throws NoSuchTicketException, UserNotExistsException{
 
         TicketDTO tDto = this.getTicketByID(ticketId);
         List<CommentDTO> comments = tDto.getComments();
         if(comments == null) {
             comments = new ArrayList<>();
         }
-        comments.add(comment);
+        UserDTO userDTO = userServiceMockup.getUserByUserId(userId);
+        CommentDTO commentDTO = new CommentDTO(userDTO, comment);
+        comments.add(commentDTO);
         tDto.setComments(comments);
         defaultDTOs.put(ticketId, tDto);
     }
