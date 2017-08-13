@@ -5,4 +5,9 @@
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
                       http://xmlns.jcp.org/xml/ns/javaee/beans_1_2.xsd"
         bean-discovery-mode="all">
+
+    <alternatives>
+        <class>de.iubh.fernstudium.ticketsystem.services.mockups.TicketServiceMockup</class>
+        <class>de.iubh.fernstudium.ticketsystem.services.mockups.UserServiceMockup</class>
+    </alternatives>
 </beans>
