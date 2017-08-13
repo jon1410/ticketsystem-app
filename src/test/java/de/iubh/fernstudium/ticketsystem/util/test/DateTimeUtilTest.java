@@ -42,4 +42,10 @@ public class DateTimeUtilTest {
         LocalDateTime ldt = DateTimeUtil.sqlTimestampToLocalDate(null);
         assertNull(ldt);
     }
+
+    @Test
+    public void testTimeStampNow(){
+        Timestamp tsp = DateTimeUtil.now();
+        assertNull(tsp);
+    }
 }

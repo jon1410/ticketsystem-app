@@ -15,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.needle4j.annotation.InjectIntoMany;
 import org.needle4j.annotation.ObjectUnderTest;
+import org.needle4j.junit.NeedleBuilders;
 import org.needle4j.junit.NeedleRule;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,7 @@ import static org.junit.Assert.assertTrue;
 public class TicketServiceMockupTest {
 
     @Rule
-    public final NeedleRule needleRule = new NeedleRule();
+    public NeedleRule needleRule = NeedleBuilders.needleMockitoRule().build();
 
     @ObjectUnderTest(postConstruct = true)
     private TicketServiceMockup ticketServiceMockup;

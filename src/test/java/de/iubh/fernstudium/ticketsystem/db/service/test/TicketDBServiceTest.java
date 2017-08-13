@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.db.service.test;
 
+import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
@@ -23,6 +24,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -77,6 +79,7 @@ public class TicketDBServiceTest extends JPAHibernateTestManager {
         TicketEntity t = ticketDBService.getTicketById(1L);
         Assert.assertEquals("tutor", t.getAssignee().getUserId());
         Assert.assertEquals("Testticket", t.getTitle());
+        Assert.assertTrue(t.getComments() == null);
     }
 
     @Test
@@ -85,9 +88,35 @@ public class TicketDBServiceTest extends JPAHibernateTestManager {
         Assert.assertTrue(tickets.size() == 1);
     }
 
+    @Test
+    public void test40ChangeStatus(){
+        em.getTransaction().begin();
+        Assert.assertTrue( ticketDBService.changeStauts(1L, TicketStatus.CLO));
+        em.getTransaction().commit();
+    }
+
+    @Test
+    public void test41GetOpenTicketsForUserIdNotAvailable(){
+        List<TicketEntity> tickets = ticketDBService.getOpenTicketsForUserId(getUser("tutor"));
+        Assert.assertTrue(tickets.size() == 0);
+    }
+
+    @Test
+    public void test50AddComment(){
+        CommentEntity commentEntity = new CommentEntity(DateTimeUtil.now(), getUser("admin"), "I am a Comment", DateTimeUtil.now());
+        em.getTransaction().begin();
+        Assert.assertTrue(ticketDBService.addComment(1L, commentEntity));
+        em.getTransaction().commit();
+    }
+
+    @Test
+    public void test51TicketHasComments(){
+        TicketEntity t = ticketDBService.getTicketById(1L);
+        Assert.assertTrue(t.getComments().size() == 1);
+        Assert.assertEquals("I am a Comment", t.getComments().get(0).getComment());
+    }
+
     private UserEntity getUser(String id) {
         return userDBService.findById(id);
     }
-
-
 }

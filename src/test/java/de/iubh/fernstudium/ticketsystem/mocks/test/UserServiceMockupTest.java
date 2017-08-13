@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.needle4j.annotation.InjectIntoMany;
 import org.needle4j.annotation.ObjectUnderTest;
+import org.needle4j.junit.NeedleBuilders;
 import org.needle4j.junit.NeedleRule;
 
 /**
@@ -20,7 +21,7 @@ import org.needle4j.junit.NeedleRule;
 public class UserServiceMockupTest {
 
     @Rule
-    public final NeedleRule needleRule = new NeedleRule();
+    public NeedleRule needleRule = NeedleBuilders.needleMockitoRule().build();
 
     @ObjectUnderTest(postConstruct = true)
     private UserServiceMockup userServiceMockup;

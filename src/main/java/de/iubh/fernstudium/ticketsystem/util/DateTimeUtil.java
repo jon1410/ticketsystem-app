@@ -23,4 +23,8 @@ public class DateTimeUtil {
         }
         return Timestamp.valueOf(ldt);
     }
+
+    public static Timestamp now(){
+        return Timestamp.valueOf(LocalDateTime.now());
+    }
 }

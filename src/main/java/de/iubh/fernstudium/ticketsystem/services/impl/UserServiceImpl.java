@@ -41,7 +41,9 @@ public class UserServiceImpl implements UserService {
         if(this.userIdExists(userId)){
             throw new UserAlreadyExistsException("User with UserId: " + userId + "already exists");
         }
-        UserEntity userEntity = new UserEntity(userId,firstName,lastName,password,role,mailAdress);
+
+        String hasedPw = passwordUtil.hashPw(password);
+        UserEntity userEntity = new UserEntity(userId,firstName,lastName,hasedPw,role,mailAdress);
 
         try{
             userDBService.persistUser(userEntity);
