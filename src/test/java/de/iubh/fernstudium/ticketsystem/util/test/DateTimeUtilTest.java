@@ -46,6 +46,6 @@ public class DateTimeUtilTest {
     @Test
     public void testTimeStampNow(){
         Timestamp tsp = DateTimeUtil.now();
-        assertNull(tsp);
+        assertNotNull(tsp);
     }
 }
