@@ -12,12 +12,42 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="user.style.css"></h:outputStylesheet>
 
 	<title>IUBH | Ticketsystem</title>
 </h:head>
 <h:body>
 
-	<b:navBar brand="IUBH" brandHref="#" inverse="true">
+	<h:form>
+		<b:modal title="Neuen User erstellen" styleClass="newUser"
+			closeOnEscape="true" id="newUser" backdrop="false">
+
+			<b:panelGrid colSpans="12">
+				<b:inputText placeholder="EMail Adresse"></b:inputText>
+				<b:inputText placeholder="Vorname"></b:inputText>
+				<b:inputText placeholder="Nachname"></b:inputText>
+				<b:selectOneMenu>
+					<f:selectItem itemLabel="(Rolle - Bitte auswählen)" itemValue="" />
+					<f:selectItem itemLabel="User" itemValue="User" />
+					<f:selectItem itemLabel="Admin" itemValue="Admin" />
+					<f:selectItem itemLabel="Tutor/-Bearbeiter" itemValue="Tutor_Bearbeiter" />
+				</b:selectOneMenu>
+				<b:inputSecret placeholder="Passwort"></b:inputSecret>
+				<b:inputSecret placeholder="Passwort wiederholen"></b:inputSecret>
+			</b:panelGrid>
+
+			<f:facet name="footer">
+				<b:commandButton look="default" value="speichern"
+					styleClass="btnNewUser"></b:commandButton>
+			</f:facet>
+		</b:modal>
+
+
+	</h:form>
+
+
+
+	<b:navBar brand="IU-Ti" brandHref="#" inverse="true">
 		<!-- Following line is needed for TBS 3.0.1 (panel content overflow issue) -->
 		<b:navbarLinks pull="left">
 			<b:navbarLinks>
@@ -26,6 +56,8 @@
 					<b:navLink value="Tickets anzeigen"></b:navLink>
 					<b:navLink value="Ticket  bearbeiten"></b:navLink>
 					<b:navLink value="Tutor benachrichtigen"></b:navLink>
+					<b:navLink />
+					<b:navLink value="User erstellen" onclick="$('.newUser').modal()"></b:navLink>
 				</b:dropMenu>
 				<b:dropMenu value="Profil">
 					<b:navLink value="Profil bearbeiten"></b:navLink>
@@ -41,10 +73,10 @@
 			<h:form styleClass="navbar-form navbar-left" role="search">
 				<div class="form-group">
 					<b:inputText styleClass="form-control suchfeldNavbar"
-						placeholder="Sucheingabe" />
+						placeholder="Suchbegriff" />
 				</div>
-				<b:commandButton look="success" value="Suchen!"
-					style="margin-left:2px;" styleClass="btnSuchenNavbar"></b:commandButton>
+				<b:commandButton iconAwesome="fa-search"
+					styleClass="btnSuchenNavbar"></b:commandButton>
 			</h:form>
 		</b:navbarLinks>
 	</b:navBar>
@@ -93,7 +125,7 @@
 							style="font-size:5.0em;  margin:auto auto;display: inline-block;z-index:10000;"
 							value="1"></h:outputText>
 						<h:outputText
-							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;"
 							value="Nachricht(en) vorhanden" />
 					</b:panelGrid>
 					<b:iconAwesome name="fa-envelope" size="5x"
@@ -109,7 +141,7 @@
 							style="font-size:5.0em;  margin:auto auto;display: inline-block;"
 							value="4"></h:outputText>
 						<h:outputText
-							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;"
 							value="Deine Tickets" />
 					</b:panelGrid>
 					<b:iconAwesome name="fa-cubes" size="5x"
@@ -128,7 +160,7 @@
 							style="font-size:5.0em;  margin:auto auto;display: inline-block;"
 							value="50%"></h:outputText>
 						<h:outputText
-							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;"
 							value="Ticket ist in Bearbeitung" />
 					</b:panelGrid>
 					<b:iconAwesome name="fa-pie-chart" size="5x"
@@ -143,7 +175,7 @@
 						tooltip="Dein Profil">
 						<b:iconAwesome name="fa-user" styleClass="iconProfil"></b:iconAwesome>
 						<h:outputText id="txtDeinProfil"
-							style="margin-top:20px;font-size:1.8em;margin-top:20px;display: inline-block;position: relative;z-index:10000;"
+							style="margin-top:20px;font-size:1.8em;margin-top:20px;display: inline-block;position: relative;"
 							value="Dein Profil" />
 					</b:panelGrid>
 
