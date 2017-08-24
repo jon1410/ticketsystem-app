@@ -13,18 +13,16 @@ public class UserDTO {
     private String lastName;
     private String password;
     private UserRole role;
-    private String mailAdress;
 
     public UserDTO() {
     }
 
-    public UserDTO(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) {
+    public UserDTO(String userId, String firstName, String lastName, String password, UserRole role) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.role = role;
-        this.mailAdress = mailAdress;
     }
 
     public String getUserId() {
@@ -67,14 +65,6 @@ public class UserDTO {
         this.role = UserRole.valueOf(role);
     }
 
-    public String getMailAdress() {
-        return mailAdress;
-    }
-
-    public void setMailAdress(String mailAdress) {
-        this.mailAdress = mailAdress;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,8 +76,7 @@ public class UserDTO {
         if (firstName != null ? !firstName.equals(userDTO.firstName) : userDTO.firstName != null) return false;
         if (lastName != null ? !lastName.equals(userDTO.lastName) : userDTO.lastName != null) return false;
         if (password != null ? !password.equals(userDTO.password) : userDTO.password != null) return false;
-        if (role != null ? !role.equals(userDTO.role) : userDTO.role != null) return false;
-        return mailAdress != null ? mailAdress.equals(userDTO.mailAdress) : userDTO.mailAdress == null;
+        return role == userDTO.role;
     }
 
     @Override
@@ -97,7 +86,6 @@ public class UserDTO {
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (mailAdress != null ? mailAdress.hashCode() : 0);
         return result;
     }
 
@@ -108,8 +96,7 @@ public class UserDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", mailAdress='" + mailAdress + '\'' +
+                ", role=" + role +
                 '}';
     }
 
@@ -118,6 +105,6 @@ public class UserDTO {
      * @return UserEntity
      */
     public UserEntity toEntity(){
-        return new UserEntity(userId, firstName, lastName, password, role, mailAdress);
+        return new UserEntity(userId, firstName, lastName, password, role);
     }
 }

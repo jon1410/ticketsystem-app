@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class UserEntity {
 
     @Id
-    @Column(name = "USERID", nullable = false, length = 32, unique = true)
+    @Column(name = "USERID", nullable = false, length = 64, unique = true)
     private String userId;
 
     @Column(name = "FIRST_NAME", nullable = false, length = 64)
@@ -29,19 +29,15 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "MAILADDR", nullable = false)
-    private String mailAdress;
-
     public UserEntity() {
     }
 
-    public UserEntity(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) {
+    public UserEntity(String userId, String firstName, String lastName, String password, UserRole role) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.role = role;
-        this.mailAdress = mailAdress;
     }
 
     public String getUserId() {
@@ -84,16 +80,8 @@ public class UserEntity {
         this.role = role;
     }
 
-    public String getMailAdress() {
-        return mailAdress;
-    }
-
-    public void setMailAdress(String mailAdress) {
-        this.mailAdress = mailAdress;
-    }
-
     public UserDTO toDto(){
-        return new UserDTO(userId, firstName, lastName, password, role, mailAdress);
+        return new UserDTO(userId, firstName, lastName, password, role);
     }
 
     @Override
@@ -107,8 +95,7 @@ public class UserEntity {
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (role != null ? !role.equals(that.role) : that.role != null) return false;
-        return mailAdress != null ? mailAdress.equals(that.mailAdress) : that.mailAdress == null;
+        return role == that.role;
     }
 
     @Override
@@ -118,7 +105,6 @@ public class UserEntity {
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (mailAdress != null ? mailAdress.hashCode() : 0);
         return result;
     }
 
@@ -129,8 +115,7 @@ public class UserEntity {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", mailAdress='" + mailAdress + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

@@ -60,7 +60,7 @@ public class UserServiceTest {
     public void testCreateUserOK() throws UserAlreadyExistsException {
         boolean b = userService.createUser("admin",
                 "admin", "admin",
-                "admin", UserRole.AD, "admin@ticketsystem.de");
+                "admin", UserRole.AD);
         assertTrue(b);
     }
 
@@ -69,7 +69,7 @@ public class UserServiceTest {
         Mockito.doThrow(new HibernateException("This is an Exception")).when(userDBService).persistUser(Mockito.any(UserEntity.class));
         boolean b = userService.createUser("admin",
                 "admin", "admin",
-                "admin", UserRole.AD, "admin@ticketsystem.de");
+                "admin", UserRole.AD);
         assertFalse(b);
     }
 
@@ -78,7 +78,7 @@ public class UserServiceTest {
         Mockito.when(userDBService.findById(Mockito.anyString())).thenReturn(buildUserEntity());
         userService.createUser("admin",
                 "admin", "admin",
-                "admin", UserRole.AD, "admin@ticketsystem.de");
+                "admin", UserRole.AD);
     }
 
     @Test
@@ -115,6 +115,6 @@ public class UserServiceTest {
     private UserEntity buildUserEntity() {
         return new UserEntity("admin",
                 "admin", "admin",
-                passwordUtil.hashPw("admin"), UserRole.AD, "admin@ticketsystem.de")        ;
+                passwordUtil.hashPw("admin"), UserRole.AD)        ;
     }
 }

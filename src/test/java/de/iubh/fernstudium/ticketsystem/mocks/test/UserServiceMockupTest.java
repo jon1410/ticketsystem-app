@@ -34,7 +34,7 @@ public class UserServiceMockupTest {
 
         userServiceMockup.createUser("admin",
                 "admin", "admin",
-                "admin", UserRole.AD, "admin@ticketsystem.de");
+                "admin", UserRole.AD);
     }
 
     @Test

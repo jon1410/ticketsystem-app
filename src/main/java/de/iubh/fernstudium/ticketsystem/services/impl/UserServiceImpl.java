@@ -37,13 +37,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createUser(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) throws UserAlreadyExistsException {
+    public boolean createUser(String userId, String firstName, String lastName, String password, UserRole role) throws UserAlreadyExistsException {
         if(this.userIdExists(userId)){
             throw new UserAlreadyExistsException("User with UserId: " + userId + "already exists");
         }
 
         String hasedPw = passwordUtil.hashPw(password);
-        UserEntity userEntity = new UserEntity(userId,firstName,lastName,hasedPw,role,mailAdress);
+        UserEntity userEntity = new UserEntity(userId,firstName,lastName,hasedPw,role);
 
         try{
             userDBService.persistUser(userEntity);

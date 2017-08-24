@@ -117,8 +117,7 @@ public class TicketServiceMockup implements TicketService {
                     "System",
                     "System",
                     "system",
-                    UserRole.AD,
-                    "system@ticketsystem.de");
+                    UserRole.AD);
 
             defaultList.put(1L, new TicketDTO(1L, "Test-Ticket 1", "Erstes Test-Ticket",
                     userServiceMockup.getUserByUserId(MockupConstatns.SYSDEF_USER), LocalDateTime.now(), null,

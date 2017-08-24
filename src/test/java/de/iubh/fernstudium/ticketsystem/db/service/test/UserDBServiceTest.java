@@ -28,7 +28,7 @@ public class UserDBServiceTest extends JPAHibernateTestManager {
     public void test1PersistOk(){
          em.getTransaction().begin();
         UserEntity ue = new UserEntity("testUser", "test", "test",
-                "test", UserRole.AD, "test@tst.de");
+                "test", UserRole.AD);
         userDBService.persistUser(ue);
         em.getTransaction().commit();
     }

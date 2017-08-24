@@ -21,7 +21,7 @@ public class UserEntityTest extends JPAHibernateTestManager {
     public void acreateUser(){
 
         UserEntity ue = new UserEntity("testUser", "test", "test",
-                "test", UserRole.AD, "test@tst.de");
+                "test", UserRole.AD);
         assertNotNull(ue);
         em.persist(ue);
     }

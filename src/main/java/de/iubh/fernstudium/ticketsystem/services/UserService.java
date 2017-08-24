@@ -29,11 +29,10 @@ public interface UserService {
      * @param lastName
      * @param password
      * @param role
-     * @param mailAdress
      * @throws UserAlreadyExistsException
      * @return boolean, wenn User korrekt erzeugt werden konnte
      */
-    boolean createUser(String userId, String firstName, String lastName, String password, UserRole role, String mailAdress) throws UserAlreadyExistsException;
+    boolean createUser(String userId, String firstName, String lastName, String password, UserRole role) throws UserAlreadyExistsException;
 
     /**
      * Login des Users mit seinen Credentials.
