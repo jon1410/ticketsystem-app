@@ -29,6 +29,8 @@ public class UserServiceMockup implements UserService {
 	private String password;
 	private String userId;
 	
+	private UserDTO user;
+	
 
     @Inject
     private PasswordUtil passwordUtil;
@@ -64,10 +66,10 @@ public class UserServiceMockup implements UserService {
             throw new UserNotExistsException(String.format("User mit UserID: %s existiert nicht", userId));
         }
 
-        UserDTO user = users.get(userId);
+        user = users.get(userId);
 		
 		
-		boolean user = passwordUtil.authentificate(password, user.getPassword());
+		boolean userCheck = passwordUtil.authentificate(password, user.getPassword());
 		
 		if(user)
 		{
