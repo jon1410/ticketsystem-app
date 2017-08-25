@@ -25,6 +25,10 @@ import java.util.Map;
 @ApplicationScoped
 @Alternative
 public class UserServiceMockup implements UserService {
+	
+	private String password;
+	private String userId;
+	
 
     @Inject
     private PasswordUtil passwordUtil;
@@ -61,7 +65,20 @@ public class UserServiceMockup implements UserService {
         }
 
         UserDTO user = users.get(userId);
-        return passwordUtil.authentificate(password, user.getPassword());
+		
+		
+		boolean user = passwordUtil.authentificate(password, user.getPassword());
+		
+		if(user)
+		{
+			return "main.xhtml?faces-redirect=true";
+		}
+		else
+		{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARNING, "Anmeldefehler", "EMail/-Passwortkombination wurde nicht gefunden"));
+			return null;
+			
+		}
     }
 
     @Override
@@ -91,4 +108,26 @@ public class UserServiceMockup implements UserService {
     private UserDTO createUserDTO(String admin, String firstName, String lastName, String passwort, UserRole role) {
         return new UserDTO(admin, firstName, lastName, passwort, role);
     }
+	
+	
+	
+	/**Getter and Setter Methoden*/
+	
+	public String getPasswort() {
+		return passwort;
+	}
+
+	public void setPasswort(String passwort) {
+		this.passwort = passwort;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
 }
