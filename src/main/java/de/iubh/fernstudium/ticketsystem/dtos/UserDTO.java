@@ -12,6 +12,7 @@ public class UserDTO {
     protected String firstName;
     protected String lastName;
     protected String password;
+	protected String passwordAgain;
     protected UserRole role;
 
     public UserDTO() {
