@@ -74,6 +74,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mySql.version}</version>
+            <scope>provided test</scope>
         </dependency>
 
         <!-- Frontend -->
