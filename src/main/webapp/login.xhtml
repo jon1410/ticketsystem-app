@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xhtml.jcp.org/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -21,17 +21,18 @@
 	<b:container>
 
 		<h:form id="passwortForm">
-			<b:modal closable="true" backdrop="false" id="modalEmail" 
+			<b:modal closable="true" backdrop="false" id="modalEmail"
 				styleClass="modalEmail fade" title="Passwort vergessen">
 				<h:outputText
 					value="Du hast dein Passwort vergessen - kein Problem. Trage im folgendes Feld einfach deine EMail Adresse ein und wir schicken dir dein Passwort an diese EMail Adresse"></h:outputText>
-				
+
 				<p:spacer height="50"></p:spacer>
-				
+
 				<b:inputText placeholder="Email Adresse"></b:inputText>
-				
+
 				<f:facet name="footer">
-					<b:commandButton look="success" value="Passwort zuschicken" styleClass="btnPasswortVergessenBestätigen"></b:commandButton>
+					<b:commandButton look="success" value="Passwort zuschicken"
+						styleClass="btnPasswortVergessenBestätigen"></b:commandButton>
 				</f:facet>
 			</b:modal>
 		</h:form>
@@ -72,7 +73,7 @@
 						action="#{loginBean.checkLogin}" update=":loginForm:msg"
 						process="email, passwort">
 						<span>Anmelden </span>
-						<span class="sr-only">Button um sich am System anzumelden</span>
+						<span class="sr-only">Am System anmelden</span>
 					</b:commandButton>
 					<h:link value="Passwort vergessen ?" styleClass="linkForgottPw"
 						onclick="$('.modalEmail').modal(); return false;" />
