@@ -26,4 +26,11 @@ public interface UserDBService {
      * @return UserEntity
      */
     public UserEntity findById(String id);
+
+    /**
+     * Löscht einen User von der Datenbank über seine eindeutige UserID
+     *
+     * @param userId
+     */
+    public void deleteUser(String userId);
 }

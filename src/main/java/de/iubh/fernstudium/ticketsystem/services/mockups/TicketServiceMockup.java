@@ -8,6 +8,7 @@ import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
+import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class TicketServiceMockup implements TicketService {
     private static final Logger LOG = LogManager.getLogger(TicketServiceMockup.class);
 
     @Inject
-    private UserServiceMockup userServiceMockup;
+    private UserService userServiceMockup;
 
     private Map<Long, TicketDTO> defaultDTOs;
 	

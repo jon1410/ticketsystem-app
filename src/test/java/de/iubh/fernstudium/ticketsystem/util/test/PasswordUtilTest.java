@@ -8,6 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 /**
  * Created by ivanj on 04.07.2017.
  */
@@ -65,5 +68,10 @@ public class PasswordUtilTest {
         Assert.assertTrue(hashedPw.startsWith("$2a$"));
 
         Assert.assertFalse(securityUtil.authentificate(password.toUpperCase(), hashedPw));
+    }
+
+    @Test
+    public void testBase64DecodeAndHash(){
+        Assert.assertEquals("admin" , new String(Base64.getDecoder().decode("YWRtaW4="), StandardCharsets.UTF_8));
     }
 }
