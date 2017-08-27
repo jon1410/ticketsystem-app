@@ -7,7 +7,10 @@
     <persistence-unit name="TicketPU" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/TicketDB</jta-data-source>
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <!--property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/-->
             <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
             <property name="javax.persistence.schema-generation.drop-source" value="metadata"/>
         </properties>

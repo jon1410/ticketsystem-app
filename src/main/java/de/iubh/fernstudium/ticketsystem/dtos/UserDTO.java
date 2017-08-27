@@ -8,11 +8,11 @@ import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
  */
 public class UserDTO {
 
-    protected String userId;
-    protected String firstName;
-    protected String lastName;
-    protected String password;
-    protected UserRole role;
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private UserRole role;
 
     public UserDTO() {
     }
