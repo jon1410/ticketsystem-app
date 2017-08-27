@@ -16,23 +16,23 @@
 
 
 	<title>IUBH | Login</title>
-
-
 </h:head>
 <h:body>
 	<b:container>
 
-		<h:form>
-			<b:modal closable="true" backdrop="false" id="modalEmail"
-				styleClass="modalEmail" title="Passwort vergessen">
+		<h:form id="passwortForm">
+			<b:modal closable="true" backdrop="false" id="modalEmail" 
+				styleClass="modalEmail fade" title="Passwort vergessen">
 				<h:outputText
 					value="Du hast dein Passwort vergessen - kein Problem. Trage im folgendes Feld einfach deine EMail Adresse ein und wir schicken dir dein Passwort an diese EMail Adresse"></h:outputText>
 				
 				<p:spacer height="50"></p:spacer>
 				
 				<b:inputText placeholder="Email Adresse"></b:inputText>
-				<p:separator></p:separator>
-				<b:commandButton look="success" value="Passwort zuschicken" styleClass="btnPasswortVergessenBestätigen"></b:commandButton>
+				
+				<f:facet name="footer">
+					<b:commandButton look="success" value="Passwort zuschicken" styleClass="btnPasswortVergessenBestätigen"></b:commandButton>
+				</f:facet>
 			</b:modal>
 		</h:form>
 
