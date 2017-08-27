@@ -22,7 +22,8 @@ public class UserBean extends UserDTO {
 
     public String createUser(){
         try {
-            boolean createUser = userService.createUser(super.getUserId(), super.getFirstName(), super.getLastName(), super.getPassword(), super.getUserRole());
+            boolean createUser = userService.createUser(super.getUserId(),
+                    super.getFirstName(), super.getLastName(), super.getPassword(), super.getUserRole());
             if(createUser){
                 return "...";
             }else{
