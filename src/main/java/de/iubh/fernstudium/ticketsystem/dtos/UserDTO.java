@@ -8,11 +8,11 @@ import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
  */
 public class UserDTO {
 
-    private String userId;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private UserRole role;
+    protected String userId;
+    protected String firstName;
+    protected String lastName;
+    protected String password;
+    protected UserRole role;
 
     public UserDTO() {
     }
@@ -64,6 +64,8 @@ public class UserDTO {
     public void setRole(String role) {
         this.role = UserRole.valueOf(role);
     }
+
+    public UserRole getUserRole(){ return role; }
 
     @Override
     public boolean equals(Object o) {

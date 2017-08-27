@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
+import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
@@ -47,19 +48,12 @@ public class LoginBean {
             if(userService.login(userEmail, userPasswort)){
                 return "main.xhtml?faces-redirect=true";
             }else{
-                return resolveError();
+                return FacesContextUtils.resolveError("Anmeldefehler", "EMail/-Passwortkombination wurde nicht gefunden", null);
             }
         } catch (UserNotExistsException | InvalidPasswordException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));
-            return resolveError();
+            return FacesContextUtils.resolveError("Anmeldefehler", "EMail/-Passwortkombination wurde nicht gefunden", null);
         }
-    }
-
-    private String resolveError() {
-        FacesContext.getCurrentInstance().
-                addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Anmeldefehler", "EMail/-Passwortkombination wurde nicht gefunden"));
-        return null;
     }
 
 }
