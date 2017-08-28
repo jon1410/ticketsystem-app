@@ -77,10 +77,6 @@ public class UserDTO{
     }
 
     public String getRole() {
-        //notwendig für main.xhtml selectOne, sonst NPE
-        if(role == null){
-            return UserRole.ST.getResolvedRoleText();
-        }
         return role.getResolvedRoleText();
     }
 

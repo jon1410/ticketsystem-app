@@ -27,21 +27,21 @@
 				<b:message for="mail"></b:message>
 				<b:inputText placeholder="EMail Adresse" type="email"
 					required="true" id="mail" label="EMail" renderLabel="false"
-					value="#{userBean.userId}"></b:inputText>
+					value="#{createUserBean.userId}"></b:inputText>
 
 				<b:message for="vorname"></b:message>
 				<b:inputText placeholder="Vorname" required="true" id="vorname"
-					label="Vorname" renderLabel="false" value="#{userBean.firstName}"></b:inputText>
+					label="Vorname" renderLabel="false" value="#{createUserBean.firstName}"></b:inputText>
 
 				<b:message for="nachname"></b:message>
 				<b:inputText placeholder="Nachname" required="true" id="nachname"
-					label="Nachname" renderLabel="false" value="#{userBean.lastName}"></b:inputText>
+					label="Nachname" renderLabel="false" value="#{createUserBean.lastName}"></b:inputText>
 
 				<b:message for="rolle"></b:message>
 				<b:selectOneMenu
 					tooltip="Wähle hier die Rolle für den jeweiligen Benutzer"
 					required="true" label="Rolle" id="rolle" renderLabel="false"
-					value="#{userBean.role}">
+					value="#{createUserBean.role}">
 					<f:selectItem itemLabel="(Rolle - Bitte auswählen)" itemValue="" />
 					<f:selectItem itemLabel="Student" itemValue="Student" />
 					<f:selectItem itemLabel="Admin" itemValue="Admin" />
@@ -50,7 +50,7 @@
 				</b:selectOneMenu>
 
 				<b:message for="feedback"></b:message>
-				<p:password id="feedback" value="#{userBean.password}"
+				<p:password id="feedback" value="#{createUserBean.password}"
 					feedback="true" placeholder="Passwort" required="true"
 					label="Passwort" promptLabel="Bitte Passwort eingeben"
 					goodLabel="Ok" weakLabel="Unsicher" strongLabel="Sicher!" />
@@ -59,7 +59,7 @@
 
 			<f:facet name="footer">
 				<b:commandButton value="speichern" styleClass="btnNewUser"
-					update="newPanelGrid" actionListener="#{userBean.createUser()}">
+					update="newPanelGrid" actionListener="#{createUserBean.createUser()}">
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
