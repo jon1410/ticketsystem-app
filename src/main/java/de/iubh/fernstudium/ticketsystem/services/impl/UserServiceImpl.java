@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.services.impl;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.UserDBService;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidCredentialsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -55,9 +56,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(String userId, String password) throws UserNotExistsException, InvalidPasswordException {
+    public UserDTO login(String userId, String password) throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException {
         UserDTO user = this.getUserByUserId(userId);
-        return passwordUtil.authentificate(password, user.getPassword());
+        if(!passwordUtil.authentificate(password, user.getPassword())) {
+            throw new InvalidCredentialsException("Ungültige Anmeldedaten!");
+        }
+        return user;
     }
 
     @Override

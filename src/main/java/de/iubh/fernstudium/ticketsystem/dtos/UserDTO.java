@@ -84,6 +84,10 @@ public class UserDTO{
         this.role = UserRole.fromString(role);
     }
 
+    public void setUserRole(UserRole userRole){
+        this.role = userRole;
+    }
+
     public UserRole getUserRole(){ return role; }
 
     @Override

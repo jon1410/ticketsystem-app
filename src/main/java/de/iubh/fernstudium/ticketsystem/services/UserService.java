@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.services;
 
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidCredentialsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -42,7 +43,7 @@ public interface UserService {
      * @throws InvalidPasswordException, {@link UserNotExistsException}
      * @return boolean, wenn Credentials korrekt
      */
-    boolean login(String userId, String password) throws UserNotExistsException, InvalidPasswordException;
+    UserDTO login(String userId, String password) throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException;
 
     /**
      * Ändert das Passwort des User. Hierfür muss das alte Passwort mitgeschickt werden.

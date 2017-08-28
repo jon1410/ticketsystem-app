@@ -1,9 +1,11 @@
 package de.iubh.fernstudium.ticketsystem.mocks.test;
 
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidCredentialsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.mockups.UserServiceMockup;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtil;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtilImpl;
@@ -38,14 +40,16 @@ public class UserServiceMockupTest {
     }
 
     @Test
-    public void testLogin() throws UserNotExistsException, InvalidPasswordException {
-        Assert.assertTrue(userServiceMockup.login("admin", "admin"));
+    public void testLogin() throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException {
+        UserDTO userDTO = userServiceMockup.login("admin", "admin");
+        Assert.assertNotNull(userDTO);
     }
 
     @Test
-    public void testChangePw() throws UserNotExistsException, InvalidPasswordException {
+    public void testChangePw() throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException {
         Assert.assertTrue(userServiceMockup.changePassword("admin", "admin", "admin1"));
-        Assert.assertTrue(userServiceMockup.login("admin", "admin1"));
+        UserDTO userDTO = userServiceMockup.login("admin", "admin1");
+        Assert.assertNotNull(userDTO);
     }
 
     @Test(expected = UserNotExistsException.class)
