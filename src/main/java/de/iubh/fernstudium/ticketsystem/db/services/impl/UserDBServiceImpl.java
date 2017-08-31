@@ -42,4 +42,18 @@ public class UserDBServiceImpl implements UserDBService{
     public void deleteUser(String userId) {
         em.remove(this.findById(userId));
     }
+
+    @Override
+    public void updateUser(String userId, String firstName, String lastName, UserRole newRole) {
+        UserEntity userEntity = this.findById(userId);
+        if(firstName != null){
+            userEntity.setFirstName(firstName);
+        }
+        if(lastName != null){
+            userEntity.setLastName(lastName);
+        }
+        if(newRole != null){
+            userEntity.setRole(newRole);
+        }
+    }
 }

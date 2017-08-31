@@ -1,6 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.db.services;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
+import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 public interface UserDBService {
@@ -33,4 +34,11 @@ public interface UserDBService {
      * @param userId
      */
     public void deleteUser(String userId);
+
+    /**
+     * Ändert die Daten eines Users
+     *
+     * @param userEntity
+     */
+    public void updateUser(String UserId, String firstName, String lastName, UserRole newRole);
 }

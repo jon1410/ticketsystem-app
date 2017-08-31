@@ -65,5 +65,15 @@ public interface UserService {
      */
     boolean userIdExists(String userId);
 
+    /**
+     * Ändert Vor- und/oder Nachnamen eines Users, sowie möglicherweise seine Rolle
+     *
+     * @param UserId
+     * @param firstName
+     * @param lastName
+     * @return true, wenn Daten geändert werden konnten
+     */
+    boolean changeUserData(String UserId, String firstName, String lastName, UserRole newRole);
+
 
 }

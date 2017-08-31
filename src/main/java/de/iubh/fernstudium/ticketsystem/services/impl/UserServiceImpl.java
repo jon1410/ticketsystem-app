@@ -14,10 +14,11 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-@RequestScoped
+@ApplicationScoped
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
@@ -80,5 +81,16 @@ public class UserServiceImpl implements UserService {
     public boolean userIdExists(String userId) {
         UserEntity userEntity = userDBService.findById(userId);
         return userEntity != null;
+    }
+
+    @Override
+    public boolean changeUserData(String userId, String firstName, String lastName, UserRole newRole) {
+        try{
+            userDBService.updateUser(userId, firstName, lastName, newRole);
+        }catch(Exception ex){
+            LOG.error(ExceptionUtils.getRootCause(ex));
+            return false;
+        }
+        return true;
     }
 }

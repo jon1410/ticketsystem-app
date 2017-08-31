@@ -6,9 +6,18 @@ import javax.faces.context.FacesContext;
 public class FacesContextUtils {
 
     public static String resolveError(String summary, String detail, String returnText){
-        FacesContext.getCurrentInstance().
-                addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        summary, detail));
+        addMessage(FacesMessage.SEVERITY_WARN, summary, detail);
         return returnText;
+    }
+
+    public static String resolveInfo(String summary, String infoDetail, String returnText){
+        addMessage(FacesMessage.SEVERITY_INFO, summary, infoDetail);
+        return returnText;
+    }
+
+    private static void addMessage(FacesMessage.Severity severity, String summary, String detail) {
+        FacesContext.getCurrentInstance().
+                addMessage(null, new FacesMessage(severity,
+                        summary, detail));
     }
 }

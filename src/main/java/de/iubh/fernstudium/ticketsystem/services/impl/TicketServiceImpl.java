@@ -12,10 +12,12 @@ import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApplicationScoped
 public class TicketServiceImpl implements TicketService {
 
     @Inject

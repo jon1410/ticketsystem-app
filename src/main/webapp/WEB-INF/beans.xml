@@ -7,7 +7,6 @@
         bean-discovery-mode="all">
 
     <alternatives>
-        <class>de.iubh.fernstudium.ticketsystem.services.mockups.TicketServiceMockup</class >
-        <!--class>de.iubh.fernstudium.ticketsystem.services.mockups.UserServiceMockup</class-->
+        <!--class>de.iubh.fernstudium.ticketsystem.services.mockups.TicketServiceMockup</class -->
     </alternatives>
 </beans>

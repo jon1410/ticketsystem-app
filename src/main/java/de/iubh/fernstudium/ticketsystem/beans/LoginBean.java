@@ -24,6 +24,8 @@ public class LoginBean {
 
     @Inject
     private CurrentUserBean currentUserBean;
+    @Inject
+    private UserDataBean userDataBean;
 
     @Inject
     private UserService userService;
@@ -52,6 +54,7 @@ public class LoginBean {
         try {
             UserDTO userDTO = userService.login(userEmail, userPasswort);
             currentUserBean.init(userDTO);
+            userDataBean.init(userDTO.getUserId());
             return "main.xhtml?faces-redirect=true";
         } catch (UserNotExistsException | InvalidPasswordException |InvalidCredentialsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));

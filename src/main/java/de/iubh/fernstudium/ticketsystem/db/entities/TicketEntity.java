@@ -44,7 +44,7 @@ public class TicketEntity {
     @Column(name = "CATEG", nullable = false)
     private String category; //evtl. ReferenzID auf Kategorie
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private UserEntity assignee;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
