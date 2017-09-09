@@ -1,8 +1,10 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidCredentialsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +21,11 @@ import javax.inject.Named;
 public class LoginBean {
 
     private static final Logger LOG = LogManager.getLogger(LoginBean.class);
+
+    @Inject
+    private CurrentUserBean currentUserBean;
+    @Inject
+    private UserDataBean userDataBean;
 
     @Inject
     private UserService userService;
@@ -45,12 +52,11 @@ public class LoginBean {
     public String checkLogin(){
 
         try {
-            if(userService.login(userEmail, userPasswort)){
-                return "main.xhtml?faces-redirect=true";
-            }else{
-                return FacesContextUtils.resolveError("Anmeldefehler", "EMail/-Passwortkombination wurde nicht gefunden", null);
-            }
-        } catch (UserNotExistsException | InvalidPasswordException e) {
+            UserDTO userDTO = userService.login(userEmail, userPasswort);
+            currentUserBean.init(userDTO);
+            userDataBean.init(userDTO.getUserId());
+            return "main.xhtml?faces-redirect=true";
+        } catch (UserNotExistsException | InvalidPasswordException |InvalidCredentialsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));
             return FacesContextUtils.resolveError("Anmeldefehler", "EMail/-Passwortkombination wurde nicht gefunden", null);
         }

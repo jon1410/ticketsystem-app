@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -25,18 +24,19 @@ public class StartUpConfig {
     @Inject
     private UserDBService userDBService;
 
+    private static final String USERNAME = "admin@ticketsystem.de";
+
     @PostConstruct
     private void createAdminUser(){
-        LOG.info("Creating ADMIN User....");
-        PasswordUtil pwUtil = new PasswordUtilImpl();
-        String pw = pwUtil.hashPw(new String(Base64.getDecoder().decode("YWRtaW4="), StandardCharsets.UTF_8));
-        UserEntity userEntity = new UserEntity("admin@ticketsystem.de", "admin", "admin", pw, UserRole.AD);
-        userDBService.persistUser(userEntity);
-        LOG.info("ADMIN User created....");
-    }
 
-    @PreDestroy
-    private void deleteAdminUser(){
-        userDBService.deleteUser("admin@ticketsystem.de");
+        UserEntity u = userDBService.findById(USERNAME);
+        if(u == null){
+            LOG.info("Creating ADMIN User....");
+            PasswordUtil pwUtil = new PasswordUtilImpl();
+            String pw = pwUtil.hashPw(new String(Base64.getDecoder().decode("YWRtaW4="), StandardCharsets.UTF_8));
+            UserEntity userEntity = new UserEntity(USERNAME, "admin", "admin", pw, UserRole.AD);
+            userDBService.persistUser(userEntity);
+            LOG.info("ADMIN User created....");
+        }
     }
 }

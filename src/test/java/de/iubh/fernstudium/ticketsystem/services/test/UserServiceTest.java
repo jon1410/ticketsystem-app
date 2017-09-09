@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.services.test;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.UserDBService;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidCredentialsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -26,6 +27,7 @@ import org.needle4j.junit.NeedleRule;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -82,19 +84,18 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLoginOK() throws UserNotExistsException, InvalidPasswordException {
+    public void testLoginOK() throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException {
         String hashedPW = passwordUtil.hashPw("admin");
         Mockito.when(userDBService.findById(Mockito.anyString())).thenReturn(buildUserEntity());
-        boolean b = userService.login("admin", "admin");
-        assertTrue(b);
+        UserDTO userDTO = userService.login("admin", "admin");
+        assertNotNull(userDTO);
     }
 
-    @Test
-    public void testLoginNOK() throws UserNotExistsException, InvalidPasswordException {
+    @Test(expected = InvalidCredentialsException.class)
+    public void testLoginNOK() throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException {
         String hashedPW = passwordUtil.hashPw("admin");
         Mockito.when(userDBService.findById(Mockito.anyString())).thenReturn(buildUserEntity());
-        boolean b = userService.login("admin", "mySecretPW");
-        assertFalse(b);
+        userService.login("admin", "mySecretPW");
     }
 
     @Test

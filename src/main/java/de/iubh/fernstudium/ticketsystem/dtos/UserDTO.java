@@ -2,17 +2,35 @@ package de.iubh.fernstudium.ticketsystem.dtos;
 
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
+import de.iubh.fernstudium.ticketsystem.util.config.ValidationConfig;
+
+import javax.enterprise.context.SessionScoped;
+import javax.faces.view.facelets.ValidatorConfig;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Created by ivanj on 04.07.2017.
  */
-public class UserDTO {
+public class UserDTO{
 
+    @Pattern(regexp = ValidationConfig.EMAIL_REGEX)
     protected String userId;
+
+    @NotNull
     protected String firstName;
+
+    @NotNull
     protected String lastName;
+
+    @NotNull @Size(min = 4)
     protected String password;
 	protected String passwordAgain;
+
+	@NotNull
     protected UserRole role;
 
     public UserDTO() {
@@ -63,7 +81,11 @@ public class UserDTO {
     }
 
     public void setRole(String role) {
-        this.role = UserRole.valueOf(role);
+        this.role = UserRole.fromString(role);
+    }
+
+    public void setUserRole(UserRole userRole){
+        this.role = userRole;
     }
 
     public UserRole getUserRole(){ return role; }

@@ -19,7 +19,12 @@ public enum UserRole {
         return resolvedRoleText;
     }
 
-    public UserRole fromString(String shortText){
-        return valueOf(shortText);
+    public static UserRole fromString(String text){
+        for(UserRole u : UserRole.values()){
+            if(u.resolvedRoleText.equalsIgnoreCase(text)){
+                return u;
+            }
+        }
+        return null;
     }
 }

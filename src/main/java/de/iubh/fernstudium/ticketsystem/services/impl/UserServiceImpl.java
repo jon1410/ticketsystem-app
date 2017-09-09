@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.services.impl;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.UserDBService;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidCredentialsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -13,10 +14,11 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-@RequestScoped
+@ApplicationScoped
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
@@ -55,9 +57,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(String userId, String password) throws UserNotExistsException, InvalidPasswordException {
+    public UserDTO login(String userId, String password) throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException {
         UserDTO user = this.getUserByUserId(userId);
-        return passwordUtil.authentificate(password, user.getPassword());
+        if(!passwordUtil.authentificate(password, user.getPassword())) {
+            throw new InvalidCredentialsException("Ungültige Anmeldedaten!");
+        }
+        return user;
     }
 
     @Override
@@ -76,5 +81,16 @@ public class UserServiceImpl implements UserService {
     public boolean userIdExists(String userId) {
         UserEntity userEntity = userDBService.findById(userId);
         return userEntity != null;
+    }
+
+    @Override
+    public boolean changeUserData(String userId, String firstName, String lastName, UserRole newRole) {
+        try{
+            userDBService.updateUser(userId, firstName, lastName, newRole);
+        }catch(Exception ex){
+            LOG.error(ExceptionUtils.getRootCause(ex));
+            return false;
+        }
+        return true;
     }
 }

@@ -28,7 +28,7 @@ public class TicketEntity {
     @Column(name = "TITLE", length = 64, nullable = false)
     private String title;
 
-    @Column(name = "DESC", length = 1000, nullable = false)
+    @Column(name = "DESCRIPTION", length = 1000, nullable = false)
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -44,7 +44,7 @@ public class TicketEntity {
     @Column(name = "CATEG", nullable = false)
     private String category; //evtl. ReferenzID auf Kategorie
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private UserEntity assignee;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

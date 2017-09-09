@@ -16,4 +16,10 @@ public class UserRoleTest {
         assertEquals("Tutor", UserRole.TU.getResolvedRoleText());
         assertEquals("Student", UserRole.ST.getResolvedRoleText());
     }
-}
+
+    @Test
+    public void testUserRoleValueOf(){
+        assertEquals(UserRole.ST, UserRole.fromString("Student"));
+        assertEquals(UserRole.TU, UserRole.fromString("Tutor"));
+        assertEquals(UserRole.AD, UserRole.fromString("Administrator"));
+    }}
