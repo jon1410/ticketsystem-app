@@ -4,9 +4,5 @@ $(function() {
 	$('[data-toggle="tooltip"]').tooltip();
 
 
-	$(".linkForgottPw").click(function(e) {
-		e.stopPropagation();
-		//Some stuff here
-		//...
-	})
+	
 });

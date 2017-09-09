@@ -3,16 +3,29 @@
 /*The Navbar Settings*/
 .btnSuchenNavbar {
 	color: #fff !important;
-	background-color: transparent !important;
-	border: 1px solid #009091 !important;
+	border: 0px !important;
+	background-color: rgb(98, 188, 186) !important;
 	transition: background-color 1s ease;
+	margin-left: -13px;
+	position: absolute;
+	border-radius: 0px !important;
 }
 
 .btnSuchenNavbar:hover {
 	color: #fff !important;
-	border: 1px solid #63BBBA !important;
-	background-color: #63BBBA !important;
+	background-color: rgb(1, 143, 145) !important;
 	transition: background-color 1s ease;
+}
+
+.suchfeldNavbar {
+	width: 200px !important;
+	height: 2.3em !important;
+}
+
+.suchfeldNavbar:focus {
+	border: 0px !important;
+	box-shadow: 0px !important;
+	-webkit-box-shadow: 0px !important;
 }
 
 .navbar-brand {
@@ -164,6 +177,22 @@
 	cursor: default;
 }
 
+#profilColumn  .neuesBildBtn {
+	position: absolute;
+}
+
+.profilBild {
+	width: 200px;
+	height: 200px;
+	border: 1px solid black;
+	border-radius: 50%;
+}
+
+.neuesBildBtn {
+	width: 100%;
+	margin-top: 10px;
+}
+
 .neuesTicketSpalte:hover .panelNeu {
 	box-sizing: border-box;
 	border-top: 70px solid transparent;
@@ -173,29 +202,30 @@
 	cursor: pointer;
 }
 
+.btnNeuesTicket, .btnNeuesPasswort, .btnAenderungen {
+	border: none !important;
+	width: 100%;
+	background-color: rgb(98, 188, 186) !important;
+	color: #ffffff !important;
+	transition: background-color .6s ease;
+}
+
+.btnNeuesTicket:hover, .btnNeuesPasswort:hover, .btnAenderungen:hover {
+	border: none !important;
+	background-color: rgb(7, 140, 147) !important;
+	transition: background-color .8s ease;
+}
+
+.profilColumn {
+	text-align: center;
+}
+
 .hiding, .logoPanel {
 	display: none;
 }
 
 .iconProfil {
 	font-size: 7em !important;
-}
-/*End Panel Settings*/
-
-/*Media Screen for Mobile Devices*/
-@media screen and (max-width: 480px) {
-	.btnSuchenNavbar {
-		width: 90% !important;
-		text-align: center;
-		margin: auto 5% !important;
-	}
-	.suchfeldNavbar {
-		width: 90% !important;
-		margin: auto 5% !important;
-	}
-	.navbar-inverse .navbar-nav>li {
-		margin-left: 5% !important;
-	}
 }
 
 .color {
@@ -252,13 +282,23 @@
 	font-size: 60px;
 }
 
-@media screen and (max-height: 450px) {
-	.overlay a {
-		font-size: 10px
+/*End Panel Settings*/
+
+/*Media Screen for Mobile Devices*/
+@media screen and (max-width: 765px) {
+	.btnSuchenNavbar {
+		width: 90% !important;
+		text-align: center;
+		margin: 5% 5% !important;
 	}
-	.overlay .closebtn {
-		font-size: 1.0em;
-		top: 15px;
-		right: 35px;
+	.suchfeldNavbar {
+		width: 90% !important;
+		margin: auto 5% !important;
+	}
+	.navbar-inverse .navbar-nav>li {
+		margin-left: 5% !important;
+	}
+	.navbar-collapse {
+		height: 320px !important;
 	}
 }
