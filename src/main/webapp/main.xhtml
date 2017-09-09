@@ -25,14 +25,15 @@
 			closeOnEscape="true" id="password" backdrop="false">
 
 			<b:panelGrid colSpans="12" id="changePassword">
-				<b:inputSecret placeholder="Neues Passwort" label="Neues Passwort"></b:inputSecret>
+				<b:inputSecret placeholder="Neues Passwort" label="Neues Passwort"
+							   value="#{userBean.newPassword}"></b:inputSecret>
 				<b:inputSecret placeholder="Neues Passwort wiederholen"
-					label="Neues Passwort wiederholen"></b:inputSecret>
+					label="Neues Passwort wiederholen" value="#{userBean.repeatedPassword}"></b:inputSecret>
 			</b:panelGrid>
 
 			<f:facet name="footer">
 				<b:commandButton value="speichern" styleClass="btnNeuesPasswort"
-					update="changePassword">
+					update="changePassword" actionListener="#{userBean.changePassword()}">
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
@@ -90,16 +91,17 @@
 			<b:row>
 			<b:column col-md="12" style="margin-top:11px;">
 				<b:panelGrid col-spans="12">
-					<b:inputText placeholder="Vorname" id="vorname" label="Vorname"></b:inputText>	
-					<b:inputText placeholder="Nachname" id="nachname" label="Nachname"></b:inputText>
-					<b:inputText placeholder="EMail Adresse" id="emailAdresse" label="EMail" type="email"></b:inputText>	
+					<b:inputText placeholder="Vorname" id="vorname" label="Vorname"
+								 value="#{currentUserBean.newFirstName}"></b:inputText>
+					<b:inputText placeholder="Nachname" id="nachname" label="Nachname"
+								 value="#{currentUserBean.newLastName}"></b:inputText>
 						
 				</b:panelGrid>
 			</b:column>
 			</b:row>
 
 			<f:facet name="footer">
-				<b:commandButton value="Änderungen übernehmen" styleClass="btnAenderungen">
+				<b:commandButton value="Änderungen übernehmen" styleClass="btnAenderungen"  actionListener="#{currentUserBean.changeUserData()}">
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
@@ -136,7 +138,7 @@
 					<f:selectItem itemLabel="Student" itemValue="Student" />
 					<f:selectItem itemLabel="Admin" itemValue="Admin" />
 					<f:selectItem itemLabel="Tutor/-Bearbeiter"
-						itemValue="Tutor_Bearbeiter" />
+						itemValue="Tutor" />
 				</b:selectOneMenu>
 
 				<b:message for="feedback"></b:message>
@@ -152,8 +154,6 @@
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
-
-
 	</h:form>
 	<!-- ENDE NEUER BENUTZER -->
 
@@ -214,7 +214,7 @@
 					<b:navLink value="Tutor benachrichtigen"></b:navLink>
 					<b:navLink />
 					<b:navLink value="User erstellen" onclick="$('.newUser').modal()"
-						rendered="#{userBean.currentUser.role eq 'Administrator'}"></b:navLink>
+						rendered="#{currentUserBean.resolvedUserRole eq 'Administrator'}"></b:navLink>
 				</b:dropMenu>
 				<b:dropMenu value="Profil">
 					<b:navLink value="Profil bearbeiten"
@@ -246,7 +246,7 @@
 		<b:row>
 			<b:column col-md="6" col-xs="12" styleClass="columnLogoFirst">
 				<h4>Willkommen
-					#{ticketServiceMockup.userServiceMockup.user.firstName}</h4>
+					#{currentUserBean.firstName}</h4>
 				<b:panel styleClass="logoIubh">
 					<b:image library="img" name="iubh-logo.jpg"
 						styleClass="imageLogoIubh"></b:image>

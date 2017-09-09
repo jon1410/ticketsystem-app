@@ -11,6 +11,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named("userDataBean")
@@ -41,5 +42,12 @@ public class UserDataBean implements Serializable {
 
     public void setTickets(List<TicketDTO> tickets) {
         this.tickets = tickets;
+    }
+
+    public void addTicket(TicketDTO ticketDTO){
+        if(tickets == null){
+            tickets = new ArrayList<>();
+        }
+        tickets.add(ticketDTO);
     }
 }

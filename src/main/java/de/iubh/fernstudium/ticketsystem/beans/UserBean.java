@@ -19,11 +19,11 @@ import javax.inject.Named;
 public class UserBean extends UserDTO{
 
     private static final Logger LOG = LogManager.getLogger(UserBean.class);
+    private String newPassword;
     private String repeatedPassword;
 
     @Inject
     private UserService userService;
-
     @Inject
     private CurrentUserBean currentUser;
 
@@ -44,6 +44,14 @@ public class UserBean extends UserDTO{
         this.repeatedPassword = repeatedPassword;
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
     public String createUser(){
         return createNewUser("main.xhtml?faces-redirect=true", "Fehler beim Erstellen eines neuen Users");
     }
@@ -53,8 +61,12 @@ public class UserBean extends UserDTO{
     }
 
     public String changePassword(){
+        if(!newPassword.equals(getRepeatedPassword())){
+            return  FacesContextUtils.resolveError("Passwörter stimmen nicht überein",
+                    "Sie haben das Passwort erfolgreich geändert", null);
+        }
         try {
-            boolean isPwChanged = userService.changePassword(super.getUserId(), super.getPassword(), this.getRepeatedPassword());
+            boolean isPwChanged = userService.changePassword(currentUser.getUserId(), currentUser.getPassword(), this.getRepeatedPassword());
             if(isPwChanged){
                 return  FacesContextUtils.resolveInfo("Passwort erfolgreich geändert",
                         "Sie haben das Passwort erfolgreich geändert", "main.xhtml");

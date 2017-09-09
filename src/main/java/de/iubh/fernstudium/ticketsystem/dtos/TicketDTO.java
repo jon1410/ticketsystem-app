@@ -119,7 +119,7 @@ public class TicketDTO {
      */
     public TicketEntity toEntity(){
         List<CommentEntity> commentEntities = null;
-        if(comments != null & comments.size() > 0){
+        if(comments != null && comments.size() > 0){
             commentEntities = new ArrayList<>(comments.size());
             for(CommentDTO c : comments){
                 commentEntities.add(c.toEntity());
