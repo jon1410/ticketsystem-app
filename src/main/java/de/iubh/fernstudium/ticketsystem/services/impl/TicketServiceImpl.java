@@ -75,4 +75,9 @@ public class TicketServiceImpl implements TicketService {
         TicketEntity ticketEntity = ticketDBService.createTicket(ticketDTO.toEntity());
         return ticketEntity.toDto();
     }
+
+    @Override
+    public void createMasterTicket(Long masterTicketId, List<Long> childTickets) {
+
+    }
 }

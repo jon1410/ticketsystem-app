@@ -57,7 +57,9 @@ public class UserBean extends UserDTO{
     }
 
     public String registerUser(){
-        return createNewUser("login.xhtml?faces-redirect=true", "Neuer User konnte nicht erstellt werden");
+        super.setUserRole(UserRole.ST);
+        return createNewUser("login.xhtml?faces-redirect=true",
+                "Fehler bei der Registrierung aufgetreten, bitte versuche es noch einmal");
     }
 
     public String changePassword(){

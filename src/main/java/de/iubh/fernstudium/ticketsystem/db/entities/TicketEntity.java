@@ -50,6 +50,8 @@ public class TicketEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CommentEntity> comments = new ArrayList<>();
 
+    //TODO: Masterticket-Self-Ref
+
     public TicketEntity() {
     }
 

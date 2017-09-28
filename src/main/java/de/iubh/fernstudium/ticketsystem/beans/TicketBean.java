@@ -97,7 +97,11 @@ public class TicketBean extends TicketDTO implements Serializable {
             return FacesContextUtils.resolveError("Kommentar konnte nicht hinzugefügt werden",
                     "Kommentar konnte nicht hinzugefügt werden", null);
         }
+    }
 
+    public String createMasterticket(){
+
+        return null;
     }
 
 }
