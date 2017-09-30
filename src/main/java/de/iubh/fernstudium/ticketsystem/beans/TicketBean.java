@@ -1,10 +1,13 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
+import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
+import de.iubh.fernstudium.ticketsystem.services.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +17,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Named("ticketBean")
 @RequestScoped
@@ -23,9 +27,18 @@ public class TicketBean extends TicketDTO implements Serializable {
 
     @Inject
     private TicketService ticketService;
+    @Inject
+    private CurrentUserBean currentUserBean;
+    @Inject
+    private UserService userService;
+    @Inject
+    private DefaultInits defaultInits;
+    @Inject
+    private UserDataBean userDataBean;
 
     private String newComment;
     private String userIdCommentor;
+    private String idAssigneeNewTicket;
 
     public String getNewComment() {
         return newComment;
@@ -47,8 +60,31 @@ public class TicketBean extends TicketDTO implements Serializable {
 
     }
 
+    public String getIdAssigneeNewTicket() {
+        return idAssigneeNewTicket;
+    }
+
+    public void setIdAssigneeNewTicket(String idAssigneeNewTicket) {
+        this.idAssigneeNewTicket = idAssigneeNewTicket;
+    }
+
     public void createTicket(){
+
+        super.setReporter(currentUserBean);
+        super.setCreationTime(LocalDateTime.now());
+        super.setTicketStatus(TicketStatus.NEW);
+        if(StringUtils.isEmpty(idAssigneeNewTicket)){
+            super.setAssignee(defaultInits.getDefaultAssginee());
+        }
+        else{
+            try {
+                super.setReporter(userService.getUserByUserId(idAssigneeNewTicket));
+            } catch (UserNotExistsException e) {
+                LOG.error(ExceptionUtils.getRootCauseMessage(e));
+            }
+        }
         TicketDTO ticketDTO = ticketService.createTicket(this);
+        userDataBean.addTicket(ticketDTO);
     }
 
     public String addComment(){
@@ -61,7 +97,11 @@ public class TicketBean extends TicketDTO implements Serializable {
             return FacesContextUtils.resolveError("Kommentar konnte nicht hinzugefügt werden",
                     "Kommentar konnte nicht hinzugefügt werden", null);
         }
+    }
 
+    public String createMasterticket(){
+
+        return null;
     }
 
 }

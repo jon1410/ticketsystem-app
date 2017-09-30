@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByUserId(String userId) throws UserNotExistsException {
         UserEntity userEntity = userDBService.findById(userId);
-        if(userEntity == null){
+        if (userEntity == null) {
             throw new UserNotExistsException("Could not find User with UserID: " + userId);
         }
         return userEntity.toDto();
@@ -40,16 +40,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean createUser(String userId, String firstName, String lastName, String password, UserRole role) throws UserAlreadyExistsException {
-        if(this.userIdExists(userId)){
+        if (this.userIdExists(userId)) {
             throw new UserAlreadyExistsException("User with UserId: " + userId + "already exists");
         }
 
         String hasedPw = passwordUtil.hashPw(password);
-        UserEntity userEntity = new UserEntity(userId,firstName,lastName,hasedPw,role);
+        UserEntity userEntity = new UserEntity(userId, firstName, lastName, hasedPw, role);
 
-        try{
+        try {
             userDBService.persistUser(userEntity);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             LOG.error(ExceptionUtils.getRootCause(ex));
             return false;
         }
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO login(String userId, String password) throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException {
         UserDTO user = this.getUserByUserId(userId);
-        if(!passwordUtil.authentificate(password, user.getPassword())) {
+        if (!passwordUtil.authentificate(password, user.getPassword())) {
             throw new InvalidCredentialsException("Ungültige Anmeldedaten!");
         }
         return user;
@@ -69,7 +69,8 @@ public class UserServiceImpl implements UserService {
     public boolean changePassword(String userId, String altesPw, String neuesPw) throws UserNotExistsException, InvalidPasswordException {
         UserDTO user = this.getUserByUserId(userId);
 
-        if(passwordUtil.authentificate(altesPw, user.getPassword())){
+        //first Plain Check, maybe PW is already encoded, then Ecnryption Algo
+        if (altesPw.equals(user.getPassword()) || passwordUtil.authentificate(altesPw, user.getPassword())) {
             String hashedPwNew = passwordUtil.hashPw(neuesPw);
             userDBService.changePassword(userId, hashedPwNew);
             return true;
@@ -85,9 +86,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean changeUserData(String userId, String firstName, String lastName, UserRole newRole) {
-        try{
+        try {
             userDBService.updateUser(userId, firstName, lastName, newRole);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             LOG.error(ExceptionUtils.getRootCause(ex));
             return false;
         }

@@ -65,4 +65,12 @@ public interface TicketService {
      */
     TicketDTO createTicket(TicketDTO ticketDTO);
 
+    /**
+     * Erzeugt ein Master-Ticket samt untergeorneten Tickets
+     *
+     * @param masterTicketId
+     * @param childTickets
+     */
+    void createMasterTicket(Long masterTicketId, List<Long> childTickets);
+
 }

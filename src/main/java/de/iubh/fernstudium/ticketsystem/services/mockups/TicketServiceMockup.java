@@ -112,6 +112,11 @@ public class TicketServiceMockup implements TicketService {
         return ticketDTO;
     }
 
+    @Override
+    public void createMasterTicket(Long masterTicketId, List<Long> childTickets) {
+
+    }
+
     private Map<Long, TicketDTO> createDefaultList() {
 
         Map<Long, TicketDTO> defaultList = new HashMap<>();

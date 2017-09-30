@@ -50,6 +50,8 @@ public class TicketEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CommentEntity> comments = new ArrayList<>();
 
+    //TODO: Masterticket-Self-Ref
+
     public TicketEntity() {
     }
 
@@ -137,9 +139,12 @@ public class TicketEntity {
     }
 
     public TicketDTO toDto(){
-        List<CommentDTO> commentDTOList = new ArrayList<>(comments.size());
-        for(CommentEntity c : comments){
-            commentDTOList.add(c.toDto());
+        List<CommentDTO> commentDTOList = null;
+        if(comments != null && comments.size() > 1){
+            commentDTOList = new ArrayList<>(comments.size());
+            for(CommentEntity c : comments){
+                commentDTOList.add(c.toDto());
+            }
         }
         return new TicketDTO(id, title, description,reporter.toDto(),
                 DateTimeUtil.sqlTimestampToLocalDate(creationTime), category, assignee.toDto(), commentDTOList);
