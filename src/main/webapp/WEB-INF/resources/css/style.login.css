@@ -100,13 +100,13 @@ body {
 	float: none !important;
 }
 
-.btnPasswortVergessenBestätigen {
+.btnPasswortVergessenBestätigen, .btnRegistrieren {
 	width: 100%;
 	background-color: rgba(0, 148, 146, 0.8) !important;
 	border: 0px !important;
 }
 
-.btnPasswortVergessenBestätigen:hover {
+.btnPasswortVergessenBestätigen:hover , .btnRegistrieren:hover{
 	background-color: rgba(0, 148, 146, 1) !important;
 }
 

@@ -18,6 +18,7 @@
 </h:head>
 <h:body>
 
+	<b:growl id="msgs"></b:growl>
 
 	<!-- PASSWORT ÄNDERN -->
 	<h:form id="passwordForm">
@@ -38,30 +39,154 @@
 		</b:modal>
 	</h:form>
 	<!-- ENDE PASSWORT ÄNDERN -->
-	
-	
+
+	<!-- SUCHE -->
+	<h:form id="suche">
+		<b:modal title="Suchkriterien einstellen" styleClass="sucheModal fade"
+			closeOnEscape="true" id="suche" backdrop="false">
+			<h3>Folgende Kriterien in der Suche berücksichtigen</h3>
+			<b:panelGrid colSpans="6,6" id="suchePanel">
+				<b:selectBooleanCheckbox caption="Ticket ID"></b:selectBooleanCheckbox>
+				<b:selectBooleanCheckbox caption="Datum"></b:selectBooleanCheckbox>
+				<b:selectBooleanCheckbox caption="Ersteller"></b:selectBooleanCheckbox>
+				<b:selectBooleanCheckbox caption="Status"></b:selectBooleanCheckbox>
+			</b:panelGrid>
+
+			<f:facet name="footer">
+				<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
+					update=":msgs"></b:commandButton>
+			</f:facet>
+		</b:modal>
+	</h:form>
+	<!-- ENDE SUCHE -->
+
+
+	<!-- KATEGORIE -->
+	<h:form id="kategorie">
+		<b:modal title="Kategorien" styleClass="kategorienModal fade"
+			closeOnEscape="true" id="kate" backdrop="false" size="modal-lg">
+
+			<b:row>
+				<h:form>
+					<b:panelGrid colSpans="12">
+						<b:accordion>
+							<b:panel title="Neu">
+								<h4>Hier kannst du neue Kategorien definieren</h4>
+								<hr />
+								<b:panelGrid colSpans="12">
+									<b:inputText placeholder="ID" value="#{categoryBean.courseId}"></b:inputText>
+									<b:panelGrid colSpans="6,6">
+									
+										<b:inputText placeholder="Name"
+											value="#{categoryBean.courseName}"></b:inputText>
+										<b:selectOneMenu>
+											
+											<f:selectItems
+												value="#{categoryRepositoryBean.allCategories}"
+												itemValue="#{categoryRepositoryBean.courseName}"
+												itemLabel="#{categoryRepositoryBean.courseName}"></f:selectItems>
+										</b:selectOneMenu>
+									</b:panelGrid>
+
+									<b:inputText placeholder="UserID"
+										value="#{currentUserBean.lastName}" readonly="true"
+										disabled="true"></b:inputText>
+
+									<b:commandButton value="speichern" styleClass="btnsKategorie"></b:commandButton>
+								</b:panelGrid>
+							</b:panel>
+							<b:panel title="Anzeigen">
+								<h4>Ansicht aller aktuellen Kategorien</h4>
+								<hr />
+								<b:dataTable value="#{categoryRepositoryBean.allCategories}"
+									var="category">
+									<b:dataTableColumn label="ID">
+										<h:outputText value="#{category.courseId}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="Name">
+										<h:outputText value="#{category.courseName}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="Bearbeiter">
+										<h:outputText value="#{category.tutor.lastName}" />
+									</b:dataTableColumn>
+								</b:dataTable>
+							</b:panel>
+							<b:panel title="Löschen">
+								<h4>Hier kannst du Kategorien löschen</h4>
+								<hr />
+								<b:dataTable value="#{categoryRepositoryBean.allCategories}"
+									var="category">
+									<b:dataTableColumn label="ID">
+										<h:outputText value="#{category.courseId}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="Name">
+										<h:outputText value="#{category.courseName}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="Bearbeiter">
+										<h:outputText value="#{category.tutor.lastName}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="">
+										<b:commandButton value="löschen" look="danger"></b:commandButton>
+									</b:dataTableColumn>
+								</b:dataTable>
+							</b:panel>
+							<b:panel title="Ändern">
+								<h4>Ändere Kategorien</h4>
+								<hr />
+								<b:dataTable value="#{categoryRepositoryBean.allCategories}"
+									var="category">
+									<b:dataTableColumn label="ID">
+										<h:outputText value="#{category.courseId}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="Name">
+										<h:outputText value="#{category.courseName}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="Bearbeiter">
+										<h:outputText value="#{category.tutor.lastName}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn label="">
+										<b:commandButton value="ändern" look="warning"></b:commandButton>
+									</b:dataTableColumn>
+								</b:dataTable>
+							</b:panel>
+						</b:accordion>
+					</b:panelGrid>
+
+				</h:form>
+			</b:row>
+
+
+
+
+		</b:modal>
+	</h:form>
+	<!-- ENDE KATEGORIE -->
+
+
 	<!-- TICKETS -->
 	<h:form id="yourTickets">
 		<b:modal title="Deine bisherigen Tickets" styleClass="tickets fade"
 			closeOnEscape="true" id="ticketsPanel" backdrop="false">
 
 			<b:panelGrid colSpans="12" id="ticketsGrid">
-			<h:form id="tableForm">
-				<b:dataTable searching="true" pageLengthMenu="5,10" pageLength="5" value="#{userDataBean.tickets}" var="ticket">
-					<b:dataTableColumn label="ID">
-						<h:outputText value="#{ticket.id}" />
-					</b:dataTableColumn>
-					<b:dataTableColumn label="Name">
-						<h:outputText value="#{ticket.title}" />
-					</b:dataTableColumn>
-					<b:dataTableColumn label="Status">
-						<h:outputText value="#{ticket.ticketStatus}" />
-					</b:dataTableColumn>
-					<b:dataTableColumn label="">
-						<b:commandButton look="danger" value="abbrechen" tooltip="Beendet den aktuellen Vorgang des Tickets"></b:commandButton>
-					</b:dataTableColumn>
-				</b:dataTable>
-			</h:form>
+				<h:form id="tableForm">
+					<b:dataTable searching="true" pageLengthMenu="5,10" pageLength="5"
+						value="#{userDataBean.tickets}" var="ticket">
+						<b:dataTableColumn label="ID">
+							<h:outputText value="#{ticket.id}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn label="Name">
+							<h:outputText value="#{ticket.title}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn label="Status">
+							<h:outputText value="#{ticket.ticketStatus}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn label="">
+							<b:commandButton look="danger" value="abbrechen"
+								tooltip="Beendet den aktuellen Vorgang des Tickets"></b:commandButton>
+						</b:dataTableColumn>
+					</b:dataTable>
+				</h:form>
 			</b:panelGrid>
 
 		</b:modal>
@@ -73,33 +198,33 @@
 	<h:form id="profilForm" enctype="multipart/form-data">
 		<b:modal title="Dein Profil" styleClass="profilModal fade"
 			closeOnEscape="true" id="profil" backdrop="false">
-
 			<b:row>
-				
 				<b:column col-md="12" styleClass="profilColumn">
-				
+
 					<b:image name="iubh-logo.jpg" library="img" styleClass="profilBild"></b:image>
-					<p:fileUpload styleClass="neuesBildBtn"
-						mode="simple"  update="profilColumn" skinSimple="true"
-						sizeLimit="100000" 
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="ändern" cancelLabel="Abbrechen" uploadLabel="start"/>
+					<p:fileUpload styleClass="neuesBildBtn" mode="simple"
+						update="profilColumn" skinSimple="true" sizeLimit="100000"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="ändern"
+						cancelLabel="Abbrechen" uploadLabel="start" />
 				</b:column>
-				
+
 			</b:row>
 			<p:separator></p:separator>
 			<b:row>
-			<b:column col-md="12" style="margin-top:11px;">
-				<b:panelGrid col-spans="12">
-					<b:inputText placeholder="Vorname" id="vorname" label="Vorname"></b:inputText>	
-					<b:inputText placeholder="Nachname" id="nachname" label="Nachname"></b:inputText>
-					<b:inputText placeholder="EMail Adresse" id="emailAdresse" label="EMail" type="email"></b:inputText>	
-						
-				</b:panelGrid>
-			</b:column>
+				<b:column col-md="12" style="margin-top:11px;">
+					<b:panelGrid col-spans="12">
+						<b:inputText placeholder="Vorname" id="vorname" label="Vorname"></b:inputText>
+						<b:inputText placeholder="Nachname" id="nachname" label="Nachname"></b:inputText>
+						<b:inputText placeholder="EMail Adresse" id="emailAdresse"
+							label="EMail" type="email"></b:inputText>
+
+					</b:panelGrid>
+				</b:column>
 			</b:row>
 
 			<f:facet name="footer">
-				<b:commandButton value="Änderungen übernehmen" styleClass="btnAenderungen">
+				<b:commandButton value="Änderungen übernehmen"
+					styleClass="btnAenderungen">
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
@@ -133,7 +258,7 @@
 					required="true" label="Rolle" id="rolle" renderLabel="false"
 					value="#{userBean.role}">
 					<f:selectItem itemLabel="(Rolle - Bitte auswählen)" itemValue="" />
-					<f:selectItem itemLabel="Student" itemValue="Student" />
+					<f:selectItem itemLabel="User" itemValue="User" />
 					<f:selectItem itemLabel="Admin" itemValue="Admin" />
 					<f:selectItem itemLabel="Tutor/-Bearbeiter"
 						itemValue="Tutor_Bearbeiter" />
@@ -141,8 +266,8 @@
 
 				<b:message for="feedback"></b:message>
 				<b:inputSecret id="feedback" value="#{userBean.password}"
-					placeholder=" Passwort" required="true"
-					label="Passwort" styleClass="passwortFeld" />
+					placeholder=" Passwort" required="true" label="Passwort"
+					styleClass="passwortFeld" />
 
 			</b:panelGrid>
 
@@ -152,8 +277,6 @@
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
-
-
 	</h:form>
 	<!-- ENDE NEUER BENUTZER -->
 
@@ -196,22 +319,30 @@
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
-
-
 	</h:form>
 	<!-- ENDE NEUES TICKET -->
 
 
+
+	<!-- MENÜ LEISTE -->
 	<b:navBar brand="IU-Ti" brandHref="#" inverse="true">
 		<!-- Following line is needed for TBS 3.0.1 (panel content overflow issue) -->
 		<b:navbarLinks pull="left">
 			<b:navbarLinks>
 				<b:dropMenu value="Menü">
+					<b:navLink header="Tickets"></b:navLink>
 					<b:navLink value="Neues Ticket"
 						onclick="$('.neuesTicket').modal();"></b:navLink>
-					<b:navLink value="Tickets anzeigen" onclick="$('.tickets').modal();"></b:navLink>
+					<b:navLink value="Tickets anzeigen"
+						onclick="$('.tickets').modal();"></b:navLink>
 					<b:navLink value="Ticket  bearbeiten"></b:navLink>
 					<b:navLink value="Tutor benachrichtigen"></b:navLink>
+					<b:navLink />
+					<b:navLink header="Einstellungen"></b:navLink>
+					<b:navLink value="Sucheinstellungen"
+						onclick="$('.sucheModal').modal()"></b:navLink>
+					<b:navLink value="Kategorien"
+						onclick="$('.kategorienModal').modal()"></b:navLink>
 					<b:navLink />
 					<b:navLink value="User erstellen" onclick="$('.newUser').modal()"
 						rendered="#{userBean.currentUser.role eq 'Administrator'}"></b:navLink>
@@ -225,15 +356,13 @@
 				<b:navLink value="Abmelden" styleClass="abmeldenLink"></b:navLink>
 			</b:navbarLinks>
 		</b:navbarLinks>
+
 		<b:navbarLinks pull="right">
-			<b:navLink value="    " href="#"></b:navLink>
-		</b:navbarLinks>
-		<b:navbarLinks pull="right">
-			<h:form styleClass="navbar-form navbar-left" role="search">
-				<div class="form-group">
-					<b:inputText styleClass="form-control suchfeldNavbar"
-						placeholder="Suchbegriff" />
-				</div>
+			<h:form styleClass="navbar-form navbar-left">
+
+				<b:inputText styleClass="suchfeldNavbar" placeholder="Suchbegriff"
+					tooltip="Felder aus der 'Sucheinstellung' werden mitberücksichtigt" />
+
 				<b:commandButton iconAwesome="fa-search"
 					styleClass="btnSuchenNavbar"></b:commandButton>
 			</h:form>
@@ -276,7 +405,8 @@
 			</b:column>
 
 			<b:column col-md="6" col-xs="12">
-				<b:panel styleClass="panelTickets color noBorder" onclick="$('.tickets').modal();">
+				<b:panel styleClass="panelTickets color noBorder"
+					onclick="$('.tickets').modal();">
 					<b:panelGrid colSpans="2,10" styleClass="panelQuick"
 						tooltip="Deine bisher eingereichten Tickets">
 						<h:outputText
@@ -312,7 +442,8 @@
 			</b:column>
 
 			<b:column col-md="6" col-xs="12" styleClass="ticket">
-				<b:panel styleClass="profilPanel color noBorder" onclick="$('.profilModal').modal();">
+				<b:panel styleClass="profilPanel color noBorder"
+					onclick="$('.profilModal').modal();">
 					<b:panelGrid colSpans="2,10" styleClass="panelProfil"
 						tooltip="Dein Profil">
 						<b:iconAwesome name="fa-user" styleClass="iconProfil"></b:iconAwesome>
@@ -348,7 +479,7 @@
 
 		</b:row>
 	</b:container>
-	
+
 	<!--ENDE BODY -->
 
 	<!-- Include Script -->

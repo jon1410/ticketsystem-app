@@ -20,6 +20,12 @@
 <h:body>
 	<b:container>
 
+
+		<b:growl id="msg" placementFrom="top"></b:growl>
+
+
+
+		<!--PASSWORT MODAL -->
 		<h:form id="passwortForm">
 			<b:modal closable="true" backdrop="false" id="modalEmail"
 				styleClass="modalEmail fade" title="Passwort vergessen">
@@ -28,7 +34,8 @@
 
 				<p:spacer height="50"></p:spacer>
 
-				<b:inputText placeholder="Email Adresse"></b:inputText>
+				<b:inputText placeholder="Email Adresse" required="true"
+					type="email" label="EMail Passwort anfordern"  renderLabel="false"></b:inputText>
 
 				<f:facet name="footer">
 					<b:commandButton look="success" value="Passwort zuschicken"
@@ -36,8 +43,41 @@
 				</f:facet>
 			</b:modal>
 		</h:form>
+		<!--ENDE PASSWORT MODAL -->
 
-		<!-- Logo -->
+
+
+
+		<!-- REGISTRIERUNGS MODAL -->
+		<h:form id="registrieren">
+			<b:modal closable="true" backdrop="false" id="modalRegi"
+				styleClass="registrierenModal fade" title="Jetzt registrieren">
+				<h:outputText
+					value="Befülle die Nachfolgenden Felder um dich bei uns zu registrieren"></h:outputText>
+				<p:spacer height="50"></p:spacer>
+				<b:inputText placeholder="Email Adresse" required="true"
+					type="email" label="EMail Registriereung" value="#{userDTO.userId}"
+					renderLabel="false"></b:inputText>
+				<b:inputText placeholder="Vorname" required="true"
+					label="Vorname Registriereung" value="#{userDTO.firstName}"
+					renderLabel="false"></b:inputText>
+				<b:inputText placeholder="Nachname" required="true"
+					label="Nachname Registriereung" value="#{userDTO.lastName}"
+					renderLabel="false"></b:inputText>
+
+				<f:facet name="footer">
+					<b:commandButton look="success" value="Registrierung abschliessen"
+						styleClass="btnRegistrieren"
+						actionListener="#{userBean.registerUser()}" update=":msg"></b:commandButton>
+				</f:facet>
+			</b:modal>
+		</h:form>
+		<!-- ENDE REGISTRIERUNGS MODAL -->
+
+
+
+
+		<!-- LOGO -->
 		<b:row>
 			<b:column col-md="12" styleClass="iubhLogo center-block">
 				<b:image library="img" name="iubh-logo.jpg" styleClass="logo"></b:image>
@@ -45,44 +85,51 @@
 					Applied Science) Logo</span>
 			</b:column>
 		</b:row>
-		<!--Ende Logo Tag-->
+		<!--ENDE LOGO-->
 
-		<!-- Login Panel Settings -->
+
+
+		<!-- LOGIN -->
 		<b:row styleClass="loginRow">
 			<h:form id="loginForm">
-				<b:growl id="msg" placementFrom="top" show-detail="true"></b:growl>
+
 				<b:column col-md="12" col-xs="12"
 					styleClass="loginPanel center-block">
 					<h3 class="loginHeader">Anmelden</h3>
 					<b:inputText placeholder="Deine EMail"
 						tooltip="Gib hier deine IUBH EMail Adresse ein"
 						styleClass="inputHover" tooltip-position="right" id="email"
-						required="true" value="#{loginBean.userEmail}">
+						required="true" value="#{loginBean.userEmail}"  renderLabel="false">
 						<span class="sr-only">Email Feld</span>
 					</b:inputText>
 					<b:inputSecret placeholder="Dein Passwort"
 						tooltip="Dein persönliches Passwort" styleClass="inputHover"
 						tooltip-position="right" id="passwort" required="true"
-						value="#{loginBean.userPasswort}">
+						value="#{loginBean.userPasswort}"  renderLabel="false">
 						<span class="sr-only">Passwort Feld</span>
 					</b:inputSecret>
 					<p:separator></p:separator>
 					<b:commandButton styleClass="loginButton" id="loginBtn"
 						tooltip-position="right"
 						tooltip="Melde dich beim IUBH-Ticketssystem an"
-						action="#{loginBean.checkLogin}" update=":loginForm:msg"
+						action="#{loginBean.checkLogin}" update=":msg"
 						process="email, passwort">
 						<span>Anmelden </span>
 						<span class="sr-only">Am System anmelden</span>
 					</b:commandButton>
-					<h:link value="Passwort vergessen ?" styleClass="linkForgottPw"
-						onclick="$('.modalEmail').modal(); return false;" />
+					<hr />
+					<b:panelGrid colSpans="6,6">
+						<b:navCommandLink value="Registrieren"
+							onclick="$('.registrierenModal').modal(); return false;" />
+						<h:link value="Passwort vergessen ?" styleClass="linkForgottPw"
+							onclick="$('.modalEmail').modal(); return false;" />
+					</b:panelGrid>
+
 				</b:column>
+
 			</h:form>
 		</b:row>
-		<!-- Ende Login Panel Settings -->
-
-
+		<!-- ENDE LOGIN -->
 	</b:container>
 
 	<h:outputScript library="js" name="script.login.js"></h:outputScript>
