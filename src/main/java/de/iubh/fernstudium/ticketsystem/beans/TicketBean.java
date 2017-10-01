@@ -68,23 +68,16 @@ public class TicketBean extends TicketDTO implements Serializable {
         this.idAssigneeNewTicket = idAssigneeNewTicket;
     }
 
-    public void createTicket(){
+    public String createTicket(){
 
         super.setReporter(currentUserBean);
         super.setCreationTime(LocalDateTime.now());
         super.setTicketStatus(TicketStatus.NEW);
-        if(StringUtils.isEmpty(idAssigneeNewTicket)){
-            super.setAssignee(defaultInits.getDefaultAssginee());
-        }
-        else{
-            try {
-                super.setReporter(userService.getUserByUserId(idAssigneeNewTicket));
-            } catch (UserNotExistsException e) {
-                LOG.error(ExceptionUtils.getRootCauseMessage(e));
-            }
-        }
+        super.setAssignee(getCategory().getTutor());
+
         TicketDTO ticketDTO = ticketService.createTicket(this);
         userDataBean.addTicket(ticketDTO);
+        return FacesContextUtils.resolveInfo("Ticket erstellt", "Neues Ticket wurde erstellt", null);
     }
 
     public String addComment(){

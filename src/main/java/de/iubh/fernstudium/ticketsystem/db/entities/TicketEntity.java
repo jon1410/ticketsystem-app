@@ -41,8 +41,8 @@ public class TicketEntity {
     @Column(name = "CREA_TSP", nullable = false)
     private Timestamp creationTime;
 
-    @Column(name = "CATEG", nullable = false)
-    private String category; //evtl. ReferenzID auf Kategorie
+    @OneToOne(fetch = FetchType.EAGER)
+    private CategoryEntity category;
 
     @OneToOne(fetch = FetchType.EAGER)
     private UserEntity assignee;
@@ -55,7 +55,7 @@ public class TicketEntity {
     public TicketEntity() {
     }
 
-    public TicketEntity(String title, String description, TicketStatus ticketStatus, UserEntity reporter, Timestamp creationTime, String category, UserEntity assignee, List<CommentEntity> comments) {
+    public TicketEntity(String title, String description, TicketStatus ticketStatus, UserEntity reporter, Timestamp creationTime, CategoryEntity category, UserEntity assignee, List<CommentEntity> comments) {
         this.title = title;
         this.description = description;
         this.ticketStatus = ticketStatus;
@@ -114,11 +114,11 @@ public class TicketEntity {
         this.creationTime = creationTime;
     }
 
-    public String getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryEntity category) {
         this.category = category;
     }
 
@@ -147,6 +147,6 @@ public class TicketEntity {
             }
         }
         return new TicketDTO(id, title, description,reporter.toDto(),
-                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category, assignee.toDto(), commentDTOList);
+                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category.toDto(), assignee.toDto(), commentDTOList);
     }
 }

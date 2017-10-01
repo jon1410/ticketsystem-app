@@ -28,7 +28,7 @@ public class CategoryBean extends CategoryDTO{
 
     public void createCategory() throws UserNotExistsException {
         UserDTO userDTO = userService.getUserByUserId(tutorUserId);
-        CategoryDTO categoryDTO = new CategoryDTO(super.getCourseId(), super.getCourseName(), userDTO);
+        CategoryDTO categoryDTO = new CategoryDTO(super.getCategoryId(), super.getCategoryName(), userDTO);
         categoryService.addCourse(categoryDTO);
     }
 

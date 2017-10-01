@@ -80,4 +80,8 @@ public class CurrentUserBean extends UserDTO implements Serializable {
         this.newLastName = null;
         this.newFirstName = null;
     }
+
+    public String logout(){
+        return FacesContextUtils.logout("/login.xhtml?faces-redirect=true");
+    }
 }

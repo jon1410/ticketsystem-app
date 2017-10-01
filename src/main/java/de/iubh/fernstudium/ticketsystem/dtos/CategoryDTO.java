@@ -4,33 +4,33 @@ import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 
 public class CategoryDTO {
 
-    private String courseId;
-    private String courseName;
+    private String categoryId;
+    private String categoryName;
     private UserDTO tutor;
 
     public CategoryDTO() {
     }
 
     public CategoryDTO(String courseId, String courseName, UserDTO tutor) {
-        this.courseId = courseId;
-        this.courseName = courseName;
+        this.categoryId = courseId;
+        this.categoryName = courseName;
         this.tutor = tutor;
     }
 
-    public String getCourseId() {
-        return courseId;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public UserDTO getTutor() {
@@ -42,6 +42,6 @@ public class CategoryDTO {
     }
 
     public CategoryEntity toEntity(){
-        return new CategoryEntity(courseId, courseName, tutor.toEntity());
+        return new CategoryEntity(categoryId, categoryName, tutor.toEntity());
     }
 }
