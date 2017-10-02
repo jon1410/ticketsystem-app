@@ -82,6 +82,6 @@ public class CurrentUserBean extends UserDTO implements Serializable {
     }
 
     public String logout(){
-        return FacesContextUtils.logout("/login.xhtml?faces-redirect=true");
+        return FacesContextUtils.logout(FacesContextUtils.REDIRECT_LOGIN);
     }
 }

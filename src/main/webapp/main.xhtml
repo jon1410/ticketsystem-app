@@ -271,7 +271,7 @@
                         value="#{userBean.role}">
                     <f:selectItem itemLabel="(Rolle - Bitte auswählen)" itemValue=""/>
                     <f:selectItem itemLabel="Student" itemValue="Student"/>
-                    <f:selectItem itemLabel="Admin" itemValue="Admin"/>
+                    <f:selectItem itemLabel="Admin" itemValue="Administrator"/>
                     <f:selectItem itemLabel="Tutor/-Bearbeiter"
                                   itemValue="Tutor"/>
                 </b:selectOneMenu>
@@ -285,7 +285,7 @@
 
             <f:facet name="footer">
                 <b:commandButton value="speichern" styleClass="btnNewUser"
-                                 update="newPanelGrid" actionListener="#{userBean.createUser()}">
+                                 update="newPanelGrid" action="#{userBean.createUser()}">
                 </b:commandButton>
             </f:facet>
         </b:modal>
@@ -329,7 +329,7 @@
 
             <f:facet name="footer">
                 <b:commandButton value="anlegen" styleClass="btnNeuesTicket"
-                                 update="ticketPanel" actionListener="#{ticketBean.createTicket()}">
+                                 update="ticketPanel" action="#{ticketBean.createTicket()}">
                 </b:commandButton>
             </f:facet>
         </b:modal>

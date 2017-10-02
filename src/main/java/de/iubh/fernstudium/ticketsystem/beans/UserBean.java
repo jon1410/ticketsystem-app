@@ -1,6 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
+import de.iubh.fernstudium.ticketsystem.domain.UITexts;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
@@ -53,13 +54,18 @@ public class UserBean extends UserDTO{
     }
 
     public String createUser(){
-        return createNewUser("main.xhtml?faces-redirect=true", "Fehler beim Erstellen eines neuen Users");
+        return createNewUser(FacesContextUtils.REDIRECT_MAIN);
     }
 
     public String registerUser(){
         super.setUserRole(UserRole.ST);
-        return createNewUser("login.xhtml?faces-redirect=true",
-                "Fehler bei der Registrierung aufgetreten, bitte versuche es noch einmal");
+        if(newPassword.equals(repeatedPassword)){
+            super.setPassword(newPassword);
+        }else{
+            return FacesContextUtils.resolveError(UITexts.CREATE_USER_ERROR_SUMMARY,
+                    UITexts.CREATE_USER_ERROR_DETAIL + UITexts.REG_PW_ERROR_DETAIL, null);
+        }
+        return createNewUser(FacesContextUtils.REDIRECT_LOGIN);
     }
 
     public String changePassword(){
@@ -97,20 +103,23 @@ public class UserBean extends UserDTO{
                 "Das Passwort konnte nicht geändert werden", null);
     }
 
-    private String createNewUser(String redirect, String errorText) {
+    private String createNewUser(String redirect) {
         try {
             boolean createUser = userService.createUser(super.getUserId(),
                     super.getFirstName(), super.getLastName(), super.getPassword(), super.getUserRole());
             if(createUser){
-                return redirect;
+                return FacesContextUtils.resolveInfo(UITexts.CREATE_USER_INFO_SUMMARY, UITexts.CREATE_USER_INFO_DETAIL, redirect);
             }else{
-                return FacesContextUtils.resolveError(errorText,
-                        "blablabla", null);
+                return errorCreateUser(redirect);
             }
         } catch (UserAlreadyExistsException e) {
-            return FacesContextUtils.resolveError(errorText,
-                    "blablabla", null);
+            return errorCreateUser(redirect);
         }
+    }
+
+    private String errorCreateUser(String redirect) {
+        return FacesContextUtils.resolveError(UITexts.CREATE_USER_ERROR_SUMMARY,
+                UITexts.CREATE_USER_ERROR_DETAIL, redirect);
     }
 }
 
