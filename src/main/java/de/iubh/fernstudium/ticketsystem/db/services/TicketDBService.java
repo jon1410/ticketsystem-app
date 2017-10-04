@@ -4,8 +4,10 @@ import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
+import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 public interface TicketDBService {
 
@@ -48,4 +50,36 @@ public interface TicketDBService {
      * @return TicketEntity
      */
     public TicketEntity createTicket(TicketEntity ticketEntity);
+
+    /**
+     * Sucht Tickets mit angegebener oder ähnlicher Reporter-UserId
+     *
+     * @param reporter
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> searchByReporter(UserEntity reporter);
+
+    /**
+     * Sucht Tickets mit angegebener oder ähnlicher Assignee-UserId
+     *
+     * @param assignee
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> searchByAssignee(UserEntity assignee);
+
+    /**
+     * Sucht Tickets mit angegebenem oder ähnlichem Ticket-Status
+     *
+     * @param status
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> searchByStatus(TicketStatus status);
+
+    /**
+     * Sucht Tickets mit angegebenem oder ähnlichem Title bzw. Beschreibung
+     *
+     * @param searchText
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> searchByTitleOrDescription(String searchText);
 }

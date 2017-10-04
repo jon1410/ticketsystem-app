@@ -69,4 +69,32 @@ public class TicketDBServiceImpl implements TicketDBService{
         return Arrays.asList(TicketStatus.NEW, TicketStatus.IPS, TicketStatus.IPU, TicketStatus.RES);
     }
 
+    @Override
+    public List<TicketEntity> searchByReporter(UserEntity reporter) {
+
+        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByReporter", TicketEntity.class)
+                .setParameter("userid", reporter);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<TicketEntity> searchByAssignee(UserEntity assignee) {
+        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByAssignee", TicketEntity.class)
+                .setParameter("userid", assignee);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<TicketEntity> searchByStatus(TicketStatus status) {
+        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByStatus", TicketEntity.class)
+                .setParameter("ticketStatus", status);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<TicketEntity> searchByTitleOrDescription(String searchText) {
+        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByTitleOrDescription", TicketEntity.class)
+                .setParameter("description", searchText).setParameter("title", searchText);
+        return query.getResultList();
+    }
 }

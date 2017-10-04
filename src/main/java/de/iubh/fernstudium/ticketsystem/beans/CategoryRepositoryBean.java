@@ -46,4 +46,6 @@ public class CategoryRepositoryBean {
     public void addNewCategory(CategoryDTO categoryDTO){
         allCategories.add(categoryDTO);
     }
+
+
 }
