@@ -9,6 +9,7 @@ import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,9 +93,38 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
-    public List<TicketEntity> searchByTitleOrDescription(String searchText) {
-        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByTitleOrDescription", TicketEntity.class)
-                .setParameter("description", searchText).setParameter("title", searchText);
+    public List<TicketEntity> searchByTitle(String searchText) {
+        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByTitle", TicketEntity.class)
+                .setParameter("title", searchText);
         return query.getResultList();
+    }
+
+    @Override
+    public List<TicketEntity> searchByDescription(String searchtext) {
+        final String fullTextQuery = buildFullTextQuery("DESCRIPTION");
+        Query query = em.createNativeQuery(fullTextQuery, TicketEntity.class);
+        query.setParameter(1, searchtext);
+        return query.getResultList();
+    }
+
+    private String buildFullTextQuery(String tableColumn) {
+
+        tableColumn = "(" + tableColumn + ")";
+        StringBuilder sb = new StringBuilder();
+        sb.append(QueryParameter.SELECT_ALL).append(QueryParameter.FROM).append(QueryParameter.TABLE_NAME)
+                .append(QueryParameter.WHERE).append(QueryParameter.MATCH).append(tableColumn).append(" ")
+                .append(QueryParameter.AGAINST).append("?").append(QueryParameter.BOOLEAN_MODE);
+        return sb.toString();
+    }
+
+    class QueryParameter{
+
+        static final String TABLE_NAME = "ticket ";
+        static final String SELECT_ALL = "select * ";
+        static final String FROM = "from ";
+        static final String WHERE = "where ";
+        static final String MATCH = "match";
+        static final String AGAINST = "against(";
+        static final String BOOLEAN_MODE = " in boolean mode);";
     }
 }

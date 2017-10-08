@@ -10,6 +10,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "TICKET_USER", indexes = {@Index(name="IDX_ROLE", columnList = "ROLE")})
+@NamedQueries({
+        @NamedQuery(name = "findByRole", query = "select u from UserEntity u where u.role = :role ")
+})
 public class UserEntity {
 
     @Id

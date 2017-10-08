@@ -8,12 +8,15 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsExcept
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
+import de.iubh.fernstudium.ticketsystem.util.config.ValidationConfig;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Pattern;
 
 @Named("userBean")
 @RequestScoped
@@ -22,6 +25,9 @@ public class UserBean extends UserDTO{
     private static final Logger LOG = LogManager.getLogger(UserBean.class);
     private String newPassword;
     private String repeatedPassword;
+
+    @Pattern(regexp = ValidationConfig.EMAIL_REGEX)
+    private String mailAdressForNewPw;
 
     @Inject
     private UserService userService;
@@ -35,6 +41,14 @@ public class UserBean extends UserDTO{
             return UserRole.ST.getResolvedRoleText();
         }
         return role.getResolvedRoleText();
+    }
+
+    public String getMailAdressForNewPw() {
+        return mailAdressForNewPw;
+    }
+
+    public void setMailAdressForNewPw(String mailAdressForNewPw) {
+        this.mailAdressForNewPw = mailAdressForNewPw;
     }
 
     public String getRepeatedPassword() {
@@ -55,6 +69,18 @@ public class UserBean extends UserDTO{
 
     public String createUser(){
         return createNewUser(FacesContextUtils.REDIRECT_MAIN);
+    }
+
+    public String askForNewPassword(){
+        try {
+            userService.generateNewPassword(mailAdressForNewPw);
+        } catch (UserNotExistsException e) {
+           LOG.error(ExceptionUtils.getRootCauseMessage(e));
+            return FacesContextUtils.resolveInfo(UITexts.PW_RESET_ERROR_SUMMARY,
+                    UITexts.PW_RESET_ERROR_DETAILS, FacesContextUtils.REDIRECT_LOGIN);
+        }
+        return FacesContextUtils.resolveInfo(UITexts.PW_RESET_INFO_SUMMARY,
+                UITexts.PW_RESET_INFO_DETAILS, FacesContextUtils.REDIRECT_LOGIN);
     }
 
     public String registerUser(){

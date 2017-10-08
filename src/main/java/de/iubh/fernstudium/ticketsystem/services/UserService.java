@@ -7,6 +7,8 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
+import java.util.List;
+
 /**
  * Created by ivanj on 03.07.2017.
  */
@@ -75,5 +77,17 @@ public interface UserService {
      */
     boolean changeUserData(String UserId, String firstName, String lastName, UserRole newRole);
 
+    /**
+     * Lädt alle User mit der Rolle "Tutor" im Datenbestand
+     *
+     * @return List {@link UserDTO}
+     */
+    List<UserDTO> getAllTutors();
 
+    /**
+     * Generiert ein neues Passwort und verschickt dieses per Email an den User
+     *
+     * @param mailAdress
+     */
+    void generateNewPassword(String mailAdress) throws UserNotExistsException;
 }

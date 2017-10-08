@@ -1,6 +1,5 @@
 package de.iubh.fernstudium.ticketsystem.services.impl;
 
-import com.sun.org.apache.regexp.internal.REProgram;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
@@ -42,7 +41,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public Future<List<TicketDTO>> searchByAssignee(String assignee) {
-        return searchByUserId(assignee, UserTyp.REPORTER);
+        return searchByUserId(assignee, UserTyp.ASSIGNEE);
     }
 
     @Override
@@ -54,8 +53,16 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Asynchronous
-    public Future<List<TicketDTO>> searchByTitleOrDescription(String text) {
-        return null;
+    public Future<List<TicketDTO>> searchByTitle(String text) {
+        List<TicketEntity> tickets = ticketDBService.searchByTitle(text);
+        return new AsyncResult<>(convertToDtoList(tickets));
+    }
+
+    @Override
+    @Asynchronous
+    public Future<List<TicketDTO>> searchByDescription(String searchtext) {
+        List<TicketEntity> tickets = ticketDBService.searchByDescription(searchtext);
+        return new AsyncResult<>(convertToDtoList(tickets));
     }
 
     private Future<List<TicketDTO>> searchByUserId(String userId, UserTyp type) {

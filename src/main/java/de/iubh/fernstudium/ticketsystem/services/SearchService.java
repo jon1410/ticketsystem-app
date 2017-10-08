@@ -16,5 +16,7 @@ public interface SearchService {
 
     public Future<List<TicketDTO>> searchByStatus(TicketStatus ticketStatus);
 
-    public Future<List<TicketDTO>> searchByTitleOrDescription(String text);
+    public Future<List<TicketDTO>> searchByTitle(String text);
+
+    public Future<List<TicketDTO>> searchByDescription(String searchtext);
 }

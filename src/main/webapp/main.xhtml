@@ -379,11 +379,11 @@
         <b:navbarLinks pull="right">
             <h:form styleClass="navbar-form navbar-left">
 
-                <b:inputText styleClass="suchfeldNavbar" placeholder="Suchbegriff"
-                             tooltip="Felder aus der 'Sucheinstellung' werden mitberücksichtigt"/>
+                <b:inputText styleClass="suchfeldNavbar" placeholder="Suchbegriff" value="#{searchBean.searchString}"
+                             tooltip="Schnellsuche starten"/>
 
                 <b:commandButton iconAwesome="fa-search"
-                                 styleClass="btnSuchenNavbar"></b:commandButton>
+                                 styleClass="btnSuchenNavbar" action="#{searchBean.searchSimple}"></b:commandButton>
             </h:form>
         </b:navbarLinks>
     </b:navBar>

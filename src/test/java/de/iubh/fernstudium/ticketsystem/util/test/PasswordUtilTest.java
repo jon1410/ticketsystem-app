@@ -11,6 +11,9 @@ import org.junit.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by ivanj on 04.07.2017.
  */
@@ -25,7 +28,7 @@ public class PasswordUtilTest {
         String password = "mySecretPassword";
         String hashedPw = passwordUtil.hashPw(password);
         LOG.info("Hashed-Password: " + hashedPw);
-        Assert.assertNotNull(hashedPw);
+        assertNotNull(hashedPw);
         Assert.assertTrue(hashedPw.startsWith("$2a$"));
 
         Assert.assertTrue(passwordUtil.authentificate(password, hashedPw));
@@ -38,7 +41,7 @@ public class PasswordUtilTest {
         String password = "mySecretPassword";
         String hashedPw = securityUtil.hashPw(password);
         LOG.info("Hashed-Password: " + hashedPw);
-        Assert.assertNotNull(hashedPw);
+        assertNotNull(hashedPw);
         Assert.assertTrue(hashedPw.startsWith("$2a$"));
 
         Assert.assertTrue(securityUtil.authentificate(null, null));
@@ -51,7 +54,7 @@ public class PasswordUtilTest {
         String password = "mySecretPassword";
         String hashedPw = securityUtil.hashPw(password);
         LOG.info("Hashed-Password: " + hashedPw);
-        Assert.assertNotNull(hashedPw);
+        assertNotNull(hashedPw);
         Assert.assertTrue(hashedPw.startsWith("$2a$"));
 
         Assert.assertFalse(securityUtil.authentificate(password, hashedPw.substring(1)));
@@ -64,7 +67,7 @@ public class PasswordUtilTest {
         String password = "mySecretPassword";
         String hashedPw = securityUtil.hashPw(password);
         LOG.info("Hashed-Password: " + hashedPw);
-        Assert.assertNotNull(hashedPw);
+        assertNotNull(hashedPw);
         Assert.assertTrue(hashedPw.startsWith("$2a$"));
 
         Assert.assertFalse(securityUtil.authentificate(password.toUpperCase(), hashedPw));
@@ -73,5 +76,19 @@ public class PasswordUtilTest {
     @Test
     public void testBase64DecodeAndHash(){
         Assert.assertEquals("admin" , new String(Base64.getDecoder().decode("YWRtaW4="), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void testGeneratePassword(){
+        PasswordUtilImpl securityUtil = new PasswordUtilImpl();
+        String pw1 = securityUtil.generatePassword();
+        assertNotNull(pw1);
+        LOG.info("PW1 " + pw1);
+
+        String pw2 = securityUtil.generatePassword();
+        assertNotNull(pw1);
+        LOG.info("PW2 " + pw2);
+
+        assertNotEquals(pw1, pw2);
     }
 }

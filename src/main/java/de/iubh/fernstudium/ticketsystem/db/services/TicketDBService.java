@@ -81,5 +81,13 @@ public interface TicketDBService {
      * @param searchText
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByTitleOrDescription(String searchText);
+    public List<TicketEntity> searchByTitle(String searchText);
+
+    /**
+     * Sucht Tickets nach angegeben Stichwörter
+     *
+     * @param searchtext
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> searchByDescription(String searchtext);
 }

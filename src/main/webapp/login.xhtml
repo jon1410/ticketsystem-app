@@ -35,11 +35,12 @@
 				<p:spacer height="50"></p:spacer>
 
 				<b:inputText placeholder="Email Adresse" required="true"
-					type="email" label="EMail Passwort anfordern"  renderLabel="false"></b:inputText>
+					type="email" label="EMail Passwort anfordern" value="#{userBean.mailAdressForNewPw}"  renderLabel="false"></b:inputText>
 
 				<f:facet name="footer">
 					<b:commandButton look="success" value="Passwort zuschicken"
-						styleClass="btnPasswortVergessenBestätigen"></b:commandButton>
+						styleClass="btnPasswortVergessenBestätigen" actionListener="#{userBean.askForNewPassword()}"
+									 update=":msg" oncomplete="$('.modalEmail').modal('hide');return false;"></b:commandButton>
 				</f:facet>
 			</b:modal>
 		</h:form>
