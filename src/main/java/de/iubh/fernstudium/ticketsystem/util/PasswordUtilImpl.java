@@ -1,6 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.util;
 
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
+import org.apache.commons.lang.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -24,5 +25,9 @@ public class PasswordUtilImpl implements PasswordUtil {
     public String hashPw(String password) {
         String salt = BCrypt.gensalt(13);
         return BCrypt.hashpw(password, salt);
+    }
+
+    public String generatePassword(){
+        return RandomStringUtils.random(8, true, false);
     }
 }
