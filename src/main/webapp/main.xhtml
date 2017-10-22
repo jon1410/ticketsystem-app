@@ -26,15 +26,14 @@
 			closeOnEscape="true" id="password" backdrop="false">
 
 			<b:panelGrid colSpans="12" id="changePassword">
-				<b:inputSecret placeholder="Neues Passwort" label="Neues Passwort"
-							   value="#{userBean.newPassword}"></b:inputSecret>
+				<b:inputSecret placeholder="Neues Passwort" label="Neues Passwort"></b:inputSecret>
 				<b:inputSecret placeholder="Neues Passwort wiederholen"
-					label="Neues Passwort wiederholen" value="#{userBean.repeatedPassword}"></b:inputSecret>
+					label="Neues Passwort wiederholen"></b:inputSecret>
 			</b:panelGrid>
 
 			<f:facet name="footer">
 				<b:commandButton value="speichern" styleClass="btnNeuesPasswort"
-					update="changePassword" actionListener="#{userBean.changePassword()}">
+					update="changePassword">
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
@@ -77,11 +76,11 @@
 								<b:panelGrid colSpans="12">
 									<b:inputText placeholder="ID" value="#{categoryBean.courseId}"></b:inputText>
 									<b:panelGrid colSpans="6,6">
-									
+
 										<b:inputText placeholder="Name"
 											value="#{categoryBean.courseName}"></b:inputText>
 										<b:selectOneMenu>
-											
+
 											<f:selectItems
 												value="#{categoryRepositoryBean.allCategories}"
 												itemValue="#{categoryRepositoryBean.courseName}"
@@ -212,7 +211,6 @@
 			</b:row>
 			<p:separator></p:separator>
 			<b:row>
-<<<<<<< HEAD
 				<b:column col-md="12" style="margin-top:11px;">
 					<b:panelGrid col-spans="12">
 						<b:inputText placeholder="Vorname" id="vorname" label="Vorname"></b:inputText>
@@ -227,21 +225,6 @@
 			<f:facet name="footer">
 				<b:commandButton value="Änderungen übernehmen"
 					styleClass="btnAenderungen">
-=======
-			<b:column col-md="12" style="margin-top:11px;">
-				<b:panelGrid col-spans="12">
-					<b:inputText placeholder="Vorname" id="vorname" label="Vorname"
-								 value="#{currentUserBean.newFirstName}"></b:inputText>
-					<b:inputText placeholder="Nachname" id="nachname" label="Nachname"
-								 value="#{currentUserBean.newLastName}"></b:inputText>
-						
-				</b:panelGrid>
-			</b:column>
-			</b:row>
-
-			<f:facet name="footer">
-				<b:commandButton value="Änderungen übernehmen" styleClass="btnAenderungen"  actionListener="#{currentUserBean.changeUserData()}">
->>>>>>> 9c666d061567ceb089cbed4ad8b9666f72799662
 				</b:commandButton>
 			</f:facet>
 		</b:modal>
@@ -278,7 +261,7 @@
 					<f:selectItem itemLabel="User" itemValue="User" />
 					<f:selectItem itemLabel="Admin" itemValue="Admin" />
 					<f:selectItem itemLabel="Tutor/-Bearbeiter"
-						itemValue="Tutor" />
+						itemValue="Tutor_Bearbeiter" />
 				</b:selectOneMenu>
 
 				<b:message for="feedback"></b:message>
@@ -356,13 +339,11 @@
 					<b:navLink value="Tutor benachrichtigen"></b:navLink>
 					<b:navLink />
 					<b:navLink header="Einstellungen"></b:navLink>
-					<b:navLink value="Sucheinstellungen"
-						onclick="$('.sucheModal').modal()"></b:navLink>
 					<b:navLink value="Kategorien"
 						onclick="$('.kategorienModal').modal()"></b:navLink>
 					<b:navLink />
 					<b:navLink value="User erstellen" onclick="$('.newUser').modal()"
-						rendered="#{currentUserBean.resolvedUserRole eq 'Administrator'}"></b:navLink>
+						rendered="#{userBean.currentUser.role eq 'Administrator'}"></b:navLink>
 				</b:dropMenu>
 				<b:dropMenu value="Profil">
 					<b:navLink value="Profil bearbeiten"
@@ -380,8 +361,19 @@
 				<b:inputText styleClass="suchfeldNavbar" placeholder="Suchbegriff"
 					tooltip="Felder aus der 'Sucheinstellung' werden mitberücksichtigt" />
 
-				<b:commandButton iconAwesome="fa-search"
-					styleClass="btnSuchenNavbar"></b:commandButton>
+				<!-- Abgetrennter Button -->
+				<div class="btn-group">
+					<b:commandButton look="success" value="Suche starten"></b:commandButton>
+					<button type="button" class="btn btn-success dropdown-toggle"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span> <span class="sr-only">Menü
+							ein-/ausblenden</span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#" onclick="$('.sucheModal').modal();">Einstellungen</a></li>
+						
+					</ul>
+				</div>
 			</h:form>
 		</b:navbarLinks>
 	</b:navBar>
@@ -392,7 +384,7 @@
 		<b:row>
 			<b:column col-md="6" col-xs="12" styleClass="columnLogoFirst">
 				<h4>Willkommen
-					#{currentUserBean.firstName}</h4>
+					#{ticketServiceMockup.userServiceMockup.user.firstName}</h4>
 				<b:panel styleClass="logoIubh">
 					<b:image library="img" name="iubh-logo.jpg"
 						styleClass="imageLogoIubh"></b:image>
