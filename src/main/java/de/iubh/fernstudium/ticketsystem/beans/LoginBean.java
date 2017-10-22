@@ -1,6 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
+import de.iubh.fernstudium.ticketsystem.domain.UITexts;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidCredentialsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -55,10 +56,10 @@ public class LoginBean {
             UserDTO userDTO = userService.login(userEmail, userPasswort);
             currentUserBean.init(userDTO);
             userDataBean.init(userDTO.getUserId());
-            return "main.xhtml?faces-redirect=true";
+            return FacesContextUtils.REDIRECT_MAIN;
         } catch (UserNotExistsException | InvalidPasswordException |InvalidCredentialsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));
-            return FacesContextUtils.resolveError("Anmeldefehler", "EMail/-Passwortkombination wurde nicht gefunden", null);
+            return FacesContextUtils.resolveError(UITexts.LOGIN_ERROR_SUMMARY, UITexts.LOGIN_ERROR_DETAIL, null);
         }
     }
 

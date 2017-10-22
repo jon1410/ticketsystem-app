@@ -21,14 +21,14 @@ public class TicketDTO {
     private TicketStatus ticketStatus;
     private UserDTO reporter;
     private LocalDateTime creationTime;
-    private String category; //evtl. ReferenzID auf Kategorie
+    private CategoryDTO category; //evtl. ReferenzID auf Kategorie
     private UserDTO assignee;
     private List<CommentDTO> comments;
 
     public TicketDTO() {
     }
 
-    public TicketDTO(Long id, String title, String description, UserDTO reporter, LocalDateTime creationTime, String category, UserDTO assignee, List<CommentDTO> comments) {
+    public TicketDTO(Long id, String title, String description, UserDTO reporter, LocalDateTime creationTime, CategoryDTO category, UserDTO assignee, List<CommentDTO> comments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -89,11 +89,11 @@ public class TicketDTO {
         this.creationTime = creationTime;
     }
 
-    public String getCategory() {
+    public CategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryDTO category) {
         this.category = category;
     }
 
@@ -127,7 +127,7 @@ public class TicketDTO {
         }
         return new TicketEntity(title, description, ticketStatus,
                 reporter.toEntity(), DateTimeUtil.localDtToSqlTimestamp(creationTime),
-                category, assignee.toEntity(), commentEntities);
+                category.toEntity(), assignee.toEntity(), commentEntities);
     }
 
     @Override

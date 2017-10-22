@@ -35,11 +35,12 @@
 				<p:spacer height="50"></p:spacer>
 
 				<b:inputText placeholder="Email Adresse" required="true"
-					type="email" label="EMail Passwort anfordern"  renderLabel="false"></b:inputText>
+					type="email" label="EMail Passwort anfordern" value="#{userBean.mailAdressForNewPw}"  renderLabel="false"></b:inputText>
 
 				<f:facet name="footer">
 					<b:commandButton look="success" value="Passwort zuschicken"
-						styleClass="btnPasswortVergessenBestätigen"></b:commandButton>
+						styleClass="btnPasswortVergessenBestätigen" actionListener="#{userBean.askForNewPassword()}"
+									 update=":msg" oncomplete="$('.modalEmail').modal('hide');return false;"></b:commandButton>
 				</f:facet>
 			</b:modal>
 		</h:form>
@@ -56,19 +57,25 @@
 					value="Befülle die Nachfolgenden Felder um dich bei uns zu registrieren"></h:outputText>
 				<p:spacer height="50"></p:spacer>
 				<b:inputText placeholder="Email Adresse" required="true"
-					type="email" label="EMail Registriereung" value="#{userDTO.userId}"
+					type="email" label="EMail Registriereung" value="#{userBean.userId}"
 					renderLabel="false"></b:inputText>
 				<b:inputText placeholder="Vorname" required="true"
-					label="Vorname Registriereung" value="#{userDTO.firstName}"
+					label="Vorname Registriereung" value="#{userBean.firstName}"
 					renderLabel="false"></b:inputText>
 				<b:inputText placeholder="Nachname" required="true"
-					label="Nachname Registriereung" value="#{userDTO.lastName}"
+					label="Nachname Registriereung" value="#{userBean.lastName}"
 					renderLabel="false"></b:inputText>
+				<b:inputSecret placeholder="Dein Passwort" label="Passwort Registrierung" required="true"
+							   value="#{userBean.newPassword}"
+							   renderLabel="false"></b:inputSecret>
+				<b:inputSecret placeholder="Passwort wiederholen" required="true"
+							   label="Passwort wiederholen" value="#{userBean.repeatedPassword}"
+							   renderLabel="false"></b:inputSecret>
 
 				<f:facet name="footer">
 					<b:commandButton look="success" value="Registrierung abschliessen"
 						styleClass="btnRegistrieren"
-						actionListener="#{userBean.registerUser()}" update=":msg"></b:commandButton>
+						actionListener="#{userBean.registerUser()}" update=":msg" oncomplete="$('.registrierenModal').modal('hide');return false;"></b:commandButton>
 				</f:facet>
 			</b:modal>
 		</h:form>

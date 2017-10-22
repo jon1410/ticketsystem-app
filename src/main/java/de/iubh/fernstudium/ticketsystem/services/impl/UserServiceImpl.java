@@ -8,8 +8,10 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordExceptio
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
+import de.iubh.fernstudium.ticketsystem.services.EmailService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.util.PasswordUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +19,9 @@ import org.apache.logging.log4j.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -28,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     private PasswordUtil passwordUtil;
+
+    @Inject
+    private EmailService emailService;
 
     @Override
     public UserDTO getUserByUserId(String userId) throws UserNotExistsException {
@@ -93,5 +101,34 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<UserDTO> getAllTutors() {
+        List<UserEntity> users = userDBService.findByRole(UserRole.AD);
+        return convertToDtoList(users);
+    }
+
+    @Override
+    public void generateNewPassword(String mailAdress) throws UserNotExistsException {
+        String newPw = passwordUtil.generatePassword();
+        //check if User exists...
+        UserDTO user = this.getUserByUserId(mailAdress);
+
+        if(!emailService.isMailConfigured()){
+            System.out.println("### Neues Passwort ist: " + newPw);
+        };
+
+        String hashedPwNew = passwordUtil.hashPw(newPw);
+        userDBService.changePassword(mailAdress, hashedPwNew);
+    }
+
+    private List<UserDTO> convertToDtoList(List<UserEntity> users) {
+        if(CollectionUtils.isNotEmpty(users)){
+            return users.stream().map(UserEntity::toDto).collect(Collectors.toList());
+        }
+        else{
+            return new ArrayList<>();
+        }
     }
 }

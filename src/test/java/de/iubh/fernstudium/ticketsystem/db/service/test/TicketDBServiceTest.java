@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.db.service.test;
 
+import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
@@ -62,7 +63,7 @@ public class TicketDBServiceTest extends JPAHibernateTestManager {
         ticketEntity.setComments(null);
         ticketEntity.setTicketStatus(TicketStatus.NEW);
         ticketEntity.setAssignee(getUser("tutor"));
-        ticketEntity.setCategory("Test");
+        ticketEntity.setCategory(new CategoryEntity("ISEF", "Test ISEF", getUser("tutor")));
         ticketEntity.setCreationTime(DateTimeUtil.localDtToSqlTimestamp(LocalDateTime.now()));
         ticketEntity.setDescription("Ein Testticket");
         ticketEntity.setReporter(getUser("student"));

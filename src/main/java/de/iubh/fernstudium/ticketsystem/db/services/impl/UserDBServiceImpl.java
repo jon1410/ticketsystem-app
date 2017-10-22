@@ -13,8 +13,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.xml.registry.infomodel.User;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 
 @Stateless
 public class UserDBServiceImpl implements UserDBService{
@@ -55,5 +58,11 @@ public class UserDBServiceImpl implements UserDBService{
         if(newRole != null){
             userEntity.setRole(newRole);
         }
+    }
+
+    @Override
+    public List<UserEntity> findByRole(UserRole role) {
+        Query query = em.createNamedQuery("findByRole", UserEntity.class).setParameter("role", role);
+        return query.getResultList();
     }
 }

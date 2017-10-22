@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
+import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;

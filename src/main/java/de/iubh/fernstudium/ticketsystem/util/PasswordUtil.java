@@ -25,4 +25,11 @@ public interface PasswordUtil {
      */
     String hashPw(String password);
 
+    /**
+     * Generiert ein neues Passwort für den User
+     *
+     * @return neues Passwort
+     */
+    String generatePassword();
+
 }

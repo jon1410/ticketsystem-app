@@ -4,6 +4,8 @@ import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
+import java.util.List;
+
 public interface UserDBService {
 
     /**
@@ -38,7 +40,15 @@ public interface UserDBService {
     /**
      * Ändert die Daten eines Users
      *
-     * @param userEntity
+     * @param userId, firstName, lastName, newRole
      */
-    public void updateUser(String UserId, String firstName, String lastName, UserRole newRole);
+    public void updateUser(String userId, String firstName, String lastName, UserRole newRole);
+
+    /**
+     * Liest alle Benutzer mit der angebeben Rollen
+     *
+     * @param role
+     * @return Liste von {@link UserEntity}
+     */
+    public List<UserEntity> findByRole(UserRole role);
 }

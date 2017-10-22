@@ -14,10 +14,17 @@ import java.util.List;
  * Created by ivanj on 16.07.2017.
  */
 @Entity
-@Table(name = "TICKET", indexes = {@Index(name="IDX_A", columnList = "reporter_USERID,STAUTS")})
+@Table(name = "TICKET", indexes = {@Index(name="IDX_A", columnList = "reporter_USERID,STAUTS"),
+                                   @Index(name="IDX_B", columnList = "TITLE")})
 @NamedQueries({
-         @NamedQuery(name = "getTicketsForUserIdAndStatus", query = "select t from TicketEntity t where t.assignee = :userid and t.ticketStatus in :statusList"),
-         @NamedQuery(name = "getTicketsReportedByUserId", query = "select t from TicketEntity t where t.reporter = :userid"),
+        @NamedQuery(name = "getTicketsForUserIdAndStatus", query = "select t from TicketEntity t where t.assignee = :userid and t.ticketStatus in :statusList"),
+        @NamedQuery(name = "getTicketsReportedByUserId", query = "select t from TicketEntity t where t.reporter = :userid"),
+        @NamedQuery(name = "searchByReporter", query = "select t from TicketEntity t where t.reporter.userId like concat('%', :userid, '%')"),
+        @NamedQuery(name = "searchByAssignee", query = "select t from TicketEntity t where t.assignee.userId like concat('%', :userid, '%')"),
+        @NamedQuery(name = "searchByStatus", query = "select t from TicketEntity t where t.ticketStatus = :ticketStatus"),
+        @NamedQuery(name = "searchByTitle", query = "select t from TicketEntity t where t.title like concat('%', :title, '%')"),
+        @NamedQuery(name = "searchByCategoryId", query = "select t from TicketEntity t where t.category.categoryId like concat('%', :categoryId, '%')"),
+        @NamedQuery(name = "searchByCategoryName", query = "select t from TicketEntity t where t.category.categoryName like concat('%', :categoryName, '%')"),
 })
 public class TicketEntity {
 
@@ -28,7 +35,7 @@ public class TicketEntity {
     @Column(name = "TITLE", length = 64, nullable = false)
     private String title;
 
-    @Column(name = "DESCRIPTION", length = 1000, nullable = false)
+    @Column(name = "DESCRIPTION", length = 4000, nullable = false)
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -41,8 +48,8 @@ public class TicketEntity {
     @Column(name = "CREA_TSP", nullable = false)
     private Timestamp creationTime;
 
-    @Column(name = "CATEG", nullable = false)
-    private String category; //evtl. ReferenzID auf Kategorie
+    @OneToOne(fetch = FetchType.EAGER)
+    private CategoryEntity category;
 
     @OneToOne(fetch = FetchType.EAGER)
     private UserEntity assignee;
@@ -55,7 +62,7 @@ public class TicketEntity {
     public TicketEntity() {
     }
 
-    public TicketEntity(String title, String description, TicketStatus ticketStatus, UserEntity reporter, Timestamp creationTime, String category, UserEntity assignee, List<CommentEntity> comments) {
+    public TicketEntity(String title, String description, TicketStatus ticketStatus, UserEntity reporter, Timestamp creationTime, CategoryEntity category, UserEntity assignee, List<CommentEntity> comments) {
         this.title = title;
         this.description = description;
         this.ticketStatus = ticketStatus;
@@ -114,11 +121,11 @@ public class TicketEntity {
         this.creationTime = creationTime;
     }
 
-    public String getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryEntity category) {
         this.category = category;
     }
 
@@ -147,6 +154,6 @@ public class TicketEntity {
             }
         }
         return new TicketDTO(id, title, description,reporter.toDto(),
-                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category, assignee.toDto(), commentDTOList);
+                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category.toDto(), assignee.toDto(), commentDTOList);
     }
 }
