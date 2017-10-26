@@ -6,6 +6,7 @@ import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -44,6 +45,22 @@ public interface TicketDBService {
     public boolean addComment(Long ticketId, CommentEntity comment);
 
     /**
+     * Liefert alle Tickets, die einem bestimmten User zugeordnet sind
+     *
+     * @param user
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> getTicketsForUserId(UserEntity user);
+
+    /**
+     * Liefert alle Tickets, die von einem bestimmten User eingemeldet wurden
+     *
+     * @param user
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> getTicketsReportedByUserId(UserEntity user);
+
+    /**
      * Speichert ein neues Ticket in der Datenbank
      *
      * @param ticketEntity
@@ -57,7 +74,7 @@ public interface TicketDBService {
      * @param reporter
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByReporter(UserEntity reporter);
+    public List<TicketEntity> searchByReporter(String reporter);
 
     /**
      * Sucht Tickets mit angegebener oder ähnlicher Assignee-UserId
@@ -65,7 +82,7 @@ public interface TicketDBService {
      * @param assignee
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByAssignee(UserEntity assignee);
+    public List<TicketEntity> searchByAssignee(String assignee);
 
     /**
      * Sucht Tickets mit angegebenem oder ähnlichem Ticket-Status
@@ -90,4 +107,13 @@ public interface TicketDBService {
      * @return Liste {@link TicketEntity}
      */
     public List<TicketEntity> searchByDescription(String searchtext);
+
+    /**
+     * Sucht nach Tickets mit Erstellungsdatum von - bis (Zeitpunkt)
+     *
+     * @param from
+     * @param to
+     * @return Liste {@link TicketEntity}
+     */
+    public List<TicketEntity> searchByDateRange(LocalDateTime from, LocalDateTime to);
 }

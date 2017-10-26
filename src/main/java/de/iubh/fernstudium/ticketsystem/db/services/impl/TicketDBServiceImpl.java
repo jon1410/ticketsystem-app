@@ -4,13 +4,17 @@ import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
+import de.iubh.fernstudium.ticketsystem.db.utils.QueryUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
+import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,6 +65,20 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
+    public List<TicketEntity> getTicketsForUserId(UserEntity user) {
+        TypedQuery<TicketEntity> query = em.createNamedQuery("getTicketsForUserId", TicketEntity.class)
+                .setParameter("userid", user);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<TicketEntity> getTicketsReportedByUserId(UserEntity user) {
+        TypedQuery<TicketEntity> query = em.createNamedQuery("getTicketsReportedByUserId", TicketEntity.class)
+                .setParameter("userid", user);
+        return query.getResultList();
+    }
+
+    @Override
     public TicketEntity createTicket(TicketEntity ticketEntity) {
         em.persist(ticketEntity);
         return ticketEntity;
@@ -71,7 +89,7 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
-    public List<TicketEntity> searchByReporter(UserEntity reporter) {
+    public List<TicketEntity> searchByReporter(String reporter) {
 
         TypedQuery<TicketEntity> query = em.createNamedQuery("searchByReporter", TicketEntity.class)
                 .setParameter("userid", reporter);
@@ -79,7 +97,7 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
-    public List<TicketEntity> searchByAssignee(UserEntity assignee) {
+    public List<TicketEntity> searchByAssignee(String assignee) {
         TypedQuery<TicketEntity> query = em.createNamedQuery("searchByAssignee", TicketEntity.class)
                 .setParameter("userid", assignee);
         return query.getResultList();
@@ -101,30 +119,17 @@ public class TicketDBServiceImpl implements TicketDBService{
 
     @Override
     public List<TicketEntity> searchByDescription(String searchtext) {
-        final String fullTextQuery = buildFullTextQuery("DESCRIPTION");
+        final String fullTextQuery = QueryUtils.buildFullTextQuery("DESCRIPTION");
         Query query = em.createNativeQuery(fullTextQuery, TicketEntity.class);
         query.setParameter(1, searchtext);
         return query.getResultList();
     }
 
-    private String buildFullTextQuery(String tableColumn) {
-
-        tableColumn = "(" + tableColumn + ")";
-        StringBuilder sb = new StringBuilder();
-        sb.append(QueryParameter.SELECT_ALL).append(QueryParameter.FROM).append(QueryParameter.TABLE_NAME)
-                .append(QueryParameter.WHERE).append(QueryParameter.MATCH).append(tableColumn).append(" ")
-                .append(QueryParameter.AGAINST).append("?").append(QueryParameter.BOOLEAN_MODE);
-        return sb.toString();
-    }
-
-    class QueryParameter{
-
-        static final String TABLE_NAME = "ticket ";
-        static final String SELECT_ALL = "select * ";
-        static final String FROM = "from ";
-        static final String WHERE = "where ";
-        static final String MATCH = "match";
-        static final String AGAINST = "against(";
-        static final String BOOLEAN_MODE = " in boolean mode);";
+    @Override
+    public List<TicketEntity> searchByDateRange(LocalDateTime from, LocalDateTime to) {
+        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByDateRange", TicketEntity.class)
+                .setParameter("fromDate", DateTimeUtil.localDtToSqlTimestamp(from))
+                .setParameter("toDate", DateTimeUtil.localDtToSqlTimestamp(to));
+        return query.getResultList();
     }
 }

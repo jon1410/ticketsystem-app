@@ -1,6 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.dtos;
 
-import de.iubh.fernstudium.ticketsystem.domain.HistoryAction;
+import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 
 import java.time.LocalDateTime;

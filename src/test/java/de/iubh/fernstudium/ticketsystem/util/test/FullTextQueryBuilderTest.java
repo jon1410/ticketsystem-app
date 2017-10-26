@@ -2,7 +2,21 @@ package de.iubh.fernstudium.ticketsystem.util.test;
 
 import org.junit.Test;
 
+import java.util.StringJoiner;
+
 public class FullTextQueryBuilderTest {
+
+    @Test
+    public void testStringJoiner(){
+        StringJoiner sj = new StringJoiner(", ");
+
+        String[] test = {"abc", "xy", "zzz"};
+
+        for(String s : test){
+            sj.add(s);
+        }
+        System.out.println(sj.toString());
+    }
 
     @Test
     public void testFullTextQuery(){

@@ -24,7 +24,6 @@ public class TutorRepositroyBean {
 
     @PostConstruct
     public void initializeTutors(){
-
         allTutors = userService.getAllTutors();
         LOG.info(String.format("Loaded %d Tutors", allTutors.size()) );
     }

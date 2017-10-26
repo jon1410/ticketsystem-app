@@ -13,6 +13,7 @@ import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -65,19 +66,32 @@ public class SearchServiceImpl implements SearchService {
         return new AsyncResult<>(convertToDtoList(tickets));
     }
 
+    @Override
+    public Future<List<TicketDTO>> searchByDateRange(LocalDateTime from, LocalDateTime to) {
+        return null;
+    }
+
     private Future<List<TicketDTO>> searchByUserId(String userId, UserTyp type) {
         UserEntity userEntity = userDBService.findById(userId);
         List<TicketDTO> returnList;
+        List<TicketEntity> tickets = null;
         if(userEntity == null){
-            returnList = new ArrayList<>();
-        }else{
-            List<TicketEntity> tickets = null;
             if(type == UserTyp.REPORTER){
-                tickets = ticketDBService.searchByReporter(userEntity);
+                tickets = ticketDBService.searchByReporter(userId);
             }else{
-                tickets = ticketDBService.searchByAssignee(userEntity);
+                tickets = ticketDBService.searchByAssignee(userId);
             }
+        }else{
+            if(type == UserTyp.REPORTER){
+                tickets = ticketDBService.getTicketsReportedByUserId(userEntity);
+            }else{
+                tickets = ticketDBService.getTicketsForUserId(userEntity);
+            }
+        }
+        if(tickets != null){
             returnList = convertToDtoList(tickets);
+        }else{
+            returnList = new ArrayList<>();
         }
         return new AsyncResult<>(returnList);
     }

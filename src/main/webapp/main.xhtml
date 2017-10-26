@@ -381,9 +381,18 @@
 
                 <b:inputText styleClass="suchfeldNavbar" placeholder="Suchbegriff" value="#{searchBean.searchString}"
                              tooltip="Schnellsuche starten"/>
-
+                <div class="btn-group">
                 <b:commandButton iconAwesome="fa-search"
                                  styleClass="btnSuchenNavbar" action="#{searchBean.searchSimple}"></b:commandButton>
+                    <button type="button" class="btn btn-success dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span> <span class="sr-only">Menü
+                            ein-/ausblenden</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onclick="$('.sucheModal').modal();">Einstellungen</a></li>
+                    </ul>
+                </div>
             </h:form>
         </b:navbarLinks>
     </b:navBar>

@@ -4,6 +4,8 @@ import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
+import de.iubh.fernstudium.ticketsystem.domain.history.HistoryPayload;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
@@ -14,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -35,6 +38,8 @@ public class TicketBean extends TicketDTO implements Serializable {
     private DefaultInits defaultInits;
     @Inject
     private UserDataBean userDataBean;
+    @Inject
+    private Event<HistoryPayload> historyEvent;
 
     private String newComment;
     private String userIdCommentor;
@@ -77,13 +82,14 @@ public class TicketBean extends TicketDTO implements Serializable {
 
         TicketDTO ticketDTO = ticketService.createTicket(this);
         userDataBean.addTicket(ticketDTO);
+        fireEvent(ticketDTO.getId(),  HistoryAction.CR);
         return FacesContextUtils.resolveInfo("Ticket erstellt", "Neues Ticket wurde erstellt", null);
     }
 
     public String addComment(){
         try {
             ticketService.addComment(super.getId(), this.newComment, userIdCommentor);
-            //TODO: return Wert definieren
+            fireEvent(super.getId(), HistoryAction.CA);
             return "main.xhtml";
         } catch (NoSuchTicketException | UserNotExistsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));
@@ -95,6 +101,11 @@ public class TicketBean extends TicketDTO implements Serializable {
     public String createMasterticket(){
 
         return null;
+    }
+
+    private void fireEvent(Long ticketId, HistoryAction historyAction){
+        HistoryPayload payload = new HistoryPayload(ticketId, historyAction, currentUserBean.getUserId());
+        historyEvent.fire(payload);
     }
 
 }

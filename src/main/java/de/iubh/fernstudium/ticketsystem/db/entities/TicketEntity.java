@@ -15,9 +15,11 @@ import java.util.List;
  */
 @Entity
 @Table(name = "TICKET", indexes = {@Index(name="IDX_A", columnList = "reporter_USERID,STAUTS"),
-                                   @Index(name="IDX_B", columnList = "TITLE")})
+                                   @Index(name="IDX_B", columnList = "TITLE"),
+                                   @Index(name="IDX_C", columnList = "CREA_TSP")})
 @NamedQueries({
         @NamedQuery(name = "getTicketsForUserIdAndStatus", query = "select t from TicketEntity t where t.assignee = :userid and t.ticketStatus in :statusList"),
+        @NamedQuery(name = "getTicketsForUserId", query = "select t from TicketEntity t where t.assignee = :userid"),
         @NamedQuery(name = "getTicketsReportedByUserId", query = "select t from TicketEntity t where t.reporter = :userid"),
         @NamedQuery(name = "searchByReporter", query = "select t from TicketEntity t where t.reporter.userId like concat('%', :userid, '%')"),
         @NamedQuery(name = "searchByAssignee", query = "select t from TicketEntity t where t.assignee.userId like concat('%', :userid, '%')"),
@@ -25,6 +27,7 @@ import java.util.List;
         @NamedQuery(name = "searchByTitle", query = "select t from TicketEntity t where t.title like concat('%', :title, '%')"),
         @NamedQuery(name = "searchByCategoryId", query = "select t from TicketEntity t where t.category.categoryId like concat('%', :categoryId, '%')"),
         @NamedQuery(name = "searchByCategoryName", query = "select t from TicketEntity t where t.category.categoryName like concat('%', :categoryName, '%')"),
+        @NamedQuery(name = "searchByDateRange", query = "select t from TicketEntity t where t.creationTime between :fromDate and :toDate"),
 })
 public class TicketEntity {
 
@@ -39,7 +42,7 @@ public class TicketEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "STAUTS", nullable = false)
+    @Column(name = "STATUS", nullable = false)
     private TicketStatus ticketStatus;
 
     @OneToOne(fetch = FetchType.EAGER)

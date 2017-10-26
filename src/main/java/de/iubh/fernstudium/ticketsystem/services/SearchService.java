@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.services;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -19,4 +20,7 @@ public interface SearchService {
     public Future<List<TicketDTO>> searchByTitle(String text);
 
     public Future<List<TicketDTO>> searchByDescription(String searchtext);
+
+    public Future<List<TicketDTO>> searchByDateRange(LocalDateTime from, LocalDateTime to);
+
 }

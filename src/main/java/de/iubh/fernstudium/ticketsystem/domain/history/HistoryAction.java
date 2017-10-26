@@ -1,4 +1,4 @@
-package de.iubh.fernstudium.ticketsystem.domain;
+package de.iubh.fernstudium.ticketsystem.domain.history;
 
 public enum HistoryAction {
 
@@ -16,5 +16,14 @@ public enum HistoryAction {
 
     public String getResolvedText(){
         return this.resolvedText;
+    }
+
+    public static HistoryAction fromString(String text){
+        for(HistoryAction h : HistoryAction.values()){
+            if(h.resolvedText.equalsIgnoreCase(text)){
+                return h;
+            }
+        }
+        return null;
     }
 }
