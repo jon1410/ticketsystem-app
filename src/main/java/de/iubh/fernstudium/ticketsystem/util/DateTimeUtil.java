@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimeUtil {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+    //private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public static LocalDateTime sqlTimestampToLocalDate(Timestamp tsp){
         if(tsp == null){
@@ -34,6 +34,8 @@ public class DateTimeUtil {
     }
 
     public static LocalDateTime format(String date){
-        return LocalDateTime.parse(date, formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return localDate.atStartOfDay();
     }
 }

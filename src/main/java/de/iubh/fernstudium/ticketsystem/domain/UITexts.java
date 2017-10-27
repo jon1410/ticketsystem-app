@@ -25,11 +25,14 @@ public class UITexts {
     public static final String PW_RESET_ERROR_DETAILS = "Die angegebene E-Mail-Adresse ist dem System nicht bekannt.";
 
     //Suche-Texte
-    public static final String SIMPLE_SEARCH_NOT_FOUND_SUMMARY = "Keine Tickets gefunden";
+    public static final String SEARCH_NOT_FOUND_SUMMARY = "Keine Tickets gefunden";
     public static final String SIMPLE_SEARCH_NOT_FOUND_DETAIL = "Zu deiner Suchanfrage wurden keine Tickets gefunden, versuche bitte die Detailsuche.";
 
-    public static final String SIMPLE_SEARCH_SUMMARY = "Suche abgeschlossen";
-    public static final String SIMPLE_SEARCH_DETAIL = "Zu deiner Suchanfrage wurden folgende Tickets gefunden.";
+    public static final String SEARCH_SUMMARY = "Suche abgeschlossen";
+    public static final String SEARCH_DETAIL = "Zu deiner Suchanfrage wurden folgende Tickets gefunden.";
+    
+    public static final String DETAIL_SEARCH_NOT_FOUND_DETAIL = "Zu deiner Suchanfrage wurden keine Tickets gefunden, bitte versuche andere Parameter.";
+
 
     //Sonst
     public static final String CREATE_USER_TRY_AGAIN = "bitte probiere es später noch einmal";

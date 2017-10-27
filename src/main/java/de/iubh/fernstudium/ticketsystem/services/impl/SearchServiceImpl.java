@@ -67,7 +67,8 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Future<List<TicketDTO>> searchByDateRange(LocalDateTime from, LocalDateTime to) {
+    public Future<List<TicketDTO>> searchByQuery(String query, List<Object> params) {
+
         return null;
     }
 

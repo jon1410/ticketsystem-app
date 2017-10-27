@@ -109,11 +109,11 @@ public interface TicketDBService {
     public List<TicketEntity> searchByDescription(String searchtext);
 
     /**
-     * Sucht nach Tickets mit Erstellungsdatum von - bis (Zeitpunkt)
+     * Führt eine bereitgestellte SQL-Query durch
      *
-     * @param from
-     * @param to
+     * @param query
+     * @param params
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByDateRange(LocalDateTime from, LocalDateTime to);
+    public List<TicketEntity> searchByCustomQuery(String query, List<Object> params);
 }

@@ -126,10 +126,15 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
-    public List<TicketEntity> searchByDateRange(LocalDateTime from, LocalDateTime to) {
-        TypedQuery<TicketEntity> query = em.createNamedQuery("searchByDateRange", TicketEntity.class)
-                .setParameter("fromDate", DateTimeUtil.localDtToSqlTimestamp(from))
-                .setParameter("toDate", DateTimeUtil.localDtToSqlTimestamp(to));
-        return query.getResultList();
+    public List<TicketEntity> searchByCustomQuery(String query, List<Object> params) {
+        Query newQuery = em.createNativeQuery(query, TicketEntity.class);
+
+        for(int i=0; i<params.size(); i++){
+            Object o = params.get(i);
+            newQuery.setParameter(i+1, o);
+        }
+
+        return newQuery.getResultList();
+
     }
 }

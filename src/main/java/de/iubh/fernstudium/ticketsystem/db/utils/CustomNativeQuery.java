@@ -1,8 +1,9 @@
 package de.iubh.fernstudium.ticketsystem.db.utils;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.StringJoiner;
+import org.apache.commons.lang3.StringUtils;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 public class CustomNativeQuery {
 
@@ -12,18 +13,30 @@ public class CustomNativeQuery {
     static final String FROM = "from ";
     static final String WHERE = "where ";
     static final String AND = "and ";
-    static final String MATCH = "match";
-    static final String AGAINST = "against(";
-    static final String BOOLEAN_MODE = " in boolean mode);";
+    static final String OR = "or ";
+    static final String IN = " in ";
+    static final String BETWEEN = " between ";
+    static final String LIKE = " like ";
+    static final String MATCH = "match ";
+    static final String AGAINST = "against (";
+    static final String BOOLEAN_MODE = " in boolean mode) ";
+    static final String OP_CB = "(";
+    static final String CL_CB = ")";
 
     private String queryString;
+    private List<Object> parameters;
 
     CustomNativeQuery(QueryBuilder builder) {
         this.queryString = builder.sb.toString();
+        this.parameters = builder.parameters;
     }
 
     public String getQueryString() {
         return queryString;
+    }
+
+    public List<Object> getParameters() {
+        return parameters;
     }
 
     public static CustomNativeQuery.QueryBuilder builder(){
@@ -33,12 +46,12 @@ public class CustomNativeQuery {
     public static class QueryBuilder{
 
         StringBuilder sb;
-        Map<Integer, String> parameterValues;
+        List<Object> parameters;
         int counter = 0;
 
         private QueryBuilder(){
             sb = new StringBuilder(1000);
-            parameterValues = new LinkedHashMap<>();
+            parameters = new LinkedList<>();
         }
 
         public QueryBuilder selectAll(){
@@ -56,7 +69,7 @@ public class CustomNativeQuery {
         }
 
         public QueryBuilder from(String tableName){
-            sb.append(FROM).append(tableName);
+            sb.append(FROM).append(tableName).append(" ");
             return this;
         }
 
@@ -70,9 +83,92 @@ public class CustomNativeQuery {
             return this;
         }
 
+        public QueryBuilder and(){
+            sb.append(" ").append(AND);
+            return this;
+        }
+
+        public QueryBuilder columnName(String columnName){
+            sb.append(columnName);
+            return this;
+        }
+
+        public QueryBuilder notEmpty(){
+            sb.append(" != \"\"");
+            return this;
+        }
+
         public QueryBuilder equals(String value){
-            sb.append("=").append("?");
+            sb.append(" = ").append("?").append(" ");
             addParam(value);
+            return this;
+        }
+
+        public QueryBuilder like(String value){
+            sb.append(LIKE).append("? ");
+            addParam("%" + value + "%");
+            return this;
+        }
+
+        public QueryBuilder or(){
+            sb.append(" ").append(OR);
+            return this;
+        }
+
+        public QueryBuilder match(String columnName){
+            sb.append(MATCH).append(OP_CB).append(columnName).append(CL_CB);
+            return this;
+        }
+
+        public QueryBuilder against(String value){
+            sb.append(AGAINST).append(value);
+            return this;
+        }
+
+        public QueryBuilder in(Object... values){
+
+            StringJoiner sj = new StringJoiner(",");
+            for(Object o : values){
+                sj.add("?");
+            }
+            sb.append(IN).append(OP_CB).append(sj.toString()).append(CL_CB);
+            addParam(values);
+            return this;
+        }
+
+        public QueryBuilder inBooleanMode(){
+            sb.append(BOOLEAN_MODE);
+            return this;
+        }
+
+        public QueryBuilder between(String fromValue, String toValue){
+            sb.append(BETWEEN).append(fromValue).append(" ").append(AND).append(toValue).append(" ");
+            return this;
+        }
+
+        public QueryBuilder between(Timestamp fromValue, Timestamp toValue){
+            sb.append(BETWEEN).append("?").append(" ").append(AND).append("? ");
+            addParam(fromValue, toValue);
+            return this;
+        }
+
+        public QueryBuilder openCurlyBraces(){
+            sb.append(OP_CB);
+            return this;
+        }
+
+        public QueryBuilder closeCurlyBraces(){
+            sb.append(CL_CB);
+            return this;
+        }
+
+        public QueryBuilder addTrueStatement(){
+            sb.append(" 1 = 1 ");
+            return this;
+        }
+
+        public QueryBuilder addFalseStatement(){
+            sb.append(" 1 = 0 ");
             return this;
         }
 
@@ -80,9 +176,11 @@ public class CustomNativeQuery {
             return new CustomNativeQuery(this);
         }
 
-        private void addParam(String value) {
-            parameterValues.put(counter, value);
-            counter++;
+        private void addParam(Object... values) {
+
+            for(Object o : values){
+                parameters.add(o);
+            }
         }
 
     }

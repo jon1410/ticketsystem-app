@@ -21,6 +21,6 @@ public interface SearchService {
 
     public Future<List<TicketDTO>> searchByDescription(String searchtext);
 
-    public Future<List<TicketDTO>> searchByDateRange(LocalDateTime from, LocalDateTime to);
+    public Future<List<TicketDTO>> searchByQuery(String query, List<Object> params);
 
 }

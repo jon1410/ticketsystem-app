@@ -1,10 +1,13 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
+import de.iubh.fernstudium.ticketsystem.db.utils.CustomNativeQuery;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.SearchService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
@@ -45,7 +48,7 @@ public class SearchBean implements Serializable {
     //Detail-Suche
     private String dateFrom; //muss dd.MM.yyyy sein
     private String dateTo; //muss dd.MM.yyyy sein
-    private Map<String, Object> statusValues;
+    private Map<String, TicketStatus> statusValues;
     private String userIdReporter;
     private String userIdAssignee;
 
@@ -73,7 +76,7 @@ public class SearchBean implements Serializable {
                 TicketDTO ticket = ticketService.getTicketByID(new Long(searchString));
                 ticketSet.add(ticket);
             } catch (NoSuchTicketException e) {
-                return resolveSearchSimpleInfo();
+                return resolveSearchInfo(UITexts.SIMPLE_SEARCH_NOT_FOUND_DETAIL);
             }
         } else{
             Future<List<TicketDTO>> ticketsTitle = searchService.searchByTitle(searchString);
@@ -84,62 +87,78 @@ public class SearchBean implements Serializable {
                 ticketSet.addAll(templist);
                 ticketSet.addAll(ticketsTitle.get(1, TimeUnit.SECONDS));
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                return resolveSearchSimpleInfo();
+                return resolveSearchInfo(UITexts.SIMPLE_SEARCH_NOT_FOUND_DETAIL);
             }
         }
 
         if(ticketSet.size() == 0){
-            return resolveSearchSimpleInfo();
+            return resolveSearchInfo(UITexts.SIMPLE_SEARCH_NOT_FOUND_DETAIL);
         }
         foundTickets = new ArrayList<>(ticketSet);
         LOG.info("Tickets aus Suche gefunden: " + foundTickets.size());
         searchString = null;
         // TODO: return definieren (eigenes XHTML oder Modal?)
-        return FacesContextUtils.resolveInfo(UITexts.SIMPLE_SEARCH_SUMMARY,
-                UITexts.SIMPLE_SEARCH_DETAIL, null);
+        return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
+                UITexts.SEARCH_DETAIL, null);
     }
 
 
-    private String resolveSearchSimpleInfo() {
-        return FacesContextUtils.resolveInfo(UITexts.SIMPLE_SEARCH_NOT_FOUND_SUMMARY,
-                UITexts.SIMPLE_SEARCH_NOT_FOUND_DETAIL, null);
+    private String resolveSearchInfo(String detailText) {
+        return FacesContextUtils.resolveInfo(UITexts.SEARCH_NOT_FOUND_SUMMARY,
+                detailText, null);
     }
 
     public String searchDetails(){
 
         Set<TicketDTO> ticketSet = new HashSet<>();
-        List<TicketDTO> ticketsByDateRange;
+        Future<List<TicketDTO>> tickets;
 
-        Future<List<TicketDTO>> ticketsDateRange;
-        Future<List<TicketDTO>> ticketsReporter;
-        Future<List<TicketDTO>> ticketsAssignee;
+        LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
+        LocalDateTime ldtTo = DateTimeUtil.format(dateTo);
+        CustomNativeQuery.QueryBuilder queryBuilder = CustomNativeQuery.builder()
+                .selectAll().from("ticket").where("CREA_TSP")
+                .between(DateTimeUtil.localDtToSqlTimestamp(ldtFrom), DateTimeUtil.localDtToSqlTimestamp(ldtTo));
 
-
-        if(isDateTimeSet()){
-            LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
-
-            LocalDateTime ldtTo;
-            if(dateTo == null && StringUtils.isEmpty(dateTo)){
-                ldtTo = LocalDateTime.now();
-            }else{
-                ldtTo = DateTimeUtil.format(dateTo);
-            }
-            ticketsDateRange = searchService.searchByDateRange(ldtFrom, ldtTo);
-        }
 
         if(StringUtils.isNotEmpty(userIdReporter)){
-            ticketsReporter = searchService.searchByReporter(userIdReporter);
+            try {
+                UserDTO user = userService.getUserByUserId(userIdReporter);
+                queryBuilder = queryBuilder.and("reporter_USERID").equals(user.getUserId());
+            } catch (UserNotExistsException e) {
+                queryBuilder = queryBuilder.and("reporter_USERID").like(userIdReporter);
+            }
         }
 
         if(StringUtils.isNotEmpty(userIdAssignee)){
-            ticketsAssignee = searchService.searchByAssignee(userIdAssignee);
+            try {
+                UserDTO user = userService.getUserByUserId(userIdAssignee);
+                queryBuilder = queryBuilder.and("assignee_USERID").equals(user.getUserId());
+            } catch (UserNotExistsException e) {
+                queryBuilder = queryBuilder.and("assignee_USERID").like(userIdAssignee);
+            }
         }
 
-        return null;
-    }
+        if(statusValues != null && !statusValues.isEmpty()){
+            queryBuilder = queryBuilder.and("STATUS").in(statusValues.values().stream().toArray());
+        }
+        CustomNativeQuery customNativeQuery = queryBuilder.buildQuery();
+        tickets = searchService.searchByQuery(customNativeQuery.getQueryString(), customNativeQuery.getParameters());
 
-    private boolean isDateTimeSet() {
-        return dateFrom != null && StringUtils.isNotEmpty(dateFrom);
+        try {
+            List<TicketDTO> foundTickets = tickets.get(5, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e ) {
+            return resolveSearchInfo(UITexts.DETAIL_SEARCH_NOT_FOUND_DETAIL);
+        }
+
+        if(foundTickets.size() == 0){
+            return resolveSearchInfo(UITexts.DETAIL_SEARCH_NOT_FOUND_DETAIL);
+        }
+
+        this.foundTickets = foundTickets;
+        foundTickets = null;
+
+        return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
+                UITexts.SEARCH_DETAIL, null);
     }
 
     public List<TicketDTO> getFoundTickets() {
@@ -174,11 +193,11 @@ public class SearchBean implements Serializable {
         this.dateTo = dateTo;
     }
 
-    public Map<String, Object> getStatusValues() {
+    public Map<String, TicketStatus> getStatusValues() {
         return statusValues;
     }
 
-    public void setStatusValues(Map<String, Object> statusValues) {
+    public void setStatusValues(Map<String, TicketStatus> statusValues) {
         this.statusValues = statusValues;
     }
 

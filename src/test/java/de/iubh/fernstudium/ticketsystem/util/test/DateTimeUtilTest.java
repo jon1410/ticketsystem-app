@@ -18,6 +18,13 @@ import static org.junit.Assert.assertTrue;
 public class DateTimeUtilTest {
 
     @Test
+    public void testFormat(){
+        String date = "2017-01-01";
+        LocalDateTime ldt = DateTimeUtil.format(date);
+        assertNotNull(ldt);
+    }
+
+    @Test
     public void testSqlTimestampToLocalDate(){
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp ts = DateTimeUtil.localDtToSqlTimestamp(localDateTime);
