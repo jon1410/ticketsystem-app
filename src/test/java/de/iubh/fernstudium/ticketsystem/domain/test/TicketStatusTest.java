@@ -3,6 +3,8 @@ package de.iubh.fernstudium.ticketsystem.domain.test;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import org.junit.Test;
 
+import javax.xml.transform.sax.SAXSource;
+
 import static org.junit.Assert.assertEquals;
 
 /**

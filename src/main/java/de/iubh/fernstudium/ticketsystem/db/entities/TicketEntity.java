@@ -14,7 +14,7 @@ import java.util.List;
  * Created by ivanj on 16.07.2017.
  */
 @Entity
-@Table(name = "TICKET", indexes = {@Index(name="IDX_A", columnList = "reporter_USERID,STAUTS"),
+@Table(name = "TICKET", indexes = {@Index(name="IDX_A", columnList = "reporter_USERID,STATUS"),
                                    @Index(name="IDX_B", columnList = "TITLE"),
                                    @Index(name="IDX_C", columnList = "CREA_TSP")})
 @NamedQueries({

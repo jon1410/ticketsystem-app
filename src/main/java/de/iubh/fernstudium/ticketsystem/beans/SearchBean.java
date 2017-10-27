@@ -14,6 +14,7 @@ import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 @SessionScoped
 @Named("searchBean")
@@ -97,9 +99,12 @@ public class SearchBean implements Serializable {
         foundTickets = new ArrayList<>(ticketSet);
         LOG.info("Tickets aus Suche gefunden: " + foundTickets.size());
         searchString = null;
-        // TODO: return definieren (eigenes XHTML oder Modal?)
-        return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
-                UITexts.SEARCH_DETAIL, null);
+
+        // TODO: raus wenn Detailsuche implementiert
+        return searchDetails();
+
+//        return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
+//                UITexts.SEARCH_DETAIL, null);
     }
 
 
@@ -110,8 +115,18 @@ public class SearchBean implements Serializable {
 
     public String searchDetails(){
 
-        Set<TicketDTO> ticketSet = new HashSet<>();
+        setDateFrom("2017-04-01");
+        setDateTo("2017-11-01");
+        setUserIdReporter("ivan");
+
+        Map<String, TicketStatus> statusValues;
+        statusValues = new LinkedHashMap<>();
+        statusValues.put("1", TicketStatus.NEW);
+        statusValues.put("2", TicketStatus.CLO);
+        setStatusValues(statusValues);
+
         Future<List<TicketDTO>> tickets;
+        List<TicketDTO> foundTickets;
 
         LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
         LocalDateTime ldtTo = DateTimeUtil.format(dateTo);
@@ -139,20 +154,26 @@ public class SearchBean implements Serializable {
         }
 
         if(statusValues != null && !statusValues.isEmpty()){
-            queryBuilder = queryBuilder.and("STATUS").in(statusValues.values().stream().toArray());
+            List<String> statusValuesAsString = statusValues.values().stream().map(v -> v.toString()).collect(Collectors.toList());
+            queryBuilder = queryBuilder.and("STATUS").in(statusValuesAsString.toArray(new String[statusValuesAsString.size()]));
         }
         CustomNativeQuery customNativeQuery = queryBuilder.buildQuery();
+        LOG.info("Starting search Service Details: " + customNativeQuery.getQueryString());
+        LOG.info("Parameters are: " + customNativeQuery.getParameters().toString());
         tickets = searchService.searchByQuery(customNativeQuery.getQueryString(), customNativeQuery.getParameters());
 
         try {
-            List<TicketDTO> foundTickets = tickets.get(5, TimeUnit.SECONDS);
+            foundTickets = tickets.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e ) {
+            LOG.error("Exception during Async-Search " + ExceptionUtils.getRootCauseMessage(e));
             return resolveSearchInfo(UITexts.DETAIL_SEARCH_NOT_FOUND_DETAIL);
         }
 
         if(foundTickets.size() == 0){
+            LOG.info("Size of found tickets is ZERO: ");
             return resolveSearchInfo(UITexts.DETAIL_SEARCH_NOT_FOUND_DETAIL);
         }
+        LOG.info("Size of Tickets in Detailsearch: " + foundTickets.size());
 
         this.foundTickets = foundTickets;
         foundTickets = null;

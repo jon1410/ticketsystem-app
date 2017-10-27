@@ -68,8 +68,17 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public Future<List<TicketDTO>> searchByQuery(String query, List<Object> params) {
+        List<TicketEntity> tickets = null;
+        tickets = ticketDBService.searchByCustomQuery(query , params);
 
-        return null;
+        List<TicketDTO> returnList;
+        if(tickets != null){
+            returnList = convertToDtoList(tickets);
+        }else{
+            returnList = new ArrayList<>();
+        }
+
+        return new AsyncResult<>(returnList);
     }
 
     private Future<List<TicketDTO>> searchByUserId(String userId, UserTyp type) {

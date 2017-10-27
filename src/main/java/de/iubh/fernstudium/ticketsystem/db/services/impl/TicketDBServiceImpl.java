@@ -134,6 +134,8 @@ public class TicketDBServiceImpl implements TicketDBService{
             newQuery.setParameter(i+1, o);
         }
 
+        System.out.println(query.toString());
+
         return newQuery.getResultList();
 
     }

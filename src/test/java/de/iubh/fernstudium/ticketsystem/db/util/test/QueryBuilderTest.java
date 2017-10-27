@@ -138,4 +138,56 @@ public class QueryBuilderTest {
         System.out.println(customNativeQuery.getQueryString());
         System.out.println(customNativeQuery.getParameters().toString());
     }
+
+    @Test
+    public void testQueryBuilder1() throws UserNotExistsException {
+
+        String dateFrom = "2017-01-01";
+        String dateTo = "2017-10-01";
+        String userIdReporter = null;
+        String userIdAssignee = "ivan";
+        Map<String, TicketStatus> statusValues;
+        statusValues = new LinkedHashMap<>();
+        statusValues.put("1", TicketStatus.NEW);
+        statusValues.put("2", TicketStatus.CLO);
+
+        Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenThrow(UserNotExistsException.class);
+
+
+        Set<TicketDTO> ticketSet = new HashSet<>();
+        Future<List<TicketDTO>> tickets;
+
+        LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
+        LocalDateTime ldtTo = DateTimeUtil.format(dateTo);
+        CustomNativeQuery.QueryBuilder queryBuilder = CustomNativeQuery.builder()
+                .selectAll().from("ticket").where("CREA_TSP")
+                .between(DateTimeUtil.localDtToSqlTimestamp(ldtFrom), DateTimeUtil.localDtToSqlTimestamp(ldtTo));
+
+
+        if(StringUtils.isNotEmpty(userIdReporter)){
+            try {
+                UserDTO user = userService.getUserByUserId(userIdReporter);
+                queryBuilder = queryBuilder.and("reporter_USERID").equals(user.getUserId());
+            } catch (UserNotExistsException e) {
+                queryBuilder = queryBuilder.and("reporter_USERID").like(userIdReporter);
+            }
+        }
+
+        if(StringUtils.isNotEmpty(userIdAssignee)){
+            try {
+                UserDTO user = userService.getUserByUserId(userIdAssignee);
+                queryBuilder = queryBuilder.and("assignee_USERID").equals(user.getUserId());
+            } catch (UserNotExistsException e) {
+                queryBuilder = queryBuilder.and("assignee_USERID").like(userIdAssignee);
+            }
+        }
+
+        if(statusValues != null && !statusValues.isEmpty()){
+            queryBuilder = queryBuilder.and("STATUS").in(statusValues.values().stream().toArray());
+        }
+        CustomNativeQuery customNativeQuery = queryBuilder.buildQuery();
+        assertNotNull(customNativeQuery);
+        System.out.println(customNativeQuery.getQueryString());
+        System.out.println(customNativeQuery.getParameters().toString());
+    }
 }
