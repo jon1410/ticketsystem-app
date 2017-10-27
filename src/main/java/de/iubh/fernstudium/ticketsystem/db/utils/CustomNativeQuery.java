@@ -99,7 +99,7 @@ public class CustomNativeQuery {
         }
 
         public QueryBuilder equals(String value){
-            sb.append(" = ").append("?").append(" ");
+            sb.append(" = ").append("? ");
             addParam(value);
             return this;
         }
