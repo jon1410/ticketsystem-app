@@ -1,4 +1,6 @@
-package de.iubh.fernstudium.ticketsystem.domain.history;
+package de.iubh.fernstudium.ticketsystem.domain.event.payload;
+
+import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
 
 import java.time.LocalDateTime;
 

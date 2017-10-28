@@ -100,11 +100,8 @@ public class SearchBean implements Serializable {
         LOG.info("Tickets aus Suche gefunden: " + foundTickets.size());
         searchString = null;
 
-        // TODO: raus wenn Detailsuche implementiert
-        return searchDetails();
-
-//        return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
-//                UITexts.SEARCH_DETAIL, null);
+        return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
+                UITexts.SEARCH_DETAIL, null);
     }
 
 
@@ -115,15 +112,15 @@ public class SearchBean implements Serializable {
 
     public String searchDetails(){
 
-        setDateFrom("2017-04-01");
-        setDateTo("2017-11-01");
-        setUserIdReporter("ivan");
-
-        Map<String, TicketStatus> statusValues;
-        statusValues = new LinkedHashMap<>();
-        statusValues.put("1", TicketStatus.NEW);
-        statusValues.put("2", TicketStatus.CLO);
-        setStatusValues(statusValues);
+//        setDateFrom("2017-04-01");
+//        setDateTo("2017-11-01");
+//        setUserIdReporter("ivan");
+//
+//        Map<String, TicketStatus> statusValues;
+//        statusValues = new LinkedHashMap<>();
+//        statusValues.put("1", TicketStatus.NEW);
+//        statusValues.put("2", TicketStatus.CLO);
+//        setStatusValues(statusValues);
 
         Future<List<TicketDTO>> tickets;
         List<TicketDTO> foundTickets;
@@ -155,7 +152,7 @@ public class SearchBean implements Serializable {
 
         if(statusValues != null && !statusValues.isEmpty()){
             List<String> statusValuesAsString = statusValues.values().stream().map(v -> v.toString()).collect(Collectors.toList());
-            queryBuilder = queryBuilder.and("STATUS").in(statusValuesAsString.toArray(new String[statusValuesAsString.size()]));
+            queryBuilder = queryBuilder.and("STATUS").in(statusValuesAsString.toArray(new String[0])); //siehe https://shipilev.net/blog/2016/arrays-wisdom-ancients/
         }
         CustomNativeQuery customNativeQuery = queryBuilder.buildQuery();
         LOG.info("Starting search Service Details: " + customNativeQuery.getQueryString());

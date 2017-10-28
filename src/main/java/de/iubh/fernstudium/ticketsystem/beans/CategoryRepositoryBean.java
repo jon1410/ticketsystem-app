@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
+import de.iubh.fernstudium.ticketsystem.domain.event.payload.CacheUpdatePayload;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
@@ -48,4 +49,6 @@ public class CategoryRepositoryBean {
     }
 
 
+    public void updateCache(CacheUpdatePayload cacheUpdatePayload) {
+    }
 }

@@ -2,11 +2,14 @@ package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.domain.event.payload.CachePayload;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
+import de.iubh.fernstudium.ticketsystem.services.impl.EventProducer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,6 +21,8 @@ public class CurrentUserBean extends UserDTO implements Serializable {
 
     @Inject
     private UserService userService;
+    @EJB
+    private EventProducer eventProducer;
 
     private static final Logger LOG = LogManager.getLogger(CurrentUserBean.class);
     private String resolvedUserRole;
@@ -72,8 +77,15 @@ public class CurrentUserBean extends UserDTO implements Serializable {
         userService.changeUserData(super.getUserId(), getNewFirstName(), getNewLastName(), super.getUserRole());
         super.setFirstName(getNewFirstName());
         super.setLastName(getNewLastName());
+
+        UserDTO cacheUpdate = createUserDto();
+        eventProducer.produceCacheEvent(new CachePayload(cacheUpdate));
         restoreNewValuesToNull();
         return null;
+    }
+
+    private UserDTO createUserDto() {
+        return new UserDTO(super.getUserId(), super.getFirstName(), super.getLastName(), super.getPassword(), super.getUserRole());
     }
 
     private void restoreNewValuesToNull() {

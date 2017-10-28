@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
+import de.iubh.fernstudium.ticketsystem.domain.event.payload.CacheUpdatePayload;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -13,9 +14,9 @@ import java.util.List;
 
 @Named("tutorRepositroyBean")
 @ApplicationScoped
-public class TutorRepositroyBean {
+public class TutorRepositoryBean {
 
-    private static final Logger LOG = LogManager.getLogger(TutorRepositroyBean.class);
+    private static final Logger LOG = LogManager.getLogger(TutorRepositoryBean.class);
 
     private List<UserDTO> allTutors;
 
@@ -35,4 +36,14 @@ public class TutorRepositroyBean {
     public void setAllTutors(List<UserDTO> allTutors) {
         this.allTutors = allTutors;
     }
+
+    public void updateCache(UserDTO userDTO){
+        for (int i=0; i < allTutors.size(); i++) {
+            if(allTutors.get(i).getUserId().equals(userDTO.getUserId())){
+                allTutors.set(i, userDTO);
+                break;
+            }
+        }
+    }
+
 }

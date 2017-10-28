@@ -5,17 +5,16 @@ import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
-import de.iubh.fernstudium.ticketsystem.domain.history.HistoryPayload;
+import de.iubh.fernstudium.ticketsystem.domain.event.payload.HistoryPayload;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
-import org.apache.commons.lang3.StringUtils;
+import de.iubh.fernstudium.ticketsystem.services.impl.EventProducer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -39,7 +38,7 @@ public class TicketBean extends TicketDTO implements Serializable {
     @Inject
     private UserDataBean userDataBean;
     @Inject
-    private Event<HistoryPayload> historyEvent;
+    private EventProducer eventProducer;
 
     private String newComment;
     private String userIdCommentor;
@@ -105,7 +104,7 @@ public class TicketBean extends TicketDTO implements Serializable {
 
     private void fireEvent(Long ticketId, HistoryAction historyAction){
         HistoryPayload payload = new HistoryPayload(ticketId, historyAction, currentUserBean.getUserId());
-        historyEvent.fire(payload);
+        eventProducer.produceHistoryEvent(payload);
     }
 
 }
