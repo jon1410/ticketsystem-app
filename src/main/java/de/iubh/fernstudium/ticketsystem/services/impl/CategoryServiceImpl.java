@@ -17,36 +17,43 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     @Inject
-    private CategoryDBService courseDBService;
+    private CategoryDBService categoryDBService;
 
     @Inject
     UserService userService;
 
     @Override
-    public CategoryDTO getCourseById(String courseId) throws CategoryNotFoundException {
-        CategoryEntity c = courseDBService.getCategoryById(courseId);
+    public CategoryDTO getCategoryById(String courseId) throws CategoryNotFoundException {
+        CategoryEntity c = categoryDBService.getCategoryById(courseId);
         return c.toDto();
     }
 
     @Override
     public boolean changeTutor(String courseId, String newTutor) throws CategoryNotFoundException, UserNotExistsException {
         UserDTO userDTO = userService.getUserByUserId(newTutor);
-        return courseDBService.changeTutor(courseId,userDTO.toEntity());
+        return categoryDBService.changeTutor(courseId,userDTO.toEntity());
     }
 
     @Override
-    public boolean changeCourseName(String courseId, String newCourseName) throws CategoryNotFoundException {
-        return courseDBService.changeCategoryName(courseId, newCourseName);
+    public boolean changeCategoryName(String courseId, String newCourseName) throws CategoryNotFoundException {
+        return categoryDBService.changeCategoryName(courseId, newCourseName);
     }
 
     @Override
-    public boolean deleteCourseById(String courseId) throws CategoryNotFoundException {
-        return courseDBService.deleteCategory(courseId);
+    public boolean changeCategory(CategoryDTO categoryDTOs) throws CategoryNotFoundException, UserNotExistsException {
+        UserDTO userDTO = userService.getUserByUserId(categoryDTOs.getTutor().getUserId());
+        categoryDTOs.setTutor(userDTO);
+        return categoryDBService.changeCategory(categoryDTOs.toEntity());
     }
 
     @Override
-    public boolean addCourse(CategoryDTO categoryDTO) {
-        return courseDBService.addCategory(categoryDTO.toEntity());
+    public boolean deleteCategoryById(String courseId) throws CategoryNotFoundException {
+        return categoryDBService.deleteCategory(courseId);
+    }
+
+    @Override
+    public boolean addCategory(CategoryDTO categoryDTO) {
+        return categoryDBService.addCategory(categoryDTO.toEntity());
     }
 
     @Override

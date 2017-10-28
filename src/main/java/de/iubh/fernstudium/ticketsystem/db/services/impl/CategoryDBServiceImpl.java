@@ -39,6 +39,14 @@ public class CategoryDBServiceImpl implements CategoryDBService {
     }
 
     @Override
+    public boolean changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException {
+        CategoryEntity c = this.getCategoryById(categoryEntity.getCategoryId());
+        c.setCategoryName(categoryEntity.getCategoryName());
+        c.setTutor(categoryEntity.getTutor());
+        return true;
+    }
+
+    @Override
     public boolean deleteCategory(String categoryId) throws CategoryNotFoundException {
         CategoryEntity c = this.getCategoryById(categoryId);
         em.remove(c);

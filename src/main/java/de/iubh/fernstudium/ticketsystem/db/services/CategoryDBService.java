@@ -32,6 +32,15 @@ public interface CategoryDBService {
     public boolean changeCategoryName(String courseId, String newCategoryName) throws CategoryNotFoundException;
 
     /**
+     * Ändert die Daten einer Kategorie-Definition
+     *
+     * @param categoryEntity
+     * @return boolean
+     * @throws CategoryNotFoundException
+     */
+    public boolean changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException;
+
+    /**
      * Löscht einen Kurs aus dem Bestand
      *
      * @param categoryId

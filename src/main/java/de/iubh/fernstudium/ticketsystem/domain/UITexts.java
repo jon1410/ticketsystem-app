@@ -16,6 +16,8 @@ public class UITexts {
 
     //Ticket-Texte
     public static final String NEW_TICKET_SUMMARY = "Neues Ticket erstellt";
+    public static final String STOP_TICKET_ERROR_SUMMARY = "Bearbeitungsvorgang nicht abgebrochen.";
+    public static final String STOP_TICKET_ERROR_DETAIL = "Der Bearbeitungsvorgangs des ausgewählten Tickets kann aktuell nicht abgebrochen werden.";
 
     //Passwort neu Texte
     public static final String PW_RESET_INFO_SUMMARY = "Passwort zurückgesetzt";
@@ -32,6 +34,10 @@ public class UITexts {
     public static final String SEARCH_DETAIL = "Zu deiner Suchanfrage wurden folgende Tickets gefunden.";
     
     public static final String DETAIL_SEARCH_NOT_FOUND_DETAIL = "Zu deiner Suchanfrage wurden keine Tickets gefunden, bitte versuche andere Parameter.";
+
+    //Kategorie-Texte
+    public static final String DELETE_CATEGORY_ERROR_SUMMARY = "Fehler beim Löschen der Kategorie";
+    public static final String DELETE_CATEGORY_ERROR_DETAIL = "Die Kategorie konnte nicht gelöscht werden, bitte versuche es später noch einmal.";
 
 
     //Sonst

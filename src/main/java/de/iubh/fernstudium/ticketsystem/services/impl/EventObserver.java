@@ -10,6 +10,7 @@ import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.domain.event.payload.CachePayload;
 import de.iubh.fernstudium.ticketsystem.domain.event.payload.CacheUpdatePayload;
 import de.iubh.fernstudium.ticketsystem.domain.event.payload.HistoryPayload;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
@@ -55,7 +56,15 @@ public class EventObserver {
             UserDTO userDTO = (UserDTO) cachePayload.getPayload();
             if(userDTO.getUserRole() == UserRole.TU){
                 tutorRepositroyBean.updateCache(userDTO);
+                categoryRepositoryBean.updateCache(userDTO);
+                return;
             }
+        }
+
+        if(cachePayload.getPayload() instanceof CategoryDTO){
+            CategoryDTO categoryDTO = (CategoryDTO) cachePayload.getPayload();
+            categoryRepositoryBean.updateCache(categoryDTO);
+            return;
         }
 
     }

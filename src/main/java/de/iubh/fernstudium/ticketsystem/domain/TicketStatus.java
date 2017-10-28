@@ -11,7 +11,8 @@ public enum TicketStatus {
     RES("gelöst"),
     CLO("geschlossen"),
     DEL("gelöscht"),
-    DLS("automatisch durch System gelöscht");
+    DLS("automatisch durch System gelöscht"),
+    UST("abgebrochen durch Einmelder");
 
     private String resolvedText;
 

@@ -14,7 +14,7 @@ public interface CategoryService {
      * @param courseId
      * @return CategoryDTO
      */
-    public CategoryDTO getCourseById(String courseId) throws CategoryNotFoundException;
+    public CategoryDTO getCategoryById(String courseId) throws CategoryNotFoundException;
 
     /**
      * Ändert den Tutor zum einem Kurs
@@ -31,7 +31,16 @@ public interface CategoryService {
      * @param newCourseName
      * @return boolean
      */
-    public boolean changeCourseName(String courseId, String newCourseName) throws CategoryNotFoundException;
+    public boolean changeCategoryName(String courseId, String newCourseName) throws CategoryNotFoundException;
+
+    /**
+     * Ändert die Daten der Kategorie
+     *
+     * @param categoryDTOs
+     * @return boolean
+     * @throws CategoryNotFoundException
+     */
+    public boolean changeCategory(CategoryDTO categoryDTOs) throws CategoryNotFoundException, UserNotExistsException;
 
     /**
      * Löscht einen Kurs aus dem Bestand
@@ -39,7 +48,7 @@ public interface CategoryService {
      * @param courseId
      * @return boolean
      */
-    public boolean deleteCourseById(String courseId) throws CategoryNotFoundException;
+    public boolean deleteCategoryById(String courseId) throws CategoryNotFoundException;
 
     /**
      * Fügt einen neuen Kurs hinzu
@@ -47,7 +56,7 @@ public interface CategoryService {
      * @param categoryDTO
      * @return boolean
      */
-    public boolean addCourse(CategoryDTO categoryDTO);
+    public boolean addCategory(CategoryDTO categoryDTO);
 
     /**
      * Liest alle definierten Kategorien

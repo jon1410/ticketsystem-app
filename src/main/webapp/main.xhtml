@@ -128,7 +128,8 @@
                                         <h:outputText value="#{category.tutor.lastName}"/>
                                     </b:dataTableColumn>
                                     <b:dataTableColumn label="">
-                                        <b:commandButton value="löschen" look="danger"></b:commandButton>
+                                        <b:commandButton value="löschen" look="danger" actionListener="#{categoryRepositoryBean.deleteCategory(category)}">
+                                        </b:commandButton>
                                     </b:dataTableColumn>
                                 </b:dataTable>
                             </b:panel>
@@ -147,7 +148,7 @@
                                         <h:outputText value="#{category.tutor.lastName}"/>
                                     </b:dataTableColumn>
                                     <b:dataTableColumn label="">
-                                        <b:commandButton value="ändern" look="warning"></b:commandButton>
+                                        <b:commandButton value="ändern" look="warning" actionListener="#{categoryRepositoryBean.changeCategory(category)}"></b:commandButton>
                                     </b:dataTableColumn>
                                 </b:dataTable>
                             </b:panel>
@@ -182,8 +183,9 @@
                             <h:outputText value="#{ticket.ticketStatus}"/>
                         </b:dataTableColumn>
                         <b:dataTableColumn label="">
+                            <!-- only if current user == reporter of Ticket !! -->
                             <b:commandButton look="danger" value="abbrechen"
-                                             tooltip="Beendet den aktuellen Vorgang des Tickets"></b:commandButton>
+                                             tooltip="Beendet den aktuellen Vorgang des Tickets" actionListener="#{userDataBean.terminateTicket(ticket)}"></b:commandButton>
                         </b:dataTableColumn>
                     </b:dataTable>
                 </h:form>
@@ -317,11 +319,6 @@
                                  required="true" label="Kategorie">
                     <f:selectItems value="#{categoryRepositoryBean.allCategories}" var="cat"
                                    itemLabel="#{cat.categoryName}" itemValue="#{cat}" />
-
-                    <!--f:selectItem itemLabel="[Bitte Kategorie angeben]" itemValue=""/>
-                    <f:selectItem itemLabel="gering" itemValue="gering"/>
-                    <f:selectItem itemLabel="mittel" itemValue="mittel"/>
-                    <f:selectItem itemLabel="hoch" itemValue="hoch"/-->
                 </b:selectOneMenu>
 
 

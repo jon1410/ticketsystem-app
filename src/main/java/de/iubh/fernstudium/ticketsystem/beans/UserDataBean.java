@@ -1,13 +1,20 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
+import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
+import de.iubh.fernstudium.ticketsystem.domain.UITexts;
+import de.iubh.fernstudium.ticketsystem.domain.event.payload.HistoryPayload;
+import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
+import de.iubh.fernstudium.ticketsystem.services.impl.EventProducer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,6 +30,10 @@ public class UserDataBean implements Serializable {
 
     @Inject
     private TicketService ticketService;
+    @EJB
+    private EventProducer eventProducer;
+    @Inject
+    private CurrentUserBean currentUserBean;
 
     List<TicketDTO> tickets;
 
@@ -43,6 +54,16 @@ public class UserDataBean implements Serializable {
 
     public void setTickets(List<TicketDTO> tickets) {
         this.tickets = tickets;
+    }
+
+    public void terminateTicket(TicketDTO ticketDTO){
+        try {
+            ticketService.changeStatus(ticketDTO.getId(), TicketStatus.UST);
+        } catch (NoSuchTicketException e) {
+            FacesContextUtils.resolveError(UITexts.STOP_TICKET_ERROR_SUMMARY, UITexts.STOP_TICKET_ERROR_DETAIL, null);
+        }
+        tickets.remove(ticketDTO);
+        eventProducer.produceHistoryEvent(new HistoryPayload(ticketDTO.getId(), HistoryAction.UC, currentUserBean.getUserId()));
     }
 
     public void addTicket(TicketDTO ticketDTO){
