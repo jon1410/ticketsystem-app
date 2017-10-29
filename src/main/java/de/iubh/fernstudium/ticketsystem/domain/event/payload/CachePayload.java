@@ -1,21 +1,40 @@
 package de.iubh.fernstudium.ticketsystem.domain.event.payload;
 
-public class CachePayload<T> {
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
-    public T payload;
+public class CachePayload {
+
+    //CDI does not know Generic-Events
+    //public T payload;
+
+    private UserDTO userDTO;
+    private CategoryDTO categoryDTO;
 
     public CachePayload() {
     }
 
-    public CachePayload(T payload) {
-        this.payload = payload;
+    public CachePayload(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
-    public T getPayload() {
-        return payload;
+    public CachePayload(CategoryDTO categoryDTO) {
+        this.categoryDTO = categoryDTO;
     }
 
-    public void setPayload(T payload) {
-        this.payload = payload;
+    public UserDTO getUserDTO() {
+        return userDTO;
+    }
+
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
+
+    public CategoryDTO getCategoryDTO() {
+        return categoryDTO;
+    }
+
+    public void setCategoryDTO(CategoryDTO categoryDTO) {
+        this.categoryDTO = categoryDTO;
     }
 }

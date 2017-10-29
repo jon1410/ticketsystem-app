@@ -84,7 +84,7 @@ public class CurrentUserBean extends UserDTO implements Serializable {
         return null;
     }
 
-    private UserDTO createUserDto() {
+    public UserDTO createUserDto() {
         return new UserDTO(super.getUserId(), super.getFirstName(), super.getLastName(), super.getPassword(), super.getUserRole());
     }
 

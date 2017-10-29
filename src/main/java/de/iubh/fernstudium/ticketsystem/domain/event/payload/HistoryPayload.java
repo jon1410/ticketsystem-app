@@ -1,6 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.domain.event.payload;
 
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 import java.time.LocalDateTime;
 
@@ -9,23 +10,23 @@ public class HistoryPayload {
     private Long ticketId;
     private String eventName;
     private LocalDateTime eventFired;
-    private String userId;
+    private UserDTO userId;
 
     public HistoryPayload() {
     }
 
-    public HistoryPayload(Long ticketId, String eventName, String userId) {
+    public HistoryPayload(Long ticketId, String eventName, UserDTO userId) {
         init(ticketId, userId);
         this.eventName = eventName;
 
     }
 
-    public HistoryPayload(Long ticketId, HistoryAction action, String userId) {
+    public HistoryPayload(Long ticketId, HistoryAction action, UserDTO userId) {
         init(ticketId, userId);
         this.eventName = action.getResolvedText();
     }
 
-    private void init(Long ticketId, String userId) {
+    private void init(Long ticketId, UserDTO userId) {
         this.ticketId = ticketId;
         this.eventFired = LocalDateTime.now();
         this.userId = userId;
@@ -55,11 +56,11 @@ public class HistoryPayload {
         this.eventFired = eventFired;
     }
 
-    public String getUserId() {
+    public UserDTO getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(UserDTO userId) {
         this.userId = userId;
     }
 

@@ -63,7 +63,7 @@ public class UserDataBean implements Serializable {
             FacesContextUtils.resolveError(UITexts.STOP_TICKET_ERROR_SUMMARY, UITexts.STOP_TICKET_ERROR_DETAIL, null);
         }
         tickets.remove(ticketDTO);
-        eventProducer.produceHistoryEvent(new HistoryPayload(ticketDTO.getId(), HistoryAction.UC, currentUserBean.getUserId()));
+        eventProducer.produceHistoryEvent(ticketDTO.getId(), HistoryAction.UC);
     }
 
     public void addTicket(TicketDTO ticketDTO){

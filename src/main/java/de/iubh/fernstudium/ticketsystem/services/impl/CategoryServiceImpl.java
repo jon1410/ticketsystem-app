@@ -8,10 +8,13 @@ import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class CategoryServiceImpl implements CategoryService {
@@ -58,6 +61,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> getAllCategories() {
-        return null;
+        List<CategoryEntity> categoryEntities = categoryDBService.getAllCategories();
+        if(CollectionUtils.isNotEmpty(categoryEntities)){
+            return categoryEntities.stream().map(CategoryEntity::toDto).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }

@@ -38,7 +38,8 @@ public class TutorRepositoryBean {
     }
 
     public void updateCache(UserDTO userDTO){
-        for (int i=0; i < allTutors.size(); i++) {
+        int i;
+        for (i=0; i < allTutors.size(); i++) {
             if(allTutors.get(i).getUserId().equals(userDTO.getUserId())){
                 allTutors.set(i, userDTO);
                 break;

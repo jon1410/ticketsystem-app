@@ -70,7 +70,7 @@
 
             <b:row>
                 <h:form>
-                    <b:panelGrid colSpans="12">
+                    <b:panelGrid colSpans="12" id="kategPanel">
                         <b:accordion>
                             <b:panel title="Neu">
                                 <h4>Hier kannst du neue Kategorien definieren</h4>
@@ -90,11 +90,10 @@
                                         <!--</b:selectOneMenu>-->
                                     </b:panelGrid>
 
-                                    <b:inputText placeholder="Verantwortliche Tutor"
-                                                 value="#{categoryBean.tutorUserId}" readonly="true"
-                                                 disabled="true"></b:inputText>
+                                    <b:inputText placeholder="Verantwortlicher Tutor"
+                                                 value="#{categoryBean.tutorUserId}"></b:inputText>
 
-                                    <b:commandButton value="speichern" styleClass="btnsKategorie"></b:commandButton>
+                                    <b:commandButton value="speichern" styleClass="btnsKategorie" actionListener="#{categoryBean.createCategory()}"></b:commandButton>
                                 </b:panelGrid>
                             </b:panel>
                             <b:panel title="Anzeigen">
@@ -148,7 +147,8 @@
                                         <h:outputText value="#{category.tutor.lastName}"/>
                                     </b:dataTableColumn>
                                     <b:dataTableColumn label="">
-                                        <b:commandButton value="ändern" look="warning" actionListener="#{categoryRepositoryBean.changeCategory(category)}"></b:commandButton>
+                                        <b:commandButton value="ändern" look="warning"
+                                                         actionListener="#{categoryRepositoryBean.changeCategory(category)}"></b:commandButton>
                                     </b:dataTableColumn>
                                 </b:dataTable>
                             </b:panel>
@@ -237,7 +237,7 @@
             </b:row>
 
             <f:facet name="footer">
-                <b:commandButton value="Änderungen übernehmen" styleClass="btnAenderungen"
+                <b:commandButton value="Änderungen übernehmen" styleClass="btnAenderungen" update=":kategorie :yourTickets"
                                  actionListener="#{currentUserBean.changeUserData()}">
                 </b:commandButton>
             </f:facet>
@@ -325,8 +325,7 @@
             </b:panelGrid>
 
             <f:facet name="footer">
-                <b:commandButton value="anlegen" styleClass="btnNeuesTicket"
-                                 update="ticketPanel" action="#{ticketBean.createTicket()}">
+                <b:commandButton value="anlegen" styleClass="btnNeuesTicket" action="#{ticketBean.createTicket()}">
                 </b:commandButton>
             </f:facet>
         </b:modal>

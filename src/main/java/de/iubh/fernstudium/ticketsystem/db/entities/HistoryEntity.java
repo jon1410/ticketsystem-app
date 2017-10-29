@@ -26,13 +26,17 @@ public class HistoryEntity {
     @Column(name = "HIST_ACTION", nullable = false)
     private HistoryAction action;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserEntity userEntity;
+
     public HistoryEntity() {
     }
 
-    public HistoryEntity(TicketEntity ticketEntity, Timestamp eventTime, HistoryAction action) {
+    public HistoryEntity(TicketEntity ticketEntity, Timestamp eventTime, HistoryAction action, UserEntity user) {
         this.ticketEntity = ticketEntity;
         this.eventTime = eventTime;
         this.action = action;
+        this.userEntity = user;
     }
 
     public Long getId() {
@@ -65,5 +69,13 @@ public class HistoryEntity {
 
     public void setAction(HistoryAction action) {
         this.action = action;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 }

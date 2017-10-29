@@ -24,12 +24,12 @@ public class CategoryBean extends CategoryDTO{
     private CategoryRepositoryBean categoryRepositoryBean;
 
     private String tutorUserId;
-    private CategoryDTO selectedCategory;
 
     public void createCategory() throws UserNotExistsException {
         UserDTO userDTO = userService.getUserByUserId(tutorUserId);
         CategoryDTO categoryDTO = new CategoryDTO(super.getCategoryId(), super.getCategoryName(), userDTO);
-        categoryService.addCourse(categoryDTO);
+        categoryService.addCategory(categoryDTO);
+        categoryRepositoryBean.addNewCategory(categoryDTO);
     }
 
     public String getTutorUserId() {
@@ -40,11 +40,4 @@ public class CategoryBean extends CategoryDTO{
         this.tutorUserId = tutorUserId;
     }
 
-    public CategoryDTO getSelectedCategory() {
-        return selectedCategory;
-    }
-
-    public void setSelectedCategory(CategoryDTO selectedCategory) {
-        this.selectedCategory = selectedCategory;
-    }
 }

@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllTutors() {
-        List<UserEntity> users = userDBService.findByRole(UserRole.AD);
+        List<UserEntity> users = userDBService.findByRole(UserRole.TU);
         return convertToDtoList(users);
     }
 

@@ -4,6 +4,8 @@ import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
 
+import java.util.List;
+
 public interface CategoryDBService {
 
     /**
@@ -55,5 +57,12 @@ public interface CategoryDBService {
      * @return boolean
      */
     public boolean addCategory(CategoryEntity categoryEntity);
+
+    /**
+     * Liest alle Kategorien von der DB.
+     *
+     * @return Liste an {@link CategoryEntity}
+     */
+    public List<CategoryEntity> getAllCategories();
 
 }

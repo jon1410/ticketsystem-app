@@ -8,6 +8,8 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundExcepti
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 public class CategoryDBServiceImpl implements CategoryDBService {
@@ -57,6 +59,12 @@ public class CategoryDBServiceImpl implements CategoryDBService {
     public boolean addCategory(CategoryEntity categoryEntity) {
         em.persist(categoryEntity);
         return true;
+    }
+
+    @Override
+    public List<CategoryEntity> getAllCategories() {
+        Query q = em.createNamedQuery("findAllCategories", CategoryEntity.class);
+        return q.getResultList();
     }
 
 }

@@ -1,9 +1,11 @@
 package de.iubh.fernstudium.ticketsystem.services.impl;
 
 import de.iubh.fernstudium.ticketsystem.beans.CategoryRepositoryBean;
+import de.iubh.fernstudium.ticketsystem.beans.CurrentUserBean;
 import de.iubh.fernstudium.ticketsystem.beans.TutorRepositoryBean;
 import de.iubh.fernstudium.ticketsystem.db.entities.HistoryEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
+import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.HistoryDBService;
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
@@ -33,12 +35,16 @@ public class EventObserver {
     private TutorRepositoryBean tutorRepositroyBean;
     @Inject
     private CategoryRepositoryBean categoryRepositoryBean;
+    @Inject
+    private CurrentUserBean currentUserBean;
 
     @Asynchronous
     @Lock(LockType.READ)
     public void observeHistoryEvent(@Observes(during = TransactionPhase.AFTER_COMPLETION) HistoryPayload historyPayload) {
         TicketEntity t = ticketDBService.getTicketById(historyPayload.getTicketId());
-        HistoryEntity historyEntity = new HistoryEntity(t, DateTimeUtil.localDtToSqlTimestamp(historyPayload.getEventFired()), historyPayload.getHistoryAction());
+        UserEntity userEntity = historyPayload.getUserId().toEntity();
+        HistoryEntity historyEntity = new HistoryEntity(t, DateTimeUtil.localDtToSqlTimestamp(historyPayload.getEventFired()),
+                historyPayload.getHistoryAction(), userEntity);
         historyDBService.createHistoryEntry(historyEntity);
     }
 
@@ -52,8 +58,8 @@ public class EventObserver {
     @Lock(LockType.READ)
     public void observeCachePayloadEvent(@Observes(during = TransactionPhase.AFTER_COMPLETION) CachePayload cachePayload) {
 
-        if(cachePayload.getPayload() instanceof UserDTO){
-            UserDTO userDTO = (UserDTO) cachePayload.getPayload();
+        if(cachePayload.getUserDTO() != null){
+            UserDTO userDTO = (UserDTO) cachePayload.getUserDTO();
             if(userDTO.getUserRole() == UserRole.TU){
                 tutorRepositroyBean.updateCache(userDTO);
                 categoryRepositoryBean.updateCache(userDTO);
@@ -61,8 +67,8 @@ public class EventObserver {
             }
         }
 
-        if(cachePayload.getPayload() instanceof CategoryDTO){
-            CategoryDTO categoryDTO = (CategoryDTO) cachePayload.getPayload();
+        if(cachePayload.getCategoryDTO() != null){
+            CategoryDTO categoryDTO = (CategoryDTO) cachePayload.getCategoryDTO();
             categoryRepositoryBean.updateCache(categoryDTO);
             return;
         }
