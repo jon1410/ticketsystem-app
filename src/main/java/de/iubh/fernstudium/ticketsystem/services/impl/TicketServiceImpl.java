@@ -59,7 +59,7 @@ public class TicketServiceImpl implements TicketService {
     public void changeStatus(Long ticketId, TicketStatus newStatus) throws NoSuchTicketException {
         if(!ticketDBService.changeStauts(ticketId, newStatus)){
             throw new NoSuchTicketException("Ticket mit ID: " + ticketId + " wurde nicht gefunden.");
-        };
+        }
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TicketServiceImpl implements TicketService {
         CommentDTO commentDTO = new CommentDTO(user, comment);
         if(!ticketDBService.addComment(ticketId, commentDTO.toEntity())){
             throw new NoSuchTicketException("Ticket mit ID: " + ticketId + " wurde nicht gefunden.");
-        };
+        }
     }
 
     @Override
@@ -78,7 +78,12 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void createMasterTicket(Long masterTicketId, List<Long> childTickets) {
+    public void createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException{
+        ticketDBService.createMasterTicket(masterTicketId, childTickets);
+    }
 
+    @Override
+    public void createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException {
+        ticketDBService.createMasterTicket(masterTicketId, childTicketId);
     }
 }

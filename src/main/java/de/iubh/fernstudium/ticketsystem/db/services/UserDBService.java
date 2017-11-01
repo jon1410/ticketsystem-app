@@ -13,14 +13,14 @@ public interface UserDBService {
      *
      * @param userEntity
      */
-    public void persistUser(UserEntity userEntity);
+    void persistUser(UserEntity userEntity);
 
     /**
      * Ändert das Passwort des Users
      *
      * @param userId, newPassword
      */
-    public void changePassword(String userId, String newPassword);
+    void changePassword(String userId, String newPassword);
 
     /**
      * Liest einen User von der Datenbank mittels eindeutiger ID.
@@ -28,21 +28,21 @@ public interface UserDBService {
      * @param id
      * @return UserEntity
      */
-    public UserEntity findById(String id);
+    UserEntity findById(String id);
 
     /**
      * Löscht einen User von der Datenbank über seine eindeutige UserID
      *
      * @param userId
      */
-    public void deleteUser(String userId);
+    void deleteUser(String userId);
 
     /**
      * Ändert die Daten eines Users
      *
      * @param userId, firstName, lastName, newRole
      */
-    public void updateUser(String userId, String firstName, String lastName, UserRole newRole);
+    void updateUser(String userId, String firstName, String lastName, UserRole newRole);
 
     /**
      * Liest alle Benutzer mit der angebeben Rollen
@@ -50,5 +50,5 @@ public interface UserDBService {
      * @param role
      * @return Liste von {@link UserEntity}
      */
-    public List<UserEntity> findByRole(UserRole role);
+    List<UserEntity> findByRole(UserRole role);
 }

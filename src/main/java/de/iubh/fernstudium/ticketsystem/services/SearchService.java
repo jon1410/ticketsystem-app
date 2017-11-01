@@ -9,18 +9,18 @@ import java.util.concurrent.Future;
 
 public interface SearchService {
 
-    public Future<TicketDTO> searchById(Long id);
+    Future<TicketDTO> searchById(Long id);
 
-    public Future<List<TicketDTO>> searchByReporter(String reporter);
+    Future<List<TicketDTO>> searchByReporter(String reporter);
 
-    public Future<List<TicketDTO>> searchByAssignee(String assignee);
+    Future<List<TicketDTO>> searchByAssignee(String assignee);
 
-    public Future<List<TicketDTO>> searchByStatus(TicketStatus ticketStatus);
+    Future<List<TicketDTO>> searchByStatus(TicketStatus ticketStatus);
 
-    public Future<List<TicketDTO>> searchByTitle(String text);
+    Future<List<TicketDTO>> searchByTitle(String text);
 
-    public Future<List<TicketDTO>> searchByDescription(String searchtext);
+    Future<List<TicketDTO>> searchByDescription(String searchtext);
 
-    public Future<List<TicketDTO>> searchByQuery(String query, List<Object> params);
+    Future<List<TicketDTO>> searchByQuery(String query, List<Object> params);
 
 }

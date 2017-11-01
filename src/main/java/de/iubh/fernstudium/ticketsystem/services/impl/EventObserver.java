@@ -10,7 +10,6 @@ import de.iubh.fernstudium.ticketsystem.db.services.HistoryDBService;
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.domain.event.payload.CachePayload;
-import de.iubh.fernstudium.ticketsystem.domain.event.payload.CacheUpdatePayload;
 import de.iubh.fernstudium.ticketsystem.domain.event.payload.HistoryPayload;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
@@ -35,8 +34,6 @@ public class EventObserver {
     private TutorRepositoryBean tutorRepositroyBean;
     @Inject
     private CategoryRepositoryBean categoryRepositoryBean;
-    @Inject
-    private CurrentUserBean currentUserBean;
 
     @Asynchronous
     @Lock(LockType.READ)
@@ -50,27 +47,19 @@ public class EventObserver {
 
     @Asynchronous
     @Lock(LockType.READ)
-    public void observeCacheUpdateEvent(@Observes(during = TransactionPhase.AFTER_COMPLETION) CacheUpdatePayload cacheUpdatePayload) {
-
-    }
-
-    @Asynchronous
-    @Lock(LockType.READ)
     public void observeCachePayloadEvent(@Observes(during = TransactionPhase.AFTER_COMPLETION) CachePayload cachePayload) {
 
         if(cachePayload.getUserDTO() != null){
-            UserDTO userDTO = (UserDTO) cachePayload.getUserDTO();
+            UserDTO userDTO = cachePayload.getUserDTO();
             if(userDTO.getUserRole() == UserRole.TU){
                 tutorRepositroyBean.updateCache(userDTO);
                 categoryRepositoryBean.updateCache(userDTO);
-                return;
             }
         }
 
         if(cachePayload.getCategoryDTO() != null){
-            CategoryDTO categoryDTO = (CategoryDTO) cachePayload.getCategoryDTO();
+            CategoryDTO categoryDTO = cachePayload.getCategoryDTO();
             categoryRepositoryBean.updateCache(categoryDTO);
-            return;
         }
 
     }

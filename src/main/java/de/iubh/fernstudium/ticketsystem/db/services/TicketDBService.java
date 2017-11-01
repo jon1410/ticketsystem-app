@@ -4,6 +4,7 @@ import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
+import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public interface TicketDBService {
      * @param id
      * @return TicketEntity
      */
-    public TicketEntity getTicketById(Long id);
+    TicketEntity getTicketById(Long id);
 
     /**
      * Ermittelt zu einer UserID alle offenen Tickets
@@ -26,7 +27,7 @@ public interface TicketDBService {
      * @param user
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> getOpenTicketsForUserId(UserEntity user);
+    List<TicketEntity> getOpenTicketsForUserId(UserEntity user);
 
     /**
      * Ändert den Status eines Tickets
@@ -34,7 +35,7 @@ public interface TicketDBService {
      * @param ticketId
      * @param newStatus
      */
-    public boolean changeStauts(Long ticketId, TicketStatus newStatus);
+    boolean changeStauts(Long ticketId, TicketStatus newStatus);
 
     /**
      * Fügt einen Kommentar zu einem Ticket hinzu
@@ -42,7 +43,7 @@ public interface TicketDBService {
      * @param ticketId
      * @param comment
      */
-    public boolean addComment(Long ticketId, CommentEntity comment);
+    boolean addComment(Long ticketId, CommentEntity comment);
 
     /**
      * Liefert alle Tickets, die einem bestimmten User zugeordnet sind
@@ -50,7 +51,7 @@ public interface TicketDBService {
      * @param user
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> getTicketsForUserId(UserEntity user);
+    List<TicketEntity> getTicketsForUserId(UserEntity user);
 
     /**
      * Liefert alle Tickets, die von einem bestimmten User eingemeldet wurden
@@ -58,7 +59,7 @@ public interface TicketDBService {
      * @param user
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> getTicketsReportedByUserId(UserEntity user);
+    List<TicketEntity> getTicketsReportedByUserId(UserEntity user);
 
     /**
      * Speichert ein neues Ticket in der Datenbank
@@ -66,7 +67,7 @@ public interface TicketDBService {
      * @param ticketEntity
      * @return TicketEntity
      */
-    public TicketEntity createTicket(TicketEntity ticketEntity);
+    TicketEntity createTicket(TicketEntity ticketEntity);
 
     /**
      * Sucht Tickets mit angegebener oder ähnlicher Reporter-UserId
@@ -74,7 +75,7 @@ public interface TicketDBService {
      * @param reporter
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByReporter(String reporter);
+    List<TicketEntity> searchByReporter(String reporter);
 
     /**
      * Sucht Tickets mit angegebener oder ähnlicher Assignee-UserId
@@ -82,7 +83,7 @@ public interface TicketDBService {
      * @param assignee
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByAssignee(String assignee);
+    List<TicketEntity> searchByAssignee(String assignee);
 
     /**
      * Sucht Tickets mit angegebenem oder ähnlichem Ticket-Status
@@ -90,7 +91,7 @@ public interface TicketDBService {
      * @param status
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByStatus(TicketStatus status);
+    List<TicketEntity> searchByStatus(TicketStatus status);
 
     /**
      * Sucht Tickets mit angegebenem oder ähnlichem Title bzw. Beschreibung
@@ -98,7 +99,7 @@ public interface TicketDBService {
      * @param searchText
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByTitle(String searchText);
+    List<TicketEntity> searchByTitle(String searchText);
 
     /**
      * Sucht Tickets nach angegeben Stichwörter
@@ -106,7 +107,7 @@ public interface TicketDBService {
      * @param searchtext
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByDescription(String searchtext);
+    List<TicketEntity> searchByDescription(String searchtext);
 
     /**
      * Führt eine bereitgestellte SQL-Query durch
@@ -115,5 +116,22 @@ public interface TicketDBService {
      * @param params
      * @return Liste {@link TicketEntity}
      */
-    public List<TicketEntity> searchByCustomQuery(String query, List<Object> params);
+    List<TicketEntity> searchByCustomQuery(String query, List<Object> params);
+
+    /**
+     * Erzeugt ein Master-Ticket samt untergeorneten Tickets
+     *
+     * @param masterTicketId
+     * @param childTickets
+     */
+    void createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException;
+
+    /**
+     * Erzeugt ein Master-Ticket zu einem Kind-Ticket bzw. fügt ein Kind-Ticket einem bestehenden Master-Ticket hinzu
+     *
+     * @param masterTicketId
+     * @param childTicketId
+     */
+    void createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException;
+
 }

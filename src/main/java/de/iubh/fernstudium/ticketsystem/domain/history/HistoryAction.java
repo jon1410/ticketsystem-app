@@ -11,7 +11,7 @@ public enum HistoryAction {
 
     private String resolvedText;
 
-    private HistoryAction(String resolvedText){
+    HistoryAction(String resolvedText){
         this.resolvedText = resolvedText;
     }
 

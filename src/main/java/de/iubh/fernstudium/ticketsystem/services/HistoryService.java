@@ -12,6 +12,6 @@ public interface HistoryService {
      * @param ticketId
      * @return List {@link TicketHistoryDTO}
      */
-    public List<TicketHistoryDTO> getHistoryForTicket(Long ticketId);
+    List<TicketHistoryDTO> getHistoryForTicket(Long ticketId);
 
 }

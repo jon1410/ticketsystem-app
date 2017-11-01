@@ -60,7 +60,12 @@ public class TicketEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CommentEntity> comments = new ArrayList<>();
 
-    //TODO: Masterticket-Self-Ref
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TicketEntity> childTickets;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private TicketEntity masterTicket;
+
 
     public TicketEntity() {
     }
@@ -74,6 +79,21 @@ public class TicketEntity {
         this.category = category;
         this.assignee = assignee;
         this.comments = comments;
+    }
+
+    public TicketEntity(String title, String description, TicketStatus ticketStatus,
+                        UserEntity reporter, Timestamp creationTime, CategoryEntity category, UserEntity assignee,
+                        List<CommentEntity> comments, List<TicketEntity> childTickets, TicketEntity masterTicket) {
+        this.title = title;
+        this.description = description;
+        this.ticketStatus = ticketStatus;
+        this.reporter = reporter;
+        this.creationTime = creationTime;
+        this.category = category;
+        this.assignee = assignee;
+        this.comments = comments;
+        this.childTickets = childTickets;
+        this.masterTicket = masterTicket;
     }
 
     public Long getId() {
@@ -148,6 +168,22 @@ public class TicketEntity {
         this.comments = comments;
     }
 
+    public List<TicketEntity> getChildTickets() {
+        return childTickets;
+    }
+
+    public void setChildTickets(List<TicketEntity> childTickets) {
+        this.childTickets = childTickets;
+    }
+
+    public TicketEntity getMasterTicket() {
+        return masterTicket;
+    }
+
+    public void setMasterTicket(TicketEntity masterTicket) {
+        this.masterTicket = masterTicket;
+    }
+
     public TicketDTO toDto(){
         List<CommentDTO> commentDTOList = null;
         if(comments != null && comments.size() > 1){
@@ -156,7 +192,24 @@ public class TicketEntity {
                 commentDTOList.add(c.toDto());
             }
         }
-        return new TicketDTO(id, title, description,reporter.toDto(),
-                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category.toDto(), assignee.toDto(), commentDTOList);
+
+        List<TicketDTO> children = null;
+        TicketDTO ticketDTO = null;
+        if(childTickets != null && childTickets.size() > 0){
+            children = new ArrayList<>(childTickets.size());
+            for(TicketEntity t : childTickets){
+                children.add(t.toDto());
+            }
+            //wenn ein Ticket "Kinder" hat ist es automatisch ein Master-Ticket
+            //und kann selbst keine Master-Referenz haben
+            masterTicket = null;
+        }else{
+            if(masterTicket != null){
+                ticketDTO = masterTicket.toDto();
+            }
+        }
+        return new TicketDTO(id, title, description, ticketStatus, reporter.toDto(),
+                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category.toDto(), assignee.toDto(), commentDTOList, children, ticketDTO);
     }
+
 }

@@ -27,7 +27,6 @@ public class EmailServiceImpl implements EmailService {
         }
 
         Properties mailProps = session.getProperties();
-        System.out.println(mailProps.toString());
 
         return false;
     }

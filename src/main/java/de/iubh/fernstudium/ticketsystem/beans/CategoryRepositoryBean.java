@@ -2,27 +2,19 @@ package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
-import de.iubh.fernstudium.ticketsystem.domain.event.payload.CacheUpdatePayload;
 import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
-import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.CategoryService;
-import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.PersistenceException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 @Named("categoryRepositoryBean")
@@ -34,8 +26,6 @@ public class CategoryRepositoryBean {
 
     @Inject
     private CategoryService categoryService;
-    @Inject
-    private UserService userService;
 
     @PostConstruct
     public void initCategories(){

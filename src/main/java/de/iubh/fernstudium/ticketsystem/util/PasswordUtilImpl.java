@@ -12,8 +12,6 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class PasswordUtilImpl implements PasswordUtil {
 
-    private static int bCryptWorkFactor = 13;
-
     public boolean authentificate(String password, String storedHash) throws InvalidPasswordException{
 
         if(null == storedHash || !storedHash.startsWith("$2a$")){
@@ -23,7 +21,8 @@ public class PasswordUtilImpl implements PasswordUtil {
     }
 
     public String hashPw(String password) {
-        String salt = BCrypt.gensalt(13);
+        int bCryptWorkFactor = 13;
+        String salt = BCrypt.gensalt(bCryptWorkFactor);
         return BCrypt.hashpw(password, salt);
     }
 

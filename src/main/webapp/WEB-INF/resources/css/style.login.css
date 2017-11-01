@@ -50,7 +50,7 @@ body {
 
 .loginButton:hover {
 	border-color: rgb(31, 153, 214);
-	padding-right: 30px!;
+	padding-right: 30px;
 	color: #ffffff;
 	transition: all 0.9s ease;
 }

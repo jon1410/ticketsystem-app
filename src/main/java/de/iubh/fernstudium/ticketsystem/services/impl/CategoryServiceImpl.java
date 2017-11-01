@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryDBService categoryDBService;
 
     @Inject
-    UserService userService;
+    private UserService userService;
 
     @Override
     public CategoryDTO getCategoryById(String courseId) throws CategoryNotFoundException {

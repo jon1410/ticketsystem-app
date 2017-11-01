@@ -14,7 +14,7 @@ public interface CategoryService {
      * @param courseId
      * @return CategoryDTO
      */
-    public CategoryDTO getCategoryById(String courseId) throws CategoryNotFoundException;
+    CategoryDTO getCategoryById(String courseId) throws CategoryNotFoundException;
 
     /**
      * Ändert den Tutor zum einem Kurs
@@ -22,7 +22,7 @@ public interface CategoryService {
      * @param courseId
      * @return boolean
      */
-    public boolean changeTutor(String courseId, String newTutor) throws CategoryNotFoundException, UserNotExistsException;
+    boolean changeTutor(String courseId, String newTutor) throws CategoryNotFoundException, UserNotExistsException;
 
     /**
      * Ändert einen Kursnamen zu einem Kurs
@@ -31,7 +31,7 @@ public interface CategoryService {
      * @param newCourseName
      * @return boolean
      */
-    public boolean changeCategoryName(String courseId, String newCourseName) throws CategoryNotFoundException;
+    boolean changeCategoryName(String courseId, String newCourseName) throws CategoryNotFoundException;
 
     /**
      * Ändert die Daten der Kategorie
@@ -40,7 +40,7 @@ public interface CategoryService {
      * @return boolean
      * @throws CategoryNotFoundException
      */
-    public boolean changeCategory(CategoryDTO categoryDTOs) throws CategoryNotFoundException, UserNotExistsException;
+    boolean changeCategory(CategoryDTO categoryDTOs) throws CategoryNotFoundException, UserNotExistsException;
 
     /**
      * Löscht einen Kurs aus dem Bestand
@@ -48,7 +48,7 @@ public interface CategoryService {
      * @param courseId
      * @return boolean
      */
-    public boolean deleteCategoryById(String courseId) throws CategoryNotFoundException;
+    boolean deleteCategoryById(String courseId) throws CategoryNotFoundException;
 
     /**
      * Fügt einen neuen Kurs hinzu
@@ -56,12 +56,12 @@ public interface CategoryService {
      * @param categoryDTO
      * @return boolean
      */
-    public boolean addCategory(CategoryDTO categoryDTO);
+    boolean addCategory(CategoryDTO categoryDTO);
 
     /**
      * Liest alle definierten Kategorien
      *
      * @return Liste an {@link CategoryDTO}
      */
-    public List<CategoryDTO> getAllCategories();
+    List<CategoryDTO> getAllCategories();
 }

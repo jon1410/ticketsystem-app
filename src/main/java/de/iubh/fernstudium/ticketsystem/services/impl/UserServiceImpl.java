@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
 
         if(!emailService.isMailConfigured()){
             System.out.println("### Neues Passwort ist: " + newPw);
-        };
+        }
 
         String hashedPwNew = passwordUtil.hashPw(newPw);
         userDBService.changePassword(mailAdress, hashedPwNew);

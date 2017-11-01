@@ -3,7 +3,6 @@ package de.iubh.fernstudium.ticketsystem.beans;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
-import de.iubh.fernstudium.ticketsystem.domain.event.payload.HistoryPayload;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
@@ -32,10 +31,8 @@ public class UserDataBean implements Serializable {
     private TicketService ticketService;
     @EJB
     private EventProducer eventProducer;
-    @Inject
-    private CurrentUserBean currentUserBean;
 
-    List<TicketDTO> tickets;
+    private List<TicketDTO> tickets;
 
     public void init(String userId){
 

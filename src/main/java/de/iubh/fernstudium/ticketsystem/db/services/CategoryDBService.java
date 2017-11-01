@@ -14,7 +14,7 @@ public interface CategoryDBService {
      * @param categoryId
      * @return CategoryEntity
      */
-    public CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException;
+    CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException;
 
     /**
      * Ändert den Tutor zum einem Kurs
@@ -22,7 +22,7 @@ public interface CategoryDBService {
      * @param categoryId
      * @return boolean
      */
-    public boolean changeTutor(String categoryId, UserEntity newTutor) throws CategoryNotFoundException;
+    boolean changeTutor(String categoryId, UserEntity newTutor) throws CategoryNotFoundException;
 
     /**
      * Ändert einen Kursnamen zu einem Kurs
@@ -31,7 +31,7 @@ public interface CategoryDBService {
      * @param newCategoryName
      * @return boolean
      */
-    public boolean changeCategoryName(String courseId, String newCategoryName) throws CategoryNotFoundException;
+    boolean changeCategoryName(String courseId, String newCategoryName) throws CategoryNotFoundException;
 
     /**
      * Ändert die Daten einer Kategorie-Definition
@@ -40,7 +40,7 @@ public interface CategoryDBService {
      * @return boolean
      * @throws CategoryNotFoundException
      */
-    public boolean changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException;
+    boolean changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException;
 
     /**
      * Löscht einen Kurs aus dem Bestand
@@ -48,7 +48,7 @@ public interface CategoryDBService {
      * @param categoryId
      * @return boolean
      */
-    public boolean deleteCategory(String categoryId) throws CategoryNotFoundException;
+    boolean deleteCategory(String categoryId) throws CategoryNotFoundException;
 
     /**
      * Fügt einen neuen Kurs hinzu
@@ -56,13 +56,13 @@ public interface CategoryDBService {
      * @param categoryEntity
      * @return boolean
      */
-    public boolean addCategory(CategoryEntity categoryEntity);
+    boolean addCategory(CategoryEntity categoryEntity);
 
     /**
      * Liest alle Kategorien von der DB.
      *
      * @return Liste an {@link CategoryEntity}
      */
-    public List<CategoryEntity> getAllCategories();
+    List<CategoryEntity> getAllCategories();
 
 }

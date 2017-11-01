@@ -7,7 +7,6 @@ import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -21,14 +20,17 @@ public class TicketDTO {
     private TicketStatus ticketStatus;
     private UserDTO reporter;
     private LocalDateTime creationTime;
-    private CategoryDTO category; //evtl. ReferenzID auf Kategorie
+    private CategoryDTO category;
     private UserDTO assignee;
     private List<CommentDTO> comments;
+    private List<TicketDTO> childTickets;
+    private TicketDTO masterTicket;
 
     public TicketDTO() {
     }
 
-    public TicketDTO(Long id, String title, String description, UserDTO reporter, LocalDateTime creationTime, CategoryDTO category, UserDTO assignee, List<CommentDTO> comments) {
+    public TicketDTO(Long id, String title, String description, UserDTO reporter,
+                     LocalDateTime creationTime, CategoryDTO category, UserDTO assignee, List<CommentDTO> comments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -38,6 +40,22 @@ public class TicketDTO {
         this.category = category;
         this.assignee = assignee;
         this.comments = comments;
+    }
+
+    public TicketDTO(Long id, String title, String description, TicketStatus ticketStatus, UserDTO reporter,
+                     LocalDateTime creationTime, CategoryDTO category, UserDTO assignee,
+                     List<CommentDTO> comments, List<TicketDTO> childTickets, TicketDTO masterTicket) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.ticketStatus = ticketStatus;
+        this.reporter = reporter;
+        this.creationTime = creationTime;
+        this.category = category;
+        this.assignee = assignee;
+        this.comments = comments;
+        this.childTickets = childTickets;
+        this.masterTicket = masterTicket;
     }
 
     public Long getId() {
@@ -77,7 +95,6 @@ public class TicketDTO {
     }
 
     public void setReporter(UserDTO reporter) {
-        //TODO: getUserFromDB
         this.reporter = reporter;
     }
 
@@ -102,7 +119,6 @@ public class TicketDTO {
     }
 
     public void setAssignee(UserDTO assignee) {
-        //TODO: getFromDB
         this.assignee = assignee;
     }
 
@@ -112,6 +128,22 @@ public class TicketDTO {
 
     public void setComments(List<CommentDTO> comments) {
         this.comments = comments;
+    }
+
+    public List<TicketDTO> getChildTickets() {
+        return childTickets;
+    }
+
+    public void setChildTickets(List<TicketDTO> childTickets) {
+        this.childTickets = childTickets;
+    }
+
+    public TicketDTO getMasterTicket() {
+        return masterTicket;
+    }
+
+    public void setMasterTicket(TicketDTO masterTicket) {
+        this.masterTicket = masterTicket;
     }
 
     /**
@@ -125,9 +157,42 @@ public class TicketDTO {
                 commentEntities.add(c.toEntity());
             }
         }
+
+        List<TicketEntity> children = null;
+        TicketEntity ticketEntity = null;
+        if(childTickets != null && childTickets.size() > 0){
+            children = new ArrayList<>(childTickets.size());
+            for(TicketDTO t : childTickets){
+                children.add(t.toEntity());
+            }
+            //wenn ein Ticket "Kinder" hat ist es automatisch ein Master-Ticket
+            //und kann selbst keine Master-Referenz haben
+            masterTicket = null;
+        }else{
+            if(masterTicket != null){
+                ticketEntity = masterTicket.toEntity();
+            }
+        }
         return new TicketEntity(title, description, ticketStatus,
                 reporter.toEntity(), DateTimeUtil.localDtToSqlTimestamp(creationTime),
-                category.toEntity(), assignee.toEntity(), commentEntities);
+                category.toEntity(), assignee.toEntity(), commentEntities, children, ticketEntity);
+    }
+
+    @Override
+    public String toString() {
+        return "TicketDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", ticketStatus=" + ticketStatus +
+                ", reporter=" + reporter +
+                ", creationTime=" + creationTime +
+                ", category=" + category +
+                ", assignee=" + assignee +
+                ", comments=" + comments +
+                ", childTickets=" + childTickets +
+                ", masterTicket=" + masterTicket +
+                '}';
     }
 
     @Override
@@ -139,33 +204,33 @@ public class TicketDTO {
 
         if (id != null ? !id.equals(ticketDTO.id) : ticketDTO.id != null) return false;
         if (title != null ? !title.equals(ticketDTO.title) : ticketDTO.title != null) return false;
+        if (description != null ? !description.equals(ticketDTO.description) : ticketDTO.description != null)
+            return false;
+        if (ticketStatus != ticketDTO.ticketStatus) return false;
         if (reporter != null ? !reporter.equals(ticketDTO.reporter) : ticketDTO.reporter != null) return false;
         if (creationTime != null ? !creationTime.equals(ticketDTO.creationTime) : ticketDTO.creationTime != null)
             return false;
         if (category != null ? !category.equals(ticketDTO.category) : ticketDTO.category != null) return false;
         if (assignee != null ? !assignee.equals(ticketDTO.assignee) : ticketDTO.assignee != null) return false;
-        return comments != null ? comments.equals(ticketDTO.comments) : ticketDTO.comments == null;
+        if (comments != null ? !comments.equals(ticketDTO.comments) : ticketDTO.comments != null) return false;
+        if (childTickets != null ? !childTickets.equals(ticketDTO.childTickets) : ticketDTO.childTickets != null)
+            return false;
+        return masterTicket != null ? masterTicket.equals(ticketDTO.masterTicket) : ticketDTO.masterTicket == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (ticketStatus != null ? ticketStatus.hashCode() : 0);
         result = 31 * result + (reporter != null ? reporter.hashCode() : 0);
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (assignee != null ? assignee.hashCode() : 0);
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
+        result = 31 * result + (childTickets != null ? childTickets.hashCode() : 0);
+        result = 31 * result + (masterTicket != null ? masterTicket.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "TicketDTO{" +
-                "id=" + id +
-                ", category='" + category + '\'' +
-                ", assignee='" + assignee + '\'' +
-                ", comments=" + comments +
-                '}';
     }
 }

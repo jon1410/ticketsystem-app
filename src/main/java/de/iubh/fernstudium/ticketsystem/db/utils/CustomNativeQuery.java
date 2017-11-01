@@ -1,7 +1,5 @@
 package de.iubh.fernstudium.ticketsystem.db.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -177,10 +175,7 @@ public class CustomNativeQuery {
         }
 
         private void addParam(Object... values) {
-
-            for(Object o : values){
-                parameters.add(o);
-            }
+            parameters.addAll(Arrays.asList(values));
         }
 
     }

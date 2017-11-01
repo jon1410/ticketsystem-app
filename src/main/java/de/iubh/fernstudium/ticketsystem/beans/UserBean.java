@@ -120,7 +120,7 @@ public class UserBean extends UserDTO{
         if(!userService.changeUserData(super.getUserId(), super.getFirstName(), super.getLastName(), super.getUserRole())){
             return FacesContextUtils.resolveError("Fehler beim Ändern der Benutzerdaten",
                     "Die Daten konnten nicht geändert werden.", null);
-        };
+        }
         return "main.xhtml";
     }
 

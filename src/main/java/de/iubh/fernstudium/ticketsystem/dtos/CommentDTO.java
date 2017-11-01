@@ -107,7 +107,7 @@ public class CommentDTO {
                 '}';
     }
 
-    private void init(LocalDateTime now, UserDTO author, String comment, LocalDateTime now1) {
+    private void init(LocalDateTime creationDate, UserDTO author, String comment, LocalDateTime changeDate) {
         this.creationDate = creationDate;
         this.author = author;
         this.comment = comment;
