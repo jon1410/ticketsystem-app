@@ -10,6 +10,8 @@
         <class>de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity</class>
         <class>de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity</class>
         <class>de.iubh.fernstudium.ticketsystem.db.entities.UserEntity</class>
+        <class>de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity</class>
+        <class>de.iubh.fernstudium.ticketsystem.db.entities.HistoryEntity</class>
 
         <properties>
             <!--property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'classpath:create.sql'\;RUNSCRIPT FROM 'classpath:data.sql'"/-->

@@ -193,23 +193,22 @@ public class TicketEntity {
             }
         }
 
-        List<TicketDTO> children = null;
-        TicketDTO ticketDTO = null;
+        List<Long> children = null;
+        Long masterId = null;
         if(childTickets != null && childTickets.size() > 0){
             children = new ArrayList<>(childTickets.size());
             for(TicketEntity t : childTickets){
-                children.add(t.toDto());
+                children.add(t.getId());
             }
             //wenn ein Ticket "Kinder" hat ist es automatisch ein Master-Ticket
             //und kann selbst keine Master-Referenz haben
             masterTicket = null;
         }else{
             if(masterTicket != null){
-                ticketDTO = masterTicket.toDto();
+                masterId = masterTicket.getId();
             }
         }
         return new TicketDTO(id, title, description, ticketStatus, reporter.toDto(),
-                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category.toDto(), assignee.toDto(), commentDTOList, children, ticketDTO);
+                DateTimeUtil.sqlTimestampToLocalDate(creationTime), category.toDto(), assignee.toDto(), commentDTOList, children, masterId);
     }
-
 }

@@ -1,6 +1,5 @@
 package de.iubh.fernstudium.ticketsystem.beans;
 
-import de.iubh.fernstudium.ticketsystem.domain.event.payload.CacheUpdatePayload;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.apache.logging.log4j.LogManager;

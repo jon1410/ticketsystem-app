@@ -2,9 +2,11 @@ package de.iubh.fernstudium.ticketsystem.dtos;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
+import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,9 @@ import java.util.List;
  * Created by ivanj on 03.07.2017.
  */
 public class TicketDTO {
+
+    @Inject
+    private TicketDBService ticketDBService;
 
     private Long id;
     private String title;
@@ -23,8 +28,8 @@ public class TicketDTO {
     private CategoryDTO category;
     private UserDTO assignee;
     private List<CommentDTO> comments;
-    private List<TicketDTO> childTickets;
-    private TicketDTO masterTicket;
+    private List<Long> childTicketsIds;
+    private Long masterTicketId;
 
     public TicketDTO() {
     }
@@ -44,7 +49,7 @@ public class TicketDTO {
 
     public TicketDTO(Long id, String title, String description, TicketStatus ticketStatus, UserDTO reporter,
                      LocalDateTime creationTime, CategoryDTO category, UserDTO assignee,
-                     List<CommentDTO> comments, List<TicketDTO> childTickets, TicketDTO masterTicket) {
+                     List<CommentDTO> comments, List<Long> childTickets, Long masterTicket) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -54,8 +59,8 @@ public class TicketDTO {
         this.category = category;
         this.assignee = assignee;
         this.comments = comments;
-        this.childTickets = childTickets;
-        this.masterTicket = masterTicket;
+        this.childTicketsIds = childTickets;
+        this.masterTicketId = masterTicket;
     }
 
     public Long getId() {
@@ -130,21 +135,7 @@ public class TicketDTO {
         this.comments = comments;
     }
 
-    public List<TicketDTO> getChildTickets() {
-        return childTickets;
-    }
 
-    public void setChildTickets(List<TicketDTO> childTickets) {
-        this.childTickets = childTickets;
-    }
-
-    public TicketDTO getMasterTicket() {
-        return masterTicket;
-    }
-
-    public void setMasterTicket(TicketDTO masterTicket) {
-        this.masterTicket = masterTicket;
-    }
 
     /**
      * Erzeugt eine Entity aus dem DTO
@@ -160,17 +151,18 @@ public class TicketDTO {
 
         List<TicketEntity> children = null;
         TicketEntity ticketEntity = null;
-        if(childTickets != null && childTickets.size() > 0){
-            children = new ArrayList<>(childTickets.size());
-            for(TicketDTO t : childTickets){
-                children.add(t.toEntity());
+        if(childTicketsIds != null && childTicketsIds.size() > 0){
+            children = new ArrayList<>(childTicketsIds.size());
+            for(Long id : childTicketsIds){
+                TicketEntity t = ticketDBService.getTicketById(id);
+                children.add(t);
             }
             //wenn ein Ticket "Kinder" hat ist es automatisch ein Master-Ticket
             //und kann selbst keine Master-Referenz haben
-            masterTicket = null;
+            masterTicketId = null;
         }else{
-            if(masterTicket != null){
-                ticketEntity = masterTicket.toEntity();
+            if(masterTicketId != null ){
+                ticketEntity = ticketDBService.getTicketById(masterTicketId);
             }
         }
         return new TicketEntity(title, description, ticketStatus,
@@ -190,8 +182,8 @@ public class TicketDTO {
                 ", category=" + category +
                 ", assignee=" + assignee +
                 ", comments=" + comments +
-                ", childTickets=" + childTickets +
-                ", masterTicket=" + masterTicket +
+                ", childTicketsIds=" + childTicketsIds +
+                ", masterTicketId=" + masterTicketId +
                 '}';
     }
 
@@ -213,9 +205,9 @@ public class TicketDTO {
         if (category != null ? !category.equals(ticketDTO.category) : ticketDTO.category != null) return false;
         if (assignee != null ? !assignee.equals(ticketDTO.assignee) : ticketDTO.assignee != null) return false;
         if (comments != null ? !comments.equals(ticketDTO.comments) : ticketDTO.comments != null) return false;
-        if (childTickets != null ? !childTickets.equals(ticketDTO.childTickets) : ticketDTO.childTickets != null)
+        if (childTicketsIds != null ? !childTicketsIds.equals(ticketDTO.childTicketsIds) : ticketDTO.childTicketsIds != null)
             return false;
-        return masterTicket != null ? masterTicket.equals(ticketDTO.masterTicket) : ticketDTO.masterTicket == null;
+        return masterTicketId != null ? masterTicketId.equals(ticketDTO.masterTicketId) : ticketDTO.masterTicketId == null;
     }
 
     @Override
@@ -229,8 +221,8 @@ public class TicketDTO {
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (assignee != null ? assignee.hashCode() : 0);
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
-        result = 31 * result + (childTickets != null ? childTickets.hashCode() : 0);
-        result = 31 * result + (masterTicket != null ? masterTicket.hashCode() : 0);
+        result = 31 * result + (childTicketsIds != null ? childTicketsIds.hashCode() : 0);
+        result = 31 * result + (masterTicketId != null ? masterTicketId.hashCode() : 0);
         return result;
     }
 }

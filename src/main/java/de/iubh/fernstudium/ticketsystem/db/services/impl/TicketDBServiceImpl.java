@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @Stateless
@@ -150,11 +151,8 @@ public class TicketDBServiceImpl implements TicketDBService{
 
         TicketEntity master = this.getTicketById(masterTicketId);
         List<TicketEntity> children = checkChildren(master.getChildTickets(), childTicketId);
-        if(master.getChildTickets() == null){
-            master.getChildTickets().addAll(children);
-        }else{
-            master.setChildTickets(children);
-        }
+        master.setChildTickets(children);
+        setMasterTicketToChildren(children, master);
     }
 
 
@@ -181,6 +179,6 @@ public class TicketDBServiceImpl implements TicketDBService{
             childTickets = new ArrayList<>(1);
             childTickets.add(child);
         }
-        return childTickets;
+        return new LinkedList<>(childTickets);
     }
 }
