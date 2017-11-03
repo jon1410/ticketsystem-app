@@ -48,13 +48,13 @@ public class CurrentUserBean extends UserDTO implements Serializable {
         resolvedUserRole = userDTO.getUserRole().getResolvedRoleText();
     }
 
-    public String changeUserData(){
+    public void changeUserData(){
 
         //wenn alles gleich, keine Änderung durchführen
         if(getNewFirstName().equals(getFirstName()) && getNewLastName().equals(getLastName())){
             restoreNewValuesToNull();
-            return FacesContextUtils.resolveInfo("Daten sind gleich, daher wurden sie nicht geändert",
-                    "Gleiche Daten eingegeben",  "main.xhtml?faces-redirect=true");
+            FacesContextUtils.resolveInfo("Daten sind gleich, daher wurden sie nicht geändert",
+                    "Gleiche Daten eingegeben",  null);
         }
 
         userService.changeUserData(super.getUserId(), getNewFirstName(), getNewLastName(), super.getUserRole());
@@ -64,25 +64,24 @@ public class CurrentUserBean extends UserDTO implements Serializable {
         UserDTO cacheUpdate = createUserDto();
         eventProducer.produceCacheEvent(new CachePayload(cacheUpdate));
         restoreNewValuesToNull();
-        return null;
     }
 
-    public String changePassword(){
+    public void changePassword(){
         if(!newPassword.equals(getRepeatedPassword())){
-            return  FacesContextUtils.resolveError(UITexts.PW_NOT_EQUAL,
+            FacesContextUtils.resolveError(UITexts.PW_NOT_EQUAL,
                     UITexts.PW_NOT_EQUAL, null);
         }
         try {
             boolean isPwChanged = userService.changePassword(super.getUserId(), super.getPassword(), this.getRepeatedPassword());
             if(isPwChanged){
                 restoreNewValuesToNull();
-                return  FacesContextUtils.resolveInfo(UITexts.CHANGE_PW_OK,
-                        UITexts.CHANGE_PW_OK, "main.xhtml");
+                FacesContextUtils.resolveInfo(UITexts.CHANGE_PW_OK,
+                        UITexts.CHANGE_PW_OK, null);
             }else{
-                return resolveChangePasswordError();
+                resolveChangePasswordError();
             }
         } catch (UserNotExistsException | InvalidPasswordException e ) {
-            return resolveChangePasswordError();
+            resolveChangePasswordError();
         }
     }
 
@@ -101,9 +100,9 @@ public class CurrentUserBean extends UserDTO implements Serializable {
         return FacesContextUtils.logout(FacesContextUtils.REDIRECT_LOGIN);
     }
 
-    private String resolveChangePasswordError() {
+    private void resolveChangePasswordError() {
         restoreNewValuesToNull();
-        return FacesContextUtils.resolveError(UITexts.CHANGE_PW_ERROR,
+        FacesContextUtils.resolveError(UITexts.CHANGE_PW_ERROR,
                 UITexts.CHANGE_PW_ERROR, null);
     }
 

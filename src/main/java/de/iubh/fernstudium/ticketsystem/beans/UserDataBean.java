@@ -40,6 +40,7 @@ public class UserDataBean implements Serializable {
     private HistoryService historyService;
 
     private List<TicketDTO> tickets;
+    private List<TicketDTO> reportedByLoggedInUser;
     private TicketDTO activeTicket;
     private List<HistoryDTO> historyOfActiveTicket;
     private String newComment;
@@ -50,6 +51,7 @@ public class UserDataBean implements Serializable {
         LOG.info("Initializing Tickets for userId: " + userId);
         try {
             tickets = ticketService.getOpenTicketsForUserId(userId);
+            reportedByLoggedInUser = ticketService.getTicketsReportedByUserId(userId); //ToDO: evtl. hier Liste truncaten???
             LOG.info(String.format("%d Tickets loaded for User: %s", tickets.size(), userId));
         } catch (UserNotExistsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));
@@ -176,6 +178,14 @@ public class UserDataBean implements Serializable {
 
     public void setHistoryOfActiveTicket(List<HistoryDTO> historyOfActiveTicket) {
         this.historyOfActiveTicket = historyOfActiveTicket;
+    }
+
+    public List<TicketDTO> getReportedByLoggedInUser() {
+        return reportedByLoggedInUser;
+    }
+
+    public void setReportedByLoggedInUser(List<TicketDTO> reportedByLoggedInUser) {
+        this.reportedByLoggedInUser = reportedByLoggedInUser;
     }
 
     public void initHistoryOfActiveTicket(Long id) {

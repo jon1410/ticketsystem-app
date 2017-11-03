@@ -4,6 +4,7 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
+import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 import java.util.List;
 
@@ -29,6 +30,14 @@ public interface TicketService {
      * @throws UserNotExistsException
      */
     List<TicketDTO> getOpenTicketsForUserId(String userId) throws UserNotExistsException;
+
+    /**
+     * Liefert alle Tickets, die von einem Benutzer eingemeldet wurden
+     *
+     * @param userId
+     * @return Liste von {@link TicketDTO}
+     */
+    List<TicketDTO> getTicketsReportedByUserId(String userId) throws UserNotExistsException;
 
     /**
      * Ermittelt alle historischen Tickets zu einem User

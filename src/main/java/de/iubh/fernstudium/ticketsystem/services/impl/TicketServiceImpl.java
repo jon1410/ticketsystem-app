@@ -11,6 +11,7 @@ import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.ejb.Asynchronous;
 import javax.enterprise.context.ApplicationScoped;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
@@ -42,18 +44,20 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketDTO> getOpenTicketsForUserId(String userId) throws UserNotExistsException {
 
         UserDTO userDTO = userService.getUserByUserId(userId);
-        List<TicketEntity> ticketEntityList = ticketDBService.getOpenTicketsForUserId(userDTO.toEntity());
+        List<TicketEntity> ticketEntities = ticketDBService.getOpenTicketsForUserId(userDTO.toEntity());
+        return convertToDtoList(ticketEntities);
+    }
 
-        List<TicketDTO> ticketDTOList = new ArrayList<>(ticketEntityList.size());
-        for(TicketEntity t : ticketEntityList){
-            ticketDTOList.add(t.toDto());
-        }
-        return ticketDTOList;
+    @Override
+    public List<TicketDTO> getTicketsReportedByUserId(String userId) throws UserNotExistsException {
+        UserDTO userDTO = userService.getUserByUserId(userId);
+        List<TicketEntity> ticketEntities = ticketDBService.getTicketsReportedByUserId(userDTO.toEntity());
+        return convertToDtoList(ticketEntities);
     }
 
     @Override
     public List<TicketDTO> getHistoricTicketsByUserId(String userId) {
-        //TODO evtl. in HistoryService verschieben
+        //TODO evtl. in HistoryService verschieben bzw. kann über Suchfunktion abgebildet werden
         return null;
     }
 
@@ -91,5 +95,12 @@ public class TicketServiceImpl implements TicketService {
     public TicketDTO createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException {
         TicketEntity ticketEntity =ticketDBService.createMasterTicket(masterTicketId, childTicketId);
         return ticketEntity.toDto();
+    }
+
+    private List<TicketDTO> convertToDtoList(List<TicketEntity> ticketEntities){
+        if(CollectionUtils.isEmpty(ticketEntities)){
+            return new ArrayList<>();
+        }
+        return ticketEntities.stream().map(TicketEntity::toDto).collect(Collectors.toList());
     }
 }
