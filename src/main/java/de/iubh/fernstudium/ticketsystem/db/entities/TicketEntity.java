@@ -66,7 +66,6 @@ public class TicketEntity {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private TicketEntity masterTicket;
 
-
     public TicketEntity() {
     }
 

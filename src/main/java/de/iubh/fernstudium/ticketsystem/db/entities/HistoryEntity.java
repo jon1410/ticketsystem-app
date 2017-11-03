@@ -1,6 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.db.entities;
 
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
+import de.iubh.fernstudium.ticketsystem.dtos.HistoryDTO;
+import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -29,13 +31,17 @@ public class HistoryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity userEntity;
 
+    @Column(name = "ACTION_DETAILS")
+    private String details;
+
     public HistoryEntity() {
     }
 
-    public HistoryEntity(TicketEntity ticketEntity, Timestamp eventTime, HistoryAction action, UserEntity user) {
+    public HistoryEntity(TicketEntity ticketEntity, Timestamp eventTime, HistoryAction action, String details, UserEntity user) {
         this.ticketEntity = ticketEntity;
         this.eventTime = eventTime;
         this.action = action;
+        this.details = details;
         this.userEntity = user;
     }
 
@@ -78,4 +84,18 @@ public class HistoryEntity {
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
     }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public HistoryDTO toDto(){
+        return new HistoryDTO(id, ticketEntity.toDto(), DateTimeUtil.sqlTimestampToLocalDate(eventTime),
+                action, details, userEntity.toDto());
+    }
+
 }

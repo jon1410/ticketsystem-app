@@ -41,7 +41,7 @@ public class EventObserver {
         TicketEntity t = ticketDBService.getTicketById(historyPayload.getTicketId());
         UserEntity userEntity = historyPayload.getUserId().toEntity();
         HistoryEntity historyEntity = new HistoryEntity(t, DateTimeUtil.localDtToSqlTimestamp(historyPayload.getEventFired()),
-                historyPayload.getHistoryAction(), userEntity);
+                historyPayload.getHistoryAction(), historyPayload.getDetails(), userEntity);
         historyDBService.createHistoryEntry(historyEntity);
     }
 

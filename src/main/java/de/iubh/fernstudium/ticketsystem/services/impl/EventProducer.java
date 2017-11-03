@@ -23,8 +23,8 @@ public class EventProducer {
         historyEvent.fire(historyPayload);
     }
 
-    public void produceHistoryEvent(Long ticketId, HistoryAction historyAction){
-        historyEvent.fire(new HistoryPayload(ticketId, historyAction, currentUserBean.createUserDto()));
+    public void produceHistoryEvent(Long ticketId, HistoryAction historyAction, String details){
+        historyEvent.fire(new HistoryPayload(ticketId, historyAction, currentUserBean.createUserDto(), details));
     }
 
     public void produceCacheEvent(CachePayload cachePayload){

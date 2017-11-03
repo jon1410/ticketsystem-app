@@ -137,22 +137,24 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
-    public void createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException {
+    public TicketEntity createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException {
         TicketEntity master = this.getTicketById(masterTicketId);
         List<TicketEntity> children = this.getTicketsByIds(childTickets);
 
         master.setChildTickets(children);
         setMasterTicketToChildren(children, master);
+        return master;
     }
 
 
     @Override
-    public void createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException {
+    public TicketEntity createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException {
 
         TicketEntity master = this.getTicketById(masterTicketId);
         List<TicketEntity> children = checkChildren(master.getChildTickets(), childTicketId);
         master.setChildTickets(children);
         setMasterTicketToChildren(children, master);
+        return master;
     }
 
 

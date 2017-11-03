@@ -11,25 +11,27 @@ public class HistoryPayload {
     private String eventName;
     private LocalDateTime eventFired;
     private UserDTO userId;
+    private String details;
 
     public HistoryPayload() {
     }
 
-    public HistoryPayload(Long ticketId, String eventName, UserDTO userId) {
-        init(ticketId, userId);
+    public HistoryPayload(Long ticketId, String eventName, UserDTO userId, String details) {
+        init(ticketId, userId, details);
         this.eventName = eventName;
 
     }
 
-    public HistoryPayload(Long ticketId, HistoryAction action, UserDTO userId) {
-        init(ticketId, userId);
+    public HistoryPayload(Long ticketId, HistoryAction action, UserDTO userId, String details) {
+        init(ticketId, userId, details);
         this.eventName = action.getResolvedText();
     }
 
-    private void init(Long ticketId, UserDTO userId) {
+    private void init(Long ticketId, UserDTO userId, String details) {
         this.ticketId = ticketId;
         this.eventFired = LocalDateTime.now();
         this.userId = userId;
+        this.details = details;
     }
 
     public Long getTicketId() {
@@ -66,5 +68,13 @@ public class HistoryPayload {
 
     public HistoryAction getHistoryAction(){
         return HistoryAction.fromString(this.eventName);
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 }

@@ -46,7 +46,7 @@ public class TicketBean extends TicketDTO implements Serializable {
     }
 
     private void fireEvent(Long ticketId, HistoryAction historyAction){
-        eventProducer.produceHistoryEvent(ticketId, historyAction);
+        eventProducer.produceHistoryEvent(ticketId, historyAction, null);
     }
 
 }

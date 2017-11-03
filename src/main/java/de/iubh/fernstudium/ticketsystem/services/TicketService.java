@@ -70,7 +70,7 @@ public interface TicketService {
      * @param masterTicketId
      * @param childTickets
      */
-    void createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException;
+    TicketDTO createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException;
 
     /**
      * Erzeugt ein Master-Ticket zu einem Kind-Ticket bzw. fügt ein Kind-Ticket einem bestehenden Master-Ticket hinzu
@@ -78,6 +78,6 @@ public interface TicketService {
      * @param masterTicketId
      * @param childTicketId
      */
-    void createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException;
+    TicketDTO createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException;
 
 }
