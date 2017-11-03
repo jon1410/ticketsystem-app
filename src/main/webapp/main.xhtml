@@ -28,14 +28,14 @@
 
             <b:panelGrid colSpans="12" id="changePassword">
                 <b:inputSecret placeholder="Neues Passwort" label="Neues Passwort"
-                               value="#{userBean.newPassword}"></b:inputSecret>
+                               value="#{currentUserBean.newPassword}"></b:inputSecret>
                 <b:inputSecret placeholder="Neues Passwort wiederholen"
-                               label="Neues Passwort wiederholen" value="#{userBean.repeatedPassword}"></b:inputSecret>
+                               label="Neues Passwort wiederholen" value="#{currentUserBean.repeatedPassword}"></b:inputSecret>
             </b:panelGrid>
 
             <f:facet name="footer">
                 <b:commandButton value="speichern" styleClass="btnNeuesPasswort"
-                                 update="changePassword" actionListener="#{userBean.changePassword()}">
+                                 update="changePassword" actionListener="#{currentUserBean.changePassword()}">
                 </b:commandButton>
             </f:facet>
         </b:modal>

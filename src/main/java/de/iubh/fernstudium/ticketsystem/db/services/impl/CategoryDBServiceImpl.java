@@ -41,11 +41,11 @@ public class CategoryDBServiceImpl implements CategoryDBService {
     }
 
     @Override
-    public boolean changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException {
+    public CategoryEntity changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException {
         CategoryEntity c = this.getCategoryById(categoryEntity.getCategoryId());
         c.setCategoryName(categoryEntity.getCategoryName());
         c.setTutor(categoryEntity.getTutor());
-        return true;
+        return c;
     }
 
     @Override

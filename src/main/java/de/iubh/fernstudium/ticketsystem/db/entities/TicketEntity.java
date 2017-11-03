@@ -61,7 +61,7 @@ public class TicketEntity {
     private List<CommentEntity> comments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<TicketEntity> childTickets;
+    private List<TicketEntity> childTickets = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private TicketEntity masterTicket;

@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.beans;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
 import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.CategoryService;
@@ -49,8 +50,23 @@ public class CategoryRepositoryBean {
         allCategories.remove(categoryDTO);
     }
 
+    /**
+     * Ändert Beschreibung oder Verantwortlichkeit (Tutor) einer Kategorie
+     *
+     * @param categoryDTO
+     */
     public void changeCategory(CategoryDTO categoryDTO){
+        try {
+            CategoryDTO dto = categoryService.changeCategory(categoryDTO);
 
+            //wenn nicht null, dann gab es eine Änderung
+            if(dto != null){
+                updateCache(dto);
+            }
+        } catch (CategoryNotFoundException | UserNotExistsException e) {
+            LOG.error(ExceptionUtils.getRootCauseMessage(e));
+            FacesContextUtils.resolveError(UITexts.CHANGE_CATEGORY_ERROR, UITexts.CHANGE_CATEGORY_ERROR, null);
+        }
     }
 
     public void addNewCategory(CategoryDTO categoryDTO){

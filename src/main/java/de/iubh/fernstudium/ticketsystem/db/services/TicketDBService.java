@@ -43,7 +43,7 @@ public interface TicketDBService {
      * @param ticketId
      * @param comment
      */
-    boolean addComment(Long ticketId, CommentEntity comment);
+    TicketEntity addComment(Long ticketId, CommentEntity comment);
 
     /**
      * Liefert alle Tickets, die einem bestimmten User zugeordnet sind

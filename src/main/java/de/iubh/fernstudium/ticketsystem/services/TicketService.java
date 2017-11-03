@@ -3,7 +3,6 @@ package de.iubh.fernstudium.ticketsystem.services;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
-import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
 import java.util.List;
@@ -55,7 +54,7 @@ public interface TicketService {
      * @param userId
      * @throws NoSuchTicketException
      */
-    void addComment(long ticketId, String comment, String userId) throws NoSuchTicketException, UserNotExistsException;
+    TicketDTO addComment(long ticketId, String comment, String userId) throws NoSuchTicketException, UserNotExistsException;
 
     /**
      * Erzeugt ein neues Ticket im System

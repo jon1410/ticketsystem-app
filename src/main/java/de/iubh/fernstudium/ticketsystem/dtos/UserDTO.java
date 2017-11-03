@@ -28,7 +28,6 @@ public class UserDTO{
 
     @NotNull @Size(min = 4)
     protected String password;
-	protected String passwordAgain;
 
 	@NotNull
     protected UserRole role;

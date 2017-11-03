@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +30,14 @@ public class UserDataBean implements Serializable {
 
     @Inject
     private TicketService ticketService;
+    @Inject
+    private CurrentUserBean currentUserBean;
     @EJB
     private EventProducer eventProducer;
 
     private List<TicketDTO> tickets;
+    private TicketDTO activeTicket;
+    private String newComment;
 
     public void init(String userId){
 
@@ -43,14 +48,6 @@ public class UserDataBean implements Serializable {
         } catch (UserNotExistsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));
         }
-    }
-
-    public List<TicketDTO> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<TicketDTO> tickets) {
-        this.tickets = tickets;
     }
 
     public void terminateTicket(TicketDTO ticketDTO){
@@ -68,5 +65,60 @@ public class UserDataBean implements Serializable {
             tickets = new ArrayList<>();
         }
         tickets.add(ticketDTO);
+    }
+
+    public void addComment(){
+
+        if(activeTicket == null){
+            FacesContextUtils.resolveError(UITexts.NO_ACTIVE_TICKET,
+                    UITexts.NO_ACTIVE_TICKET, null);
+        }
+        try {
+            TicketDTO ticketDTO = ticketService.addComment(activeTicket.getId(), this.newComment, currentUserBean.getUserId());
+            updateCache(ticketDTO);
+            fireEvent(activeTicket.getId(), HistoryAction.CA);
+        } catch (NoSuchTicketException | UserNotExistsException e) {
+            LOG.error(ExceptionUtils.getRootCauseMessage(e));
+            FacesContextUtils.resolveError(UITexts.ERROR_NEW_COMMENT,
+                    UITexts.ERROR_NEW_COMMENT, null);
+        }
+    }
+
+    public void updateCache(TicketDTO dto){
+        for(int i=0; i<tickets.size(); i++){
+            TicketDTO t = tickets.get(i);
+            if(t.getId() == dto.getId()){
+                tickets.set(i, dto);
+                break;
+            }
+        }
+    }
+
+    public List<TicketDTO> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<TicketDTO> tickets) {
+        this.tickets = tickets;
+    }
+
+    public TicketDTO getActiveTicket() {
+        return activeTicket;
+    }
+
+    public void setActiveTicket(TicketDTO activeTicket) {
+        this.activeTicket = activeTicket;
+    }
+
+    public String getNewComment() {
+        return newComment;
+    }
+
+    public void setNewComment(String newComment) {
+        this.newComment = newComment;
+    }
+
+    private void fireEvent(Long ticketId, HistoryAction historyAction){
+        eventProducer.produceHistoryEvent(ticketId, historyAction);
     }
 }

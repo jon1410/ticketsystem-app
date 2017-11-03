@@ -50,10 +50,10 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     @Override
-    public boolean addComment(Long ticketId, CommentEntity comment) {
+    public TicketEntity addComment(Long ticketId, CommentEntity comment) {
         TicketEntity ticketEntity = this.getTicketById(ticketId);
         if(ticketEntity == null){
-            return false;
+            return null;
         }
         List<CommentEntity> comments = ticketEntity.getComments();
         if(comments == null){
@@ -61,7 +61,7 @@ public class TicketDBServiceImpl implements TicketDBService{
         }
         comments.add(comment);
         ticketEntity.setComments(comments);
-        return true;
+        return ticketEntity;
     }
 
     @Override

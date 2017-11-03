@@ -40,7 +40,7 @@ public interface CategoryService {
      * @return boolean
      * @throws CategoryNotFoundException
      */
-    boolean changeCategory(CategoryDTO categoryDTOs) throws CategoryNotFoundException, UserNotExistsException;
+    CategoryDTO changeCategory(CategoryDTO categoryDTOs) throws CategoryNotFoundException, UserNotExistsException;
 
     /**
      * Löscht einen Kurs aus dem Bestand

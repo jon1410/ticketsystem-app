@@ -15,10 +15,12 @@ import de.iubh.fernstudium.ticketsystem.services.UserService;
 import javax.ejb.Asynchronous;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
+@Transactional
 public class TicketServiceImpl implements TicketService {
 
     @Inject
@@ -63,12 +65,14 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void addComment(long ticketId, String comment, String userId) throws NoSuchTicketException, UserNotExistsException {
+    public TicketDTO addComment(long ticketId, String comment, String userId) throws NoSuchTicketException, UserNotExistsException {
         UserDTO user = userService.getUserByUserId(userId);
         CommentDTO commentDTO = new CommentDTO(user, comment);
-        if(!ticketDBService.addComment(ticketId, commentDTO.toEntity())){
+        TicketEntity ticketEntity = ticketDBService.addComment(ticketId, commentDTO.toEntity());
+        if(ticketEntity == null){
             throw new NoSuchTicketException("Ticket mit ID: " + ticketId + " wurde nicht gefunden.");
         }
+        return ticketEntity.toDto();
     }
 
     @Override

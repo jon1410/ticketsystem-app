@@ -3,7 +3,6 @@ package de.iubh.fernstudium.ticketsystem.beans;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
-import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserAlreadyExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
@@ -31,8 +30,6 @@ public class UserBean extends UserDTO{
 
     @Inject
     private UserService userService;
-    @Inject
-    private CurrentUserBean currentUser;
 
     @Override
     public String getRole() {
@@ -92,41 +89,6 @@ public class UserBean extends UserDTO{
                     UITexts.CREATE_USER_ERROR_DETAIL + UITexts.REG_PW_ERROR_DETAIL, null);
         }
         return createNewUser(FacesContextUtils.REDIRECT_LOGIN);
-    }
-
-    public String changePassword(){
-        if(!newPassword.equals(getRepeatedPassword())){
-            return  FacesContextUtils.resolveError("Passwörter stimmen nicht überein",
-                    "Sie haben das Passwort erfolgreich geändert", null);
-        }
-        try {
-            boolean isPwChanged = userService.changePassword(currentUser.getUserId(), currentUser.getPassword(), this.getRepeatedPassword());
-            if(isPwChanged){
-                return  FacesContextUtils.resolveInfo("Passwort erfolgreich geändert",
-                        "Sie haben das Passwort erfolgreich geändert", "main.xhtml");
-            }else{
-              return resolveChangePasswordError();
-            }
-        } catch (UserNotExistsException | InvalidPasswordException e ) {
-            return resolveChangePasswordError();
-        }
-    }
-
-    public String changeUserData(){
-        if(currentUser.toEntity().equals(this.toEntity())){
-            return FacesContextUtils.resolveInfo("Keine Datenänderung festgestellt.",
-                    "Die Daten sind gleich, keine Änderungen durchgeführt", "main.xhtml");
-        }
-        if(!userService.changeUserData(super.getUserId(), super.getFirstName(), super.getLastName(), super.getUserRole())){
-            return FacesContextUtils.resolveError("Fehler beim Ändern der Benutzerdaten",
-                    "Die Daten konnten nicht geändert werden.", null);
-        }
-        return "main.xhtml";
-    }
-
-    private String resolveChangePasswordError() {
-        return FacesContextUtils.resolveError("Fehler bei Passwortänderung",
-                "Das Passwort konnte nicht geändert werden", null);
     }
 
     private String createNewUser(String redirect) {

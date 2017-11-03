@@ -12,11 +12,13 @@ import org.apache.commons.collections.CollectionUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     @Inject
@@ -43,10 +45,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean changeCategory(CategoryDTO categoryDTOs) throws CategoryNotFoundException, UserNotExistsException {
-        UserDTO userDTO = userService.getUserByUserId(categoryDTOs.getTutor().getUserId());
-        categoryDTOs.setTutor(userDTO);
-        return categoryDBService.changeCategory(categoryDTOs.toEntity());
+    public CategoryDTO changeCategory(CategoryDTO categoryDTO) throws CategoryNotFoundException, UserNotExistsException {
+
+        CategoryDTO dbDto = this.getCategoryById(categoryDTO.getCategoryId());
+        if(!dbDto.equals(categoryDTO)){
+            UserDTO userDTO = userService.getUserByUserId(categoryDTO.getTutor().getUserId());
+            categoryDTO.setTutor(userDTO);
+            categoryDTO.setCategoryName(categoryDTO.getCategoryName());
+            CategoryEntity categoryEntity = categoryDBService.changeCategory(categoryDTO.toEntity());
+            return categoryEntity.toDto();
+        }
+
+        return null;
+
     }
 
     @Override

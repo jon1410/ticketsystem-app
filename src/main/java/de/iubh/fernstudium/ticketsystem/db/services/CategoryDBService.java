@@ -40,7 +40,7 @@ public interface CategoryDBService {
      * @return boolean
      * @throws CategoryNotFoundException
      */
-    boolean changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException;
+    CategoryEntity changeCategory(CategoryEntity categoryEntity) throws CategoryNotFoundException;
 
     /**
      * Löscht einen Kurs aus dem Bestand

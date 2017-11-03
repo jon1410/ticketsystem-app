@@ -15,11 +15,18 @@ public class UITexts {
     public static final String CREATE_USER_INFO_DETAIL = "Neuer Benutzer angelegt.";
 
     //Ticket-Texte
-    public static final String NEW_TICKET_SUMMARY = "Neues Ticket erstellt";
+    public static final String NEW_TICKET = "Neues Ticket erstellt";
     public static final String STOP_TICKET_ERROR_SUMMARY = "Bearbeitungsvorgang nicht abgebrochen.";
     public static final String STOP_TICKET_ERROR_DETAIL = "Der Bearbeitungsvorgangs des ausgewählten Tickets kann aktuell nicht abgebrochen werden.";
+    public static final String NO_ACTIVE_TICKET = "Kein Ticket aktiv!";
+
+    //Kommentar-Texte
+    public static final String ERROR_NEW_COMMENT = "Fehler! Kommentar konnte nicht hinzugefügt werden!";
 
     //Passwort neu Texte
+    public static final String PW_NOT_EQUAL = "Die eingegebenen Passwörter stimmen nicht überein, Passwort nicht geändert.";
+    public static final String CHANGE_PW_OK = "Dein Passwort wurde erfolgreich geändert.";
+    public static final String CHANGE_PW_ERROR = "Fehler aufgetreten! Passwort wurde nicht geändert!";
     public static final String PW_RESET_INFO_SUMMARY = "Passwort zurückgesetzt";
     public static final String PW_RESET_INFO_DETAILS = "Dein neues Passwort wurde per Email zugeschickt.";
 
@@ -36,6 +43,8 @@ public class UITexts {
     public static final String DETAIL_SEARCH_NOT_FOUND_DETAIL = "Zu deiner Suchanfrage wurden keine Tickets gefunden, bitte versuche andere Parameter.";
 
     //Kategorie-Texte
+    public static final String CREATE_CATEGORY_ERROR_USER = "Fehler beim Erzeugen der Kategorie, angegebener Tutor existiert nicht.";
+    public static final String CHANGE_CATEGORY_ERROR = "Fehler beim Ändern der Kategorie, bitte wende dich an den Support.";
     public static final String DELETE_CATEGORY_ERROR_SUMMARY = "Fehler beim Löschen der Kategorie";
     public static final String DELETE_CATEGORY_ERROR_DETAIL = "Die Kategorie konnte nicht gelöscht werden, bitte versuche es später noch einmal.";
     public static final String DELETE_CATEGORY_DB_ERROR_DETAIL = "Diese Kategorie wird noch verwendet und kann nicht gelöscht werden!";
