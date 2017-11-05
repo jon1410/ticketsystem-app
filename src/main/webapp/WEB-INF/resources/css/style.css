@@ -4,19 +4,24 @@
 .btnSuchenNavbar {
 	color: #fff !important;
 	border: 0px !important;
-	background-color: rgb(98, 188, 186) !important;
+	background-color:#078C93 !important;
 	transition: background-color 1s ease;
-	margin-left: -13px;
+	margin-left: 1px!important;
 	position: absolute;
 	border-radius: 0px !important;
+	border-right: 2px solid white!important;
 }
 
 .btnSuchenNavbar:hover {
 	color: #fff !important;
-	background-color: rgb(1, 143, 145) !important;
-	transition: background-color 1s ease;
+	background-color: #8DCAC8 !important;
+	transition: background-color 0.5s ease;
 }
 
+.btnSuche{
+	background: #078C93!important;
+	border: none!important;
+}
 .suchfeldNavbar {
 	width: 200px !important;
 	height: 2.3em !important;
