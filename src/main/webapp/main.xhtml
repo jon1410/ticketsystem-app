@@ -58,11 +58,14 @@
 				<b:datepicker value="Bis" placeholder="Bis"></b:datepicker>
 				<b:inputText placeholder="Ticketersteller"></b:inputText>
 				<b:inputText placeholder="Bearbeiter"></b:inputText>
+				<!--h:selectManyCheckbox value="#{searchBean.stati}">
+					<f:selectItems value="#{searchBean.selectedStatiForSearch}" />
+				</h:selectManyCheckbox-->
 			</b:panelGrid>
 
 			<f:facet name="footer">
 				<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
-					update=":msgs"></b:commandButton>
+					update=":msgs" actionListener="#{searchBean.searchDetails()}"></b:commandButton>
 			</f:facet>
 		</h:form>
 	</b:modal>
