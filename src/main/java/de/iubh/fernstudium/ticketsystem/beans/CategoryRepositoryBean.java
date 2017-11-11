@@ -38,6 +38,13 @@ public class CategoryRepositoryBean {
             allCategories.add(new CategoryDTO("BBLO01", "Beschaffung und Logistik", temp));
         }
     }
+    
+     public void eintragBearbeitet(RowEditEvent event) {
+         
+        //TO-DO von Kategrorie "Ändern" --> Inline Table editing
+       
+        
+    }
 
     public List<CategoryDTO> getAllCategories() {
         return allCategories;
