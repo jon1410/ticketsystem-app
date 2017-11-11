@@ -45,6 +45,17 @@ public class UserDataBean implements Serializable {
     private List<HistoryDTO> historyOfActiveTicket;
     private String newComment;
     private List<Long> childTickets;
+    
+    private TicketDTO selektiertesTicket;
+    
+    
+    public void showDetail(TicketDTO ticket){
+    this.selektiertesTicket = ticket;
+        
+        //Öffnet das Modal
+        RequestContext requestContext = RequestContext.getCurrentInstance();    
+        requestContext.execute("$('.detailModal').modal('show');");
+    }
 
     public void init(String userId){
 
@@ -202,6 +213,15 @@ public class UserDataBean implements Serializable {
 
     private void fireEvent(Long ticketId, HistoryAction historyAction, String details){
         eventProducer.produceHistoryEvent(ticketId, historyAction, details);
+    }
+    
+    
+    public TicketDTO getSelektiertesTicket() {
+        return selektiertesTicket;
+    }
+
+    public void setSelektiertesTicket(TicketDTO ticket) {
+        this.selektiertesTicket = ticket;
     }
 
     private void changeStatus(TicketStatus newStatus) {
