@@ -112,9 +112,9 @@
 		<h:form id="formDetail">
 			<h3>Detail zu #{userDataBean.activeTicket.title}</h3>
 			<b:panelGrid colSpans="3,3,3,3" id="detailPanel">
-				<b:commandButton value="Bearbeitung starten" look="success"></b:commandButton>
-				<b:commandButton value="Ticket abschließen" look="warning"></b:commandButton>
-				<b:commandButton value="Ticket zurückgeben" look="danger"></b:commandButton>
+				<b:commandButton value="Bearbeitung starten" look="success" actionListener="#{userDataBean.startProgress}" update=":yourTickets :formDetail"></b:commandButton>
+				<b:commandButton value="Ticket abschließen" look="warning" actionListener="#{userDataBean.finishTicket}"></b:commandButton>
+				<b:commandButton value="Ticket zurückgeben" look="danger" actionListener="#{userDataBean.resolveTicket}"></b:commandButton>
 				<b:commandButton value="Histroie" look="default"></b:commandButton>
 			</b:panelGrid>
 			<b:panelGrid colSpans="6,6">
@@ -122,7 +122,7 @@
 				<h:outputText value="#{userDataBean.activeTicket.id}" />
 				
 				<h:outputText value="Status" />
-				<h:outputText value="#{userDataBean.activeTicket.ticketStatus}" />
+				<h:outputText value="#{userDataBean.activeTicket.ticketStatus.resolvedText}" />
 				
 				<h:outputText value="Datum" />
 				<h:outputText value="#{userDataBean.activeTicket.creationTimeAsString}" >

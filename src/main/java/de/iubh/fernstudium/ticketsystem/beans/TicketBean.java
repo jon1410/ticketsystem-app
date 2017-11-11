@@ -54,7 +54,7 @@ public class TicketBean extends TicketDTO implements Serializable {
         super.setAssignee(categoryDTO.getTutor());
 
         TicketDTO ticketDTO = ticketService.createTicket(this);
-        userDataBean.addTicket(ticketDTO);
+        userDataBean.addTicketToReporter(ticketDTO);
         fireEvent(ticketDTO.getId(),  HistoryAction.CR);
 
         return FacesContextUtils.resolveInfo(UITexts.NEW_TICKET, UITexts.NEW_TICKET, null);
