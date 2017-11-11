@@ -25,6 +25,9 @@ public class CategoryBean extends CategoryDTO{
 
     private String tutorUserId;
     private CategoryDTO selectedCategory;
+    
+    //Alle Tutoren in einer Liste für die Filterung in der Kategorie "NEU"
+    private List<Tutoren> alleTutoren;
 
     public void createCategory() throws UserNotExistsException {
         UserDTO userDTO = userService.getUserByUserId(tutorUserId);
@@ -47,4 +50,6 @@ public class CategoryBean extends CategoryDTO{
     public void setSelectedCategory(CategoryDTO selectedCategory) {
         this.selectedCategory = selectedCategory;
     }
+    
+    
 }
