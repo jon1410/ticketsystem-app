@@ -156,43 +156,29 @@
 							<b:panel title="Neu">
 								<h4>Hier kannst du neue Kategorien definieren</h4>
 								<hr />
-								<b:panelGrid colSpans="12">
+								
+									
+									<b:panelGrid colSpans="6,6">
+										
 									<b:inputText placeholder="ID"
 										value="#{categoryBean.categoryId}"></b:inputText>
-									<b:panelGrid colSpans="6,6">
 
-										<b:inputText placeholder="Name"
+									<b:inputText placeholder="Name"
 											value="#{categoryBean.categoryName}"></b:inputText>
 
 									</b:panelGrid>
 
-									<p:selectOneListbox id="tutorFilter"
-														value="#{categoryBean.tutorUserId}" filter="true" filterMatchMode="contains">
+									<b:panelGrid colSpans="12">
+	
+									<p:selectOneListbox id="tutorFilter" value="#{categoryBean.tutorUserId}" filter="true" filterMatchMode="contains">
 										<f:selectItems value="#{tutorRepositroyBean.allTutors}" var="tutor"
 													   itemLabel="#{tutor.lastName}" itemValue="#{tutor.userId}" />
 									</p:selectOneListbox>
-
-
-									<!--  Selbes Prinzip wie in "Neues Ticket"
-										
-										CONVERTER WIRD BENÖTIGT UM DAS OBJEKT ZU CASTEN
-										https://www.primefaces.org/showcase/ui/input/listbox.xhtml
-
-									<p:selectOneListbox id="tutorFilter"
-										value="#{categoryBean.tutorUserId}" converter="#{tutorConverter}"
-										var="tutor" filter="true" filterMatchMode="contains">
-										<f:selectItems value="#{tutorRepositroyBean.allTutors}" var="tutor"
-											itemLabel="#{tutor}" itemValue="#{tutor}" />
-
-										<p:column>
-											<h:outputText value="#{tutor}" />
-										</p:column>
-									</p:selectOneListbox>
-									-->
-
+									</b:panelGrid>
+					
 									<b:commandButton value="speichern" styleClass="btnsKategorie"
 										actionListener="#{categoryBean.createCategory()}"></b:commandButton>
-								</b:panelGrid>
+								
 							</b:panel>
 							<b:panel title="Anzeigen">
 								<h4>Ansicht aller aktuellen Kategorien</h4>
@@ -450,20 +436,6 @@
 								   itemLabel="#{kategory.categoryName}" itemValue="#{kategory.categoryId}" />
 				</p:selectOneListbox>
 
-				<!-- 
-				CONVERTER WIRD BENÖTIGT UM DAS OBJEKT ZU CASTEN
-				https://www.primefaces.org/showcase/ui/input/listbox.xhtml
-				 
-				<p:selectOneListbox id="advanced" value="#{ticketBean.category}"
-					converter="NeuConverter" var="category" filter="true"
-					filterMatchMode="contains" required="true">
-					<f:selectItems value="#{categoryRepositoryBean.allCategories}"
-						var="cat" itemLabel="#{cat.categoryName}" itemValue="#{cat}" />
-					<p:column>
-						<h:outputText value="#{category.categoryName}" />
-					</p:column>
-				</p:selectOneListbox>
-				-->
 
 			</b:panelGrid>
 
