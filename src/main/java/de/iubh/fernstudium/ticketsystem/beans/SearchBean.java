@@ -46,8 +46,9 @@ public class SearchBean implements Serializable {
     //Detail-Suche
     private String dateFrom; //muss dd.MM.yyyy sein
     private String dateTo; //muss dd.MM.yyyy sein
-    private String[] stati;
-    private String[] selectedStatiForSearch;
+    private List<String> stati;
+    private String selectedStatiForSearch;
+    private String[] selectedStati;
     private Map<String, TicketStatus> statusValues;
     private String userIdReporter;
     private String userIdAssignee;
@@ -58,10 +59,10 @@ public class SearchBean implements Serializable {
     @PostConstruct
     public void initStatusValues(){
         TicketStatus[] ticketStati = TicketStatus.values();
-        stati = new String[ticketStati.length];
+        stati = new ArrayList<>(ticketStati.length);
 
         for(int i=0; i<ticketStati.length; i++){
-            stati[i] = ticketStati[i].getResolvedText();
+            stati.add(ticketStati[i].getResolvedText());
         }
     }
 
@@ -110,16 +111,6 @@ public class SearchBean implements Serializable {
 
     public String searchDetails(){
 
-//        setDateFrom("2017-04-01");
-//        setDateTo("2017-11-01");
-//        setUserIdReporter("ivan");
-//
-//        Map<String, TicketStatus> statusValues;
-//        statusValues = new LinkedHashMap<>();
-//        statusValues.put("1", TicketStatus.NEW);
-//        statusValues.put("2", TicketStatus.CLO);
-//        setStatusValues(statusValues);
-
         Future<List<TicketDTO>> tickets;
         List<TicketDTO> foundTickets;
 
@@ -148,11 +139,12 @@ public class SearchBean implements Serializable {
             }
         }
 
-        List<String> statusValuesAsString = new ArrayList<>(selectedStatiForSearch.length);
-        for(String s : selectedStatiForSearch){
-            TicketStatus t = TicketStatus.valueOf(s);
-            statusValuesAsString.add(t.toString());
-        }
+        List<String> statusValuesAsString  = Arrays.asList(selectedStati);
+//        List<String> statusValuesAsString = new ArrayList<>(selectedStatiForSearch.length);
+//        for(String s : selectedStatiForSearch){
+//            TicketStatus t = TicketStatus.valueOf(s);
+//            statusValuesAsString.add(t.toString());
+//        }
         if(statusValues != null && !statusValues.isEmpty()){
             //statusValuesAsString = statusValues.values().stream().map(v -> v.toString()).collect(Collectors.toList());
             queryBuilder = queryBuilder.and("STATUS").in(statusValuesAsString.toArray(new String[0])); //siehe https://shipilev.net/blog/2016/arrays-wisdom-ancients/
@@ -238,19 +230,27 @@ public class SearchBean implements Serializable {
         this.userIdAssignee = userIdAssignee;
     }
 
-    public String[] getStati() {
+    public List<String> getStati() {
         return stati;
     }
 
-    public void setStati(String[] stati) {
+    public void setStati(List<String> stati) {
         this.stati = stati;
     }
 
-    public String[] getSelectedStatiForSearch() {
+    public String getSelectedStatiForSearch() {
         return selectedStatiForSearch;
     }
 
-    public void setSelectedStatiForSearch(String[] selectedStatiForSearch) {
+    public void setSelectedStatiForSearch(String selectedStatiForSearch) {
         this.selectedStatiForSearch = selectedStatiForSearch;
+    }
+
+    public String[] getSelectedStati() {
+        return selectedStati;
+    }
+
+    public void setSelectedStati(String[] selectedStati) {
+        this.selectedStati = selectedStati;
     }
 }

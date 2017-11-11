@@ -56,16 +56,16 @@
 			<b:panelGrid colSpans="12" id="ergebnisPanel">
 				<b:dataTable value="#{searchBean.foundTickets}" var="ergebnis">
 					<b:dataTableColumn label="Titel" value="#{ergebnis.title}"></b:dataTableColumn>
-					<b:dataTableColumn label="Status" value="#{ergebnis.status}"></b:dataTableColumn>
+					<b:dataTableColumn label="Status" value="#{ergebnis.ticketStatus.resolvedText}"></b:dataTableColumn>
 					<b:dataTableColumn label="Ersteller"
-						value="#{ergebnis.reporter.lastName}"></b:dataTableColumn>
+						value="#{ergebnis.reporter.userId}"></b:dataTableColumn>
 					<b:dataTableColumn label="Datum">
-						<h:outputText value="#{ergebnis.creationTime}">
+						<h:outputText value="#{ergebnis.creationTimeAsString}">
 							<f:convertDateTime dateStyle="medium" />
 						</h:outputText>
 					</b:dataTableColumn>
 					<b:dataTableColumn label="Beauftragter"
-						value="#{ergebnis.assignee.lastName}"></b:dataTableColumn>
+						value="#{ergebnis.assignee.userId}"></b:dataTableColumn>
 				</b:dataTable>
 			</b:panelGrid>
 
@@ -86,17 +86,15 @@
 				<b:datepicker value="Bis" placeholder="Bis"></b:datepicker>
 				<b:inputText placeholder="Ticketersteller"></b:inputText>
 				<b:inputText placeholder="Bearbeiter"></b:inputText>
-<<<<<<< HEAD
 				<strong>Zusätzlich folgende Statuse berücksichtigen</strong>
-				<b:selectMultiMenu value="#{searchBean.stati}">
-					<f:selectItems value="#{searchBean.selectedStatiForSearch}"
-						itemLabel="" itemValue=""></f:selectItems>
-				</b:selectMultiMenu>
-=======
-				<!--h:selectManyCheckbox value="#{searchBean.stati}">
-					<f:selectItems value="#{searchBean.selectedStatiForSearch}" />
-				</h:selectManyCheckbox-->
->>>>>>> f7bab4d99e599b663621699463360f3d298c056f
+				<p:selectCheckboxMenu value="#{searchBean.selectedStatiForSearch}" appendTo="@this" label="stati" multiple="true">
+					<f:selectItems value="#{searchBean.stati}" />
+				</p:selectCheckboxMenu>
+
+				<!--b:selectMultiMenu value="#{searchBean.selectedStatiForSearch}">
+					<f:selectItems value="#{searchBean.stati}" var="status"
+						itemLabel="status" itemValue="status"></f:selectItems>
+				</b:selectMultiMenu-->
 			</b:panelGrid>
 
 			<f:facet name="footer">
@@ -110,9 +108,9 @@
 	
 	<!-- DETAIL TICKET -->
 	<b:modal title="Details" styleClass="detailModal fade"
-		closeOnEscape="true" id="suche" backdrop="false">
+		closeOnEscape="true" id="ticketDetails" backdrop="false">
 		<h:form id="formDetail">
-			<h3>Detail zu #{userDataBean.selektiertesTicket.title}</h3>
+			<h3>Detail zu #{userDataBean.activeTicket.title}</h3>
 			<b:panelGrid colSpans="3,3,3,3" id="detailPanel">
 				<b:commandButton value="Bearbeitung starten" look="success"></b:commandButton>
 				<b:commandButton value="Ticket abschließen" look="warning"></b:commandButton>
@@ -121,21 +119,21 @@
 			</b:panelGrid>
 			<b:panelGrid colSpans="6,6">
 				<h:outputText value="ID" />
-				<h:outputText value="#{userDataBean.selektiertesTicket.id}" />
+				<h:outputText value="#{userDataBean.activeTicket.id}" />
 				
 				<h:outputText value="Status" />
-				<h:outputText value="#{userDataBean.selektiertesTicket.ticketStatus}" />
+				<h:outputText value="#{userDataBean.activeTicket.ticketStatus}" />
 				
 				<h:outputText value="Datum" />
-				<h:outputText value="#{userDataBean.selektiertesTicket.creationTime}" >
+				<h:outputText value="#{userDataBean.activeTicket.creationTimeAsString}" >
 					<f:convertDateTime dateStyle="medium"/>
 				</h:outputText>
 				
 				<h:outputText value="Besitzer" />
-				<h:outputText value="#{userDataBean.selektiertesTicket.reporter.lastName}" />
+				<h:outputText value="#{userDataBean.activeTicket.reporter.lastName}" />
 				
 			</b:panelGrid>
-			<b:inputTextarea value="#{userDataBean.selektiertesTicket.description}"></b:inputTextarea>
+			<b:inputTextarea value="#{userDataBean.activeTicket.description}"></b:inputTextarea>
 			<hr/>
 			<b:inputTextarea placeholder="Kommentar"></b:inputTextarea>
 			<f:facet name="footer">
@@ -166,32 +164,31 @@
 										<b:inputText placeholder="Name"
 											value="#{categoryBean.categoryName}"></b:inputText>
 
-										<!--<b:selectOneMenu>-->
-										<!--<f:selectItems-->
-										<!--value="#{categoryRepositoryBean.allCategories}" var="kat"-->
-										<!--itemValue="#{kat.categoryName}"-->
-										<!--itemLabel="#{kat.categoryId}"></f:selectItems>-->
-										<!--</b:selectOneMenu>-->
 									</b:panelGrid>
+
+									<p:selectOneListbox id="tutorFilter"
+														value="#{categoryBean.tutorUserId}" filter="true" filterMatchMode="contains">
+										<f:selectItems value="#{tutorRepositroyBean.allTutors}" var="tutor"
+													   itemLabel="#{tutor.lastName}" itemValue="#{tutor.userId}" />
+									</p:selectOneListbox>
 
 
 									<!--  Selbes Prinzip wie in "Neues Ticket"
 										
 										CONVERTER WIRD BENÖTIGT UM DAS OBJEKT ZU CASTEN
 										https://www.primefaces.org/showcase/ui/input/listbox.xhtml
-				
+
 									<p:selectOneListbox id="tutorFilter"
-										value="#{categoryBean.tutorUserId}" converter="TutorConverter"
+										value="#{categoryBean.tutorUserId}" converter="#{tutorConverter}"
 										var="tutor" filter="true" filterMatchMode="contains">
-										<f:selectItems value="#{categoryBean.alleTutoren}" var="theme"
+										<f:selectItems value="#{tutorRepositroyBean.allTutors}" var="tutor"
 											itemLabel="#{tutor}" itemValue="#{tutor}" />
 
 										<p:column>
 											<h:outputText value="#{tutor}" />
 										</p:column>
 									</p:selectOneListbox>
-									 -->
-
+									-->
 
 									<b:commandButton value="speichern" styleClass="btnsKategorie"
 										actionListener="#{categoryBean.createCategory()}"></b:commandButton>
@@ -241,7 +238,7 @@
 									var="category" emptyMessage="Keine Datensätze gefunden">
 
 									<p:ajax event="rowEdit"
-										listener="#{categoryRepositoryBean.eintragBearbeitet()}"
+										listener="#{categoryRepositoryBean.onRowEdit}"
 										update=":msgs" />
 
 									<p:column headerText="Id">
@@ -310,7 +307,7 @@
 							<!-- only if current user == reporter of Ticket !! -->
 							<b:commandButton look="info" value="Details"
 								tooltip="Schau dir den fortschritt deines Tickets an"
-								actionListener="#{userDataBean.showDetail(ticket)}" oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
+								actionListener="#{userDataBean.setActiveTicket(ticket)}" oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
 							<b:commandButton look="danger" value="abbrechen"
 								tooltip="Beendet den aktuellen Vorgang des Tickets"
 								actionListener="#{userDataBean.terminateTicket(ticket)}"></b:commandButton>
@@ -447,7 +444,11 @@
 				</b:inputTextarea>
 
 				<b:message for="kategorie"></b:message>
-
+				<p:selectOneListbox id="katFilter"
+									value="#{ticketBean.categoryId}" filter="true" filterMatchMode="contains">
+					<f:selectItems value="#{categoryRepositoryBean.allCategories}" var="kategory"
+								   itemLabel="#{kategory.categoryName}" itemValue="#{kategory.categoryId}" />
+				</p:selectOneListbox>
 
 				<!-- 
 				CONVERTER WIRD BENÖTIGT UM DAS OBJEKT ZU CASTEN
@@ -558,12 +559,12 @@
 
 		<b:row>
 			<b:column col-md="6" col-xs="12">
-				<b:panel styleClass="panelMessages color noBorder">
+				<b:panel styleClass="panelMessages color noBorder" onclick="$('.tickets').modal();">
 					<b:panelGrid colSpans="2,10" styleClass="panelQuick"
 						tooltip="Deine aktuellen noch offenen Tickets">
 						<h:outputText
 							style="font-size:5.0em;  margin:auto auto;display: inline-block;z-index:10000;"
-							value="1"></h:outputText>
+							value="#{userDataBean.tickets.size() == null ? 0 : userDataBean.tickets.size()}"></h:outputText>
 						<h:outputText
 							style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;"
 							value="Meine offenen Tickets" />
@@ -581,7 +582,7 @@
 						tooltip="Deine bisher eingereichten Tickets">
 						<h:outputText
 							style="font-size:5.0em;  margin:auto auto;display: inline-block;"
-							value="#{userDataBean.tickets.size() == null ? 0 : userDataBean.tickets.size()}"></h:outputText>
+							value="#{userDataBean.reportedByLoggedInUser.size() == null ? 0 : userDataBean.reportedByLoggedInUser.size()}"></h:outputText>
 						<h:outputText
 							style="font-size:1.5em; margin-top:20px;display: inline-block;position: relative;"
 							value="Meine eingereichten Tickets" />

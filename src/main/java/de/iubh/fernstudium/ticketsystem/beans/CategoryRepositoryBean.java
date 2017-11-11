@@ -10,9 +10,11 @@ import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+
+import javax.faces.bean.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
@@ -24,6 +26,8 @@ public class CategoryRepositoryBean {
     private static final Logger LOG = LogManager.getLogger(CategoryRepositoryBean.class);
 
     private List<CategoryDTO> allCategories;
+    private String newCategoryName;
+    private String newTutorUserId;
 
     @Inject
     private CategoryService categoryService;
@@ -88,5 +92,25 @@ public class CategoryRepositoryBean {
                 allCategories.set(i, categoryDTO);
             }
         }
+    }
+
+    public String getNewCategoryName() {
+        return newCategoryName;
+    }
+
+    public void setNewCategoryName(String newCategoryName) {
+        this.newCategoryName = newCategoryName;
+    }
+
+    public String getNewTutorUserId() {
+        return newTutorUserId;
+    }
+
+    public void setNewTutorUserId(String newTutorUserId) {
+        this.newTutorUserId = newTutorUserId;
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        System.out.println(event.getObject().toString());
     }
 }

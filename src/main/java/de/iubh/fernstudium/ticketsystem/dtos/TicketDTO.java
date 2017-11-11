@@ -96,8 +96,8 @@ public class TicketDTO {
         this.ticketStatus = ticketStatus;
     }
 
-    public String getReporter() {
-        return reporter.getUserId();
+    public UserDTO getReporter() {
+        return reporter;
     }
 
     public void setReporter(UserDTO reporter) {
@@ -120,8 +120,8 @@ public class TicketDTO {
         this.category = category;
     }
 
-    public String getAssignee() {
-        return assignee.getUserId();
+    public UserDTO getAssignee() {
+        return assignee;
     }
 
     public void setAssignee(UserDTO assignee) {

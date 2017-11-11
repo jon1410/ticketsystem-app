@@ -3,10 +3,14 @@ package de.iubh.fernstudium.ticketsystem.beans;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
+import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
+import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.impl.EventProducer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,13 +34,24 @@ public class TicketBean extends TicketDTO implements Serializable {
     private UserDataBean userDataBean;
     @Inject
     private EventProducer eventProducer;
+    @Inject
+    private CategoryService categoryService;
+
+    private String categoryId;
 
     public String createTicket(){
 
+        CategoryDTO categoryDTO = null;
+        try {
+            categoryDTO =  categoryService.getCategoryById(this.categoryId);
+        } catch (CategoryNotFoundException e) {
+            LOG.error(ExceptionUtils.getRootCause(e));
+        }
+        super.setCategory(categoryDTO);
         super.setReporter(currentUserBean);
         super.setCreationTime(LocalDateTime.now());
         super.setTicketStatus(TicketStatus.NEW);
-        super.setAssignee(getCategory().getTutor());
+        super.setAssignee(categoryDTO.getTutor());
 
         TicketDTO ticketDTO = ticketService.createTicket(this);
         userDataBean.addTicket(ticketDTO);
@@ -49,4 +64,11 @@ public class TicketBean extends TicketDTO implements Serializable {
         eventProducer.produceHistoryEvent(ticketId, historyAction, null);
     }
 
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
 }

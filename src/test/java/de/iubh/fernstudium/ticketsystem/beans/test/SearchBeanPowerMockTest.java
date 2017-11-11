@@ -19,12 +19,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.VerificationModeFactory;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import sun.security.krb5.internal.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -65,8 +63,8 @@ public class SearchBeanPowerMockTest {
         TicketStatus[] ticketStatus = TicketStatus.values();
         int expectedSize = ticketStatus.length;
 
-        String[] stati = searchBean.getStati();
-        assertEquals(expectedSize, stati.length);
+        List<String> stati = searchBean.getStati();
+        assertEquals(expectedSize, stati.size());
 
         for(String s : stati){
             assertNotNull(TicketStatus.fromString(s));
