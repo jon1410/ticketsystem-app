@@ -12,7 +12,6 @@ import de.iubh.fernstudium.ticketsystem.services.SearchService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -23,16 +22,13 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 @SessionScoped
 @Named("searchBean")

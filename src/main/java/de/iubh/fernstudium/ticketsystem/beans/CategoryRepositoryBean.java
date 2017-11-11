@@ -39,12 +39,12 @@ public class CategoryRepositoryBean {
 
     public void deleteCategory(CategoryDTO categoryDTO){
         try {
+            if(categoryDTO == null){
+                throw new CategoryNotFoundException("DTO ist null!");
+            }
             categoryService.deleteCategoryById(categoryDTO.getCategoryId());
         } catch (CategoryNotFoundException e) {
             FacesContextUtils.resolveError(UITexts.DELETE_CATEGORY_ERROR_SUMMARY, UITexts.DELETE_CATEGORY_ERROR_DETAIL, null);
-        } catch (Exception ex){
-            LOG.error(ExceptionUtils.getRootCauseMessage(ex));
-            FacesContextUtils.resolveError(UITexts.DELETE_CATEGORY_DB_ERROR_DETAIL, UITexts.DELETE_CATEGORY_DB_ERROR_DETAIL, null);
             return;
         }
         allCategories.remove(categoryDTO);

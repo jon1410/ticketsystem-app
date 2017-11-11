@@ -66,22 +66,23 @@ public class CurrentUserBean extends UserDTO implements Serializable {
         restoreNewValuesToNull();
     }
 
-    public void changePassword(){
-        if(!newPassword.equals(getRepeatedPassword())){
+    public void changePassword() {
+        if (!newPassword.equals(getRepeatedPassword())) {
             FacesContextUtils.resolveError(UITexts.PW_NOT_EQUAL,
                     UITexts.PW_NOT_EQUAL, null);
-        }
-        try {
-            boolean isPwChanged = userService.changePassword(super.getUserId(), super.getPassword(), this.getRepeatedPassword());
-            if(isPwChanged){
-                restoreNewValuesToNull();
-                FacesContextUtils.resolveInfo(UITexts.CHANGE_PW_OK,
-                        UITexts.CHANGE_PW_OK, null);
-            }else{
+        } else {
+            try {
+                boolean isPwChanged = userService.changePassword(super.getUserId(), super.getPassword(), this.getRepeatedPassword());
+                if (isPwChanged) {
+                    restoreNewValuesToNull();
+                    FacesContextUtils.resolveInfo(UITexts.CHANGE_PW_OK,
+                            UITexts.CHANGE_PW_OK, null);
+                } else {
+                    resolveChangePasswordError();
+                }
+            } catch (UserNotExistsException | InvalidPasswordException e) {
                 resolveChangePasswordError();
             }
-        } catch (UserNotExistsException | InvalidPasswordException e ) {
-            resolveChangePasswordError();
         }
     }
 

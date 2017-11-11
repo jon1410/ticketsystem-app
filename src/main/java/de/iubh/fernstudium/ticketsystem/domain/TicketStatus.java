@@ -23,4 +23,13 @@ public enum TicketStatus {
     public String getResolvedText(){
         return resolvedText;
     }
+
+    public static TicketStatus fromString(String text){
+        for(TicketStatus t : TicketStatus.values()){
+            if(t.resolvedText.equalsIgnoreCase(text)){
+                return t;
+            }
+        }
+        return null;
+    }
 }
