@@ -50,6 +50,8 @@ public class SearchBean implements Serializable {
     //Detail-Suche
     private String dateFrom; //muss dd.MM.yyyy sein
     private String dateTo; //muss dd.MM.yyyy sein
+    private String[] stati;
+    private String[] selectedStatiForSearch;
     private Map<String, TicketStatus> statusValues;
     private String userIdReporter;
     private String userIdAssignee;
@@ -60,10 +62,10 @@ public class SearchBean implements Serializable {
     @PostConstruct
     public void initStatusValues(){
         TicketStatus[] ticketStati = TicketStatus.values();
-        statusValues = new LinkedHashMap<>(ticketStati.length);
+        stati = new String[ticketStati.length];
 
-        for(TicketStatus t : ticketStati){
-            statusValues.put(t.getResolvedText(), t);
+        for(int i=0; i<ticketStati.length; i++){
+            stati[i] = ticketStati[i].getResolvedText();
         }
     }
 
@@ -150,8 +152,13 @@ public class SearchBean implements Serializable {
             }
         }
 
+        List<String> statusValuesAsString = new ArrayList<>(selectedStatiForSearch.length);
+        for(String s : selectedStatiForSearch){
+            TicketStatus t = TicketStatus.valueOf(s);
+            statusValuesAsString.add(t.toString());
+        }
         if(statusValues != null && !statusValues.isEmpty()){
-            List<String> statusValuesAsString = statusValues.values().stream().map(v -> v.toString()).collect(Collectors.toList());
+            //statusValuesAsString = statusValues.values().stream().map(v -> v.toString()).collect(Collectors.toList());
             queryBuilder = queryBuilder.and("STATUS").in(statusValuesAsString.toArray(new String[0])); //siehe https://shipilev.net/blog/2016/arrays-wisdom-ancients/
         }
         CustomNativeQuery customNativeQuery = queryBuilder.buildQuery();
@@ -233,5 +240,21 @@ public class SearchBean implements Serializable {
 
     public void setUserIdAssignee(String userIdAssignee) {
         this.userIdAssignee = userIdAssignee;
+    }
+
+    public String[] getStati() {
+        return stati;
+    }
+
+    public void setStati(String[] stati) {
+        this.stati = stati;
+    }
+
+    public String[] getSelectedStatiForSearch() {
+        return selectedStatiForSearch;
+    }
+
+    public void setSelectedStatiForSearch(String[] selectedStatiForSearch) {
+        this.selectedStatiForSearch = selectedStatiForSearch;
     }
 }

@@ -14,8 +14,6 @@ import org.apache.logging.log4j.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
 
 @Named("categoryBean")
 @RequestScoped
@@ -29,8 +27,12 @@ public class CategoryBean extends CategoryDTO{
     private CategoryService categoryService;
     @Inject
     private CategoryRepositoryBean categoryRepositoryBean;
+   
 
     private String tutorUserId;
+    
+     //Alle Tutoren in einer Liste für die Filterung in der Kategorie "NEU"
+    private List<Tutoren> alleTutoren;
 
     public void createCategory(){
         UserDTO userDTO = null;

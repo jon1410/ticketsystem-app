@@ -38,4 +38,5 @@ public class DateTimeUtil {
         LocalDate localDate = LocalDate.parse(date, formatter);
         return localDate.atStartOfDay();
     }
+
 }

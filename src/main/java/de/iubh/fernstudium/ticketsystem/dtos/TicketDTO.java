@@ -30,6 +30,7 @@ public class TicketDTO {
     private List<CommentDTO> comments;
     private List<Long> childTicketsIds;
     private Long masterTicketId;
+    private String creationTimeAsString;
 
     public TicketDTO() {
     }
@@ -135,7 +136,13 @@ public class TicketDTO {
         this.comments = comments;
     }
 
+    public String getCreationTimeAsString() {
+        return creationTime.toString();
+    }
 
+    public void setCreationTimeAsString(String creationTimeAsString) {
+        this.creationTimeAsString = creationTimeAsString;
+    }
 
     /**
      * Erzeugt eine Entity aus dem DTO

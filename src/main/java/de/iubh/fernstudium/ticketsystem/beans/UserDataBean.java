@@ -39,7 +39,7 @@ public class UserDataBean implements Serializable {
     @Inject
     private HistoryService historyService;
 
-    private List<TicketDTO> tickets;
+    private List<TicketDTO> tickets; // entspricht den offenen Tickets des aktuellen Users
     private List<TicketDTO> reportedByLoggedInUser;
     private TicketDTO activeTicket;
     private List<HistoryDTO> historyOfActiveTicket;

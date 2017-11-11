@@ -86,16 +86,22 @@
 				<b:datepicker value="Bis" placeholder="Bis"></b:datepicker>
 				<b:inputText placeholder="Ticketersteller"></b:inputText>
 				<b:inputText placeholder="Bearbeiter"></b:inputText>
+<<<<<<< HEAD
 				<strong>Zusätzlich folgende Statuse berücksichtigen</strong>
 				<b:selectMultiMenu value="#{searchBean.stati}">
 					<f:selectItems value="#{searchBean.selectedStatiForSearch}"
 						itemLabel="" itemValue=""></f:selectItems>
 				</b:selectMultiMenu>
+=======
+				<!--h:selectManyCheckbox value="#{searchBean.stati}">
+					<f:selectItems value="#{searchBean.selectedStatiForSearch}" />
+				</h:selectManyCheckbox-->
+>>>>>>> f7bab4d99e599b663621699463360f3d298c056f
 			</b:panelGrid>
 
 			<f:facet name="footer">
 				<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
-					update=":msgs"></b:commandButton>
+					update=":msgs" actionListener="#{searchBean.searchDetails()}"></b:commandButton>
 			</f:facet>
 		</h:form>
 	</b:modal>
