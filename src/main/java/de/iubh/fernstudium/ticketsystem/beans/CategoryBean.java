@@ -27,8 +27,12 @@ public class CategoryBean extends CategoryDTO{
     private CategoryService categoryService;
     @Inject
     private CategoryRepositoryBean categoryRepositoryBean;
+   
 
     private String tutorUserId;
+    
+     //Alle Tutoren in einer Liste für die Filterung in der Kategorie "NEU"
+    private List<Tutoren> alleTutoren;
 
     public void createCategory(){
         UserDTO userDTO = null;
