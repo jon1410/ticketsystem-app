@@ -48,6 +48,34 @@
 
 
 
+	<!-- ERGEBNIS SUCHE -->
+	<b:modal title="Suchergebnisse" styleClass="ergebnisModal fade"
+		closeOnEscape="true" id="ergebnis" backdrop="false">
+		<h:form id="formErgebnis">
+			<h3>Hier sind Ihre Ergebnisse</h3>
+			<b:panelGrid colSpans="12" id="ergebnisPanel">
+				<b:dataTable value="#{searchBean.foundTickets}" var="ergebnis">
+					<b:dataTableColumn label="Titel" value="#{ergebnis.title}"></b:dataTableColumn>
+					<b:dataTableColumn label="Status" value="#{ergebnis.status}"></b:dataTableColumn>
+					<b:dataTableColumn label="Ersteller"
+						value="#{ergebnis.reporter.lastName}"></b:dataTableColumn>
+					<b:dataTableColumn label="Datum">
+						<h:outputText value="#{ergebnis.creationTime}">
+							<f:convertDateTime dateStyle="medium" />
+						</h:outputText>
+					</b:dataTableColumn>
+					<b:dataTableColumn label="Beauftragter"
+						value="#{ergebnis.assignee.lastName}"></b:dataTableColumn>
+				</b:dataTable>
+			</b:panelGrid>
+
+
+		</h:form>
+	</b:modal>
+	<!-- ENDE ERGEBNIS SUCHE -->
+
+
+
 	<!-- SUCHE -->
 	<b:modal title="Suchkriterien einstellen" styleClass="sucheModal fade"
 		closeOnEscape="true" id="suche" backdrop="false">
@@ -58,9 +86,17 @@
 				<b:datepicker value="Bis" placeholder="Bis"></b:datepicker>
 				<b:inputText placeholder="Ticketersteller"></b:inputText>
 				<b:inputText placeholder="Bearbeiter"></b:inputText>
+<<<<<<< HEAD
+				<strong>Zusätzlich folgende Statuse berücksichtigen</strong>
+				<b:selectMultiMenu value="#{searchBean.stati}">
+					<f:selectItems value="#{searchBean.selectedStatiForSearch}"
+						itemLabel="" itemValue=""></f:selectItems>
+				</b:selectMultiMenu>
+=======
 				<!--h:selectManyCheckbox value="#{searchBean.stati}">
 					<f:selectItems value="#{searchBean.selectedStatiForSearch}" />
 				</h:selectManyCheckbox-->
+>>>>>>> f7bab4d99e599b663621699463360f3d298c056f
 			</b:panelGrid>
 
 			<f:facet name="footer">
@@ -70,6 +106,44 @@
 		</h:form>
 	</b:modal>
 	<!-- ENDE SUCHE -->
+	
+	
+	<!-- DETAIL TICKET -->
+	<b:modal title="Details" styleClass="detailModal fade"
+		closeOnEscape="true" id="suche" backdrop="false">
+		<h:form id="formDetail">
+			<h3>Detail zu #{userDataBean.selektiertesTicket.title}</h3>
+			<b:panelGrid colSpans="3,3,3,3" id="detailPanel">
+				<b:commandButton value="Bearbeitung starten" look="success"></b:commandButton>
+				<b:commandButton value="Ticket abschließen" look="warning"></b:commandButton>
+				<b:commandButton value="Ticket zurückgeben" look="danger"></b:commandButton>
+				<b:commandButton value="Histroie" look="default"></b:commandButton>
+			</b:panelGrid>
+			<b:panelGrid colSpans="6,6">
+				<h:outputText value="ID" />
+				<h:outputText value="#{userDataBean.selektiertesTicket.id}" />
+				
+				<h:outputText value="Status" />
+				<h:outputText value="#{userDataBean.selektiertesTicket.ticketStatus}" />
+				
+				<h:outputText value="Datum" />
+				<h:outputText value="#{userDataBean.selektiertesTicket.creationTime}" >
+					<f:convertDateTime dateStyle="medium"/>
+				</h:outputText>
+				
+				<h:outputText value="Besitzer" />
+				<h:outputText value="#{userDataBean.selektiertesTicket.reporter.lastName}" />
+				
+			</b:panelGrid>
+			<b:inputTextarea value="#{userDataBean.selektiertesTicket.description}"></b:inputTextarea>
+			<hr/>
+			<b:inputTextarea placeholder="Kommentar"></b:inputTextarea>
+			<f:facet name="footer">
+				<b:commandButton value="Kommentar übernehmen" styleClass="btnSuchekriterien" update=":msgs"></b:commandButton>
+			</f:facet>
+		</h:form>
+	</b:modal>
+	<!-- ENDE DETAIL TICKET -->
 
 
 
@@ -100,8 +174,24 @@
 										<!--</b:selectOneMenu>-->
 									</b:panelGrid>
 
-									<b:inputText placeholder="Verantwortlicher Tutor"
-										value="#{categoryBean.tutorUserId}"></b:inputText>
+
+									<!--  Selbes Prinzip wie in "Neues Ticket"
+										
+										CONVERTER WIRD BENÖTIGT UM DAS OBJEKT ZU CASTEN
+										https://www.primefaces.org/showcase/ui/input/listbox.xhtml
+				
+									<p:selectOneListbox id="tutorFilter"
+										value="#{categoryBean.tutorUserId}" converter="TutorConverter"
+										var="tutor" filter="true" filterMatchMode="contains">
+										<f:selectItems value="#{categoryBean.alleTutoren}" var="theme"
+											itemLabel="#{tutor}" itemValue="#{tutor}" />
+
+										<p:column>
+											<h:outputText value="#{tutor}" />
+										</p:column>
+									</p:selectOneListbox>
+									 -->
+
 
 									<b:commandButton value="speichern" styleClass="btnsKategorie"
 										actionListener="#{categoryBean.createCategory()}"></b:commandButton>
@@ -147,22 +237,46 @@
 							<b:panel title="Ändern">
 								<h4>Ändere Kategorien</h4>
 								<hr />
-								<b:dataTable value="#{categoryRepositoryBean.allCategories}"
-									var="category">
-									<b:dataTableColumn label="ID">
+								<p:dataTable value="#{categoryRepositoryBean.allCategories}"
+									var="category" emptyMessage="Keine Datensätze gefunden">
+
+									<p:ajax event="rowEdit"
+										listener="#{categoryRepositoryBean.eintragBearbeitet()}"
+										update=":msgs" />
+
+									<p:column headerText="Id">
 										<h:outputText value="#{category.categoryId}" />
-									</b:dataTableColumn>
-									<b:dataTableColumn label="Name">
-										<h:outputText value="#{category.categoryName}" />
-									</b:dataTableColumn>
-									<b:dataTableColumn label="Bearbeiter">
-										<h:outputText value="#{category.tutor.lastName}" />
-									</b:dataTableColumn>
-									<b:dataTableColumn label="">
-										<b:commandButton value="ändern" look="warning"
-											actionListener="#{categoryRepositoryBean.changeCategory(category)}"></b:commandButton>
-									</b:dataTableColumn>
-								</b:dataTable>
+									</p:column>
+
+									<p:column headerText="Name">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{category.categoryName}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{category.categoryName}"
+													style="width:100%" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="Bearbeiter">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{category.tutor.lastName}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText id="modelInput"
+													value="#{category.tutor.lastName}" style="width:100%" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column style="width:32px">
+										<p:rowEditor />
+									</p:column>
+
+								</p:dataTable>
 							</b:panel>
 						</b:accordion>
 					</b:panelGrid>
@@ -196,20 +310,13 @@
 							<!-- only if current user == reporter of Ticket !! -->
 							<b:commandButton look="info" value="Details"
 								tooltip="Schau dir den fortschritt deines Tickets an"
-								actionListener="#{userDataBean.showDetail(ticket)}"></b:commandButton>
+								actionListener="#{userDataBean.showDetail(ticket)}" oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
 							<b:commandButton look="danger" value="abbrechen"
 								tooltip="Beendet den aktuellen Vorgang des Tickets"
 								actionListener="#{userDataBean.terminateTicket(ticket)}"></b:commandButton>
-						</b:dataTableColumn>
-						<b:dataTableColumn label="">
-							<b:commandButton look="info" value="Bearbeitung starten"
-								tooltip="Startet den Vorgang"></b:commandButton>
-						</b:dataTableColumn>
-						<b:dataTableColumn label="">
 							<b:commandButton look="warning" value="An Reporter zurückgeben"
 								tooltip="Gibt das Ticket an den Ersteller zurück"></b:commandButton>
 						</b:dataTableColumn>
-
 					</b:dataTable>
 				</h:form>
 				<hr />
@@ -340,11 +447,23 @@
 				</b:inputTextarea>
 
 				<b:message for="kategorie"></b:message>
-				<b:selectOneMenu id="kategorie" value="#{ticketBean.category}"
-					required="true" label="Kategorie">
+
+
+				<!-- 
+				CONVERTER WIRD BENÖTIGT UM DAS OBJEKT ZU CASTEN
+				https://www.primefaces.org/showcase/ui/input/listbox.xhtml
+				 
+				<p:selectOneListbox id="advanced" value="#{ticketBean.category}"
+					converter="NeuConverter" var="category" filter="true"
+					filterMatchMode="contains" required="true">
 					<f:selectItems value="#{categoryRepositoryBean.allCategories}"
 						var="cat" itemLabel="#{cat.categoryName}" itemValue="#{cat}" />
-				</b:selectOneMenu>
+					<p:column>
+						<h:outputText value="#{category.categoryName}" />
+					</p:column>
+				</p:selectOneListbox>
+				-->
+
 			</b:panelGrid>
 
 			<f:facet name="footer">
@@ -377,11 +496,10 @@
 						<b:navLink value="Sucheinstellungen"
 							onclick="$('.sucheModal').modal()"></b:navLink>
 						<b:navLink value="Kategorien"
-							rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}"
 							onclick="$('.kategorienModal').modal()"></b:navLink>
 						<b:navLink />
 						<b:navLink value="User erstellen" onclick="$('.newUser').modal()"
-							rendered="#{currentUserBean.resolvedUserRole eq 'Administrator'}"></b:navLink>
+							rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}"></b:navLink>
 					</b:dropMenu>
 					<b:dropMenu value="Profil">
 						<b:navLink value="Profil bearbeiten"
@@ -406,7 +524,8 @@
 				<div class="btn-group">
 					<b:commandButton iconAwesome="fa-search"
 						styleClass="btnSuchenNavbar"
-						actionListener="#{searchBean.searchSimple}">
+						oncomplete="$('.ergebnisModal').modal(); return false;"
+						update="formErgebnis" actionListener="#{searchBean.searchSimple}">
 					</b:commandButton>
 					<button type="button"
 						class="btn btn-success dropdown-toggle btnSuche"
