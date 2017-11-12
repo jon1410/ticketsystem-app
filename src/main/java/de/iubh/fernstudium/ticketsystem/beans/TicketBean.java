@@ -46,6 +46,7 @@ public class TicketBean extends TicketDTO implements Serializable {
             categoryDTO =  categoryService.getCategoryById(this.categoryId);
         } catch (CategoryNotFoundException e) {
             LOG.error(ExceptionUtils.getRootCause(e));
+            return FacesContextUtils.resolveInfo(UITexts.NEW_TICKET_ERROR, UITexts.NEW_TICKET_ERROR, null);
         }
         super.setCategory(categoryDTO);
         super.setReporter(currentUserBean);

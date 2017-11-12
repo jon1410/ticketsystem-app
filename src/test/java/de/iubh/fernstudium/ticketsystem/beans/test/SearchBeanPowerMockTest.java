@@ -5,6 +5,7 @@ import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
+import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
@@ -27,16 +28,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 import static org.junit.Assert.*;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest(FacesContextUtils.class)
+@PrepareForTest({FacesContextUtils.class})
 public class SearchBeanPowerMockTest {
 
     @InjectMocks
@@ -48,13 +46,14 @@ public class SearchBeanPowerMockTest {
     private TicketService ticketService;
     @Mock
     private UserService userService;
-    @Mock
-    private Future<List<TicketDTO>> future;
+
+    private LocalDateTime creationTime;
 
     @Before
     public void init(){
         searchBean = new SearchBean();
         MockitoAnnotations.initMocks(this);
+        creationTime = LocalDateTime.now();
     }
 
     @Test
@@ -89,22 +88,146 @@ public class SearchBeanPowerMockTest {
         PowerMockito.mockStatic(FacesContextUtils.class);
         searchBean.setSearchString("test");
 
-        Mockito.when(searchService.searchByTitle(Mockito.anyString())).thenReturn(null);
-        Mockito.when(searchService.searchByDescription(Mockito.anyString())).thenReturn(null);
-        Mockito.when(future.get(3, TimeUnit.SECONDS)).thenReturn(buildDTOList());
-
+        Mockito.when(searchService.searchByTitle(Mockito.anyString())).thenReturn(buildFuture(5));
+        Mockito.when(searchService.searchByDescription(Mockito.anyString())).thenReturn(buildFuture(1));
 
         searchBean.searchSimple();
         assertNotNull(searchBean.getFoundTickets());
-        assertTrue(searchBean.getFoundTickets().size() == 1);
+        assertTrue(searchBean.getFoundTickets().size() == 1); //weil intern Set verwendet wird und alle DTOs gleich sind
         assertNull(searchBean.getSearchString());
+
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
     }
 
-    private List<TicketDTO> buildDTOList() {
-        List<TicketDTO> tickets = new ArrayList<>(5);
-        for(int i=0; i<tickets.size(); i++){
+    @Test
+    public void testSearchSimpleTextNothingFound() throws NoSuchTicketException, InterruptedException, ExecutionException, TimeoutException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        searchBean.setSearchString("test");
+
+        Mockito.when(searchService.searchByTitle(Mockito.anyString())).thenReturn(buildFuture(0));
+        Mockito.when(searchService.searchByDescription(Mockito.anyString())).thenReturn(buildFuture(0));
+
+        searchBean.searchSimple();
+        assertNull(searchBean.getFoundTickets());
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
+    public void testSearchDetailsOnlyWithDates()  {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        String sDate = "2017-01-01";
+        searchBean.setDateFrom(sDate);
+        searchBean.setDateTo(sDate);
+        assertEquals(sDate, searchBean.getDateFrom());
+        assertEquals(sDate, searchBean.getDateTo());
+
+        Mockito.when(searchService.searchByQuery(Mockito.anyString(), Mockito.anyList())).thenReturn(buildFuture(3));
+
+        searchBean.searchDetails();
+        assertNotNull(searchBean.getFoundTickets());
+        assertTrue(searchBean.getFoundTickets().size() == 3);
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
+    public void testSearchDetailsDatesAndStatus()  {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        String sDate = "2017-01-01";
+        searchBean.setDateFrom(sDate);
+        searchBean.setDateTo(sDate);
+        assertEquals(sDate, searchBean.getDateFrom());
+        assertEquals(sDate, searchBean.getDateTo());
+        String[] selectedStati = {TicketStatus.NEW.getResolvedText(), TicketStatus.CLO.getResolvedText()};
+        searchBean.setSelectedStati(selectedStati);
+        assertTrue(searchBean.getSelectedStati().length == 2);
+
+        Mockito.when(searchService.searchByQuery(Mockito.anyString(), Mockito.anyList())).thenReturn(buildFuture(3));
+
+        searchBean.searchDetails();
+        assertNotNull(searchBean.getFoundTickets());
+        assertTrue(searchBean.getFoundTickets().size() == 3);
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
+    public void testSearchDetailsDatesAndReporterAndAssignee() throws UserNotExistsException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        String sDate = "2017-01-01";
+        searchBean.setDateFrom(sDate);
+        searchBean.setDateTo(sDate);
+        assertEquals(sDate, searchBean.getDateFrom());
+        assertEquals(sDate, searchBean.getDateTo());
+        searchBean.setUserIdReporter("testUser");
+        assertEquals("testUser", searchBean.getUserIdReporter());
+        searchBean.setUserIdAssignee("testUser");
+        assertEquals("testUser", searchBean.getUserIdAssignee());
+
+        Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenReturn(buildUserDTO());
+        Mockito.when(searchService.searchByQuery(Mockito.anyString(), Mockito.anyList())).thenReturn(buildFuture(3));
+
+        searchBean.searchDetails();
+        assertNotNull(searchBean.getFoundTickets());
+        assertTrue(searchBean.getFoundTickets().size() == 3);
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
+    public void testSearchDetailsDatesAndReporterAndAssigneeWithException() throws UserNotExistsException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        String sDate = "2017-01-01";
+        searchBean.setDateFrom(sDate);
+        searchBean.setDateTo(sDate);
+        assertEquals(sDate, searchBean.getDateFrom());
+        assertEquals(sDate, searchBean.getDateTo());
+        searchBean.setUserIdReporter("testUser");
+        assertEquals("testUser", searchBean.getUserIdReporter());
+        searchBean.setUserIdAssignee("testUser");
+        assertEquals("testUser", searchBean.getUserIdAssignee());
+
+        Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenThrow(new UserNotExistsException("test"));
+        Mockito.when(searchService.searchByQuery(Mockito.anyString(), Mockito.anyList())).thenReturn(buildFuture(3));
+
+        searchBean.searchDetails();
+        assertNotNull(searchBean.getFoundTickets());
+        assertTrue(searchBean.getFoundTickets().size() == 3);
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
+    public void testSearchDetailsNothingFound() throws UserNotExistsException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        String sDate = "2017-01-01";
+        searchBean.setDateFrom(sDate);
+        searchBean.setDateTo(sDate);
+        assertEquals(sDate, searchBean.getDateFrom());
+        assertEquals(sDate, searchBean.getDateTo());
+        searchBean.setUserIdReporter("testUser");
+        assertEquals("testUser", searchBean.getUserIdReporter());
+        searchBean.setUserIdAssignee("testUser");
+        assertEquals("testUser", searchBean.getUserIdAssignee());
+
+        Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenThrow(new UserNotExistsException("test"));
+        Mockito.when(searchService.searchByQuery(Mockito.anyString(), Mockito.anyList())).thenReturn(buildFuture(0));
+
+        searchBean.searchDetails();
+        assertNull(searchBean.getFoundTickets());
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    private Future<List<TicketDTO>> buildFuture(int size) {
+        return CompletableFuture.completedFuture(buildDTOList(size));
+    }
+
+    private List<TicketDTO> buildDTOList(int size) {
+        List<TicketDTO> tickets = new ArrayList<>(size);
+        for(int i=0; i<size; i++){
             tickets.add(buildTicketDTO());
         }
         return tickets;
@@ -113,7 +236,7 @@ public class SearchBeanPowerMockTest {
 
     private TicketDTO buildTicketDTO() {
         return new TicketDTO(1L, "title", "desc",
-                TicketStatus.NEW, buildUserDTO(), LocalDateTime.now(), buildCategoryDTO(), buildUserDTO(),
+                TicketStatus.NEW, buildUserDTO(), creationTime, buildCategoryDTO(), buildUserDTO(),
                 null, null, null);
     }
 

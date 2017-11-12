@@ -109,8 +109,4 @@ public class CategoryRepositoryBean {
     public void setNewTutorUserId(String newTutorUserId) {
         this.newTutorUserId = newTutorUserId;
     }
-
-    public void onRowEdit(RowEditEvent event) {
-        System.out.println(event.getObject().toString());
-    }
 }

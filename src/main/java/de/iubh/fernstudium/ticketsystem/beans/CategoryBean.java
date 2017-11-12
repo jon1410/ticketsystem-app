@@ -10,7 +10,6 @@ import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.primefaces.event.RowEditEvent;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -31,9 +30,6 @@ public class CategoryBean extends CategoryDTO{
    
 
     private String tutorUserId;
-    
-     //Alle Tutoren in einer Liste für die Filterung in der Kategorie "NEU"
-    //private List<Tutoren> alleTutoren;
 
     public void createCategory(){
         UserDTO userDTO = null;

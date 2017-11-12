@@ -49,7 +49,6 @@ public class SearchBean implements Serializable {
     private List<String> stati;
     private String selectedStatiForSearch;
     private String[] selectedStati;
-    private Map<String, TicketStatus> statusValues;
     private String userIdReporter;
     private String userIdAssignee;
 
@@ -139,14 +138,15 @@ public class SearchBean implements Serializable {
             }
         }
 
-        List<String> statusValuesAsString  = Arrays.asList(selectedStati);
-//        List<String> statusValuesAsString = new ArrayList<>(selectedStatiForSearch.length);
-//        for(String s : selectedStatiForSearch){
-//            TicketStatus t = TicketStatus.valueOf(s);
-//            statusValuesAsString.add(t.toString());
-//        }
-        if(statusValues != null && !statusValues.isEmpty()){
-            //statusValuesAsString = statusValues.values().stream().map(v -> v.toString()).collect(Collectors.toList());
+        List<String> statusValuesAsString = null;
+        if(selectedStati != null && selectedStati.length  > 0){
+            statusValuesAsString = new ArrayList<>(selectedStati.length);
+            for(String statusValue : selectedStati){
+                statusValuesAsString.add(TicketStatus.fromString(statusValue).toString());
+            }
+        }
+
+        if(statusValuesAsString != null && !statusValuesAsString.isEmpty()){
             queryBuilder = queryBuilder.and("STATUS").in(statusValuesAsString.toArray(new String[0])); //siehe https://shipilev.net/blog/2016/arrays-wisdom-ancients/
         }
         CustomNativeQuery customNativeQuery = queryBuilder.buildQuery();
@@ -204,14 +204,6 @@ public class SearchBean implements Serializable {
 
     public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
-    }
-
-    public Map<String, TicketStatus> getStatusValues() {
-        return statusValues;
-    }
-
-    public void setStatusValues(Map<String, TicketStatus> statusValues) {
-        this.statusValues = statusValues;
     }
 
     public String getUserIdReporter() {

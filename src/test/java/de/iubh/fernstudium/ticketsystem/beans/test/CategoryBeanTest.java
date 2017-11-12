@@ -58,6 +58,8 @@ public class CategoryBeanTest {
         Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenReturn(userDTO);
         Mockito.when(categoryService.addCategory(Mockito.any(CategoryDTO.class))).thenReturn(true);
 
+        categoryBean.createCategory();
+
         PowerMockito.verifyStatic(VerificationModeFactory.times(0));
         FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
     }
@@ -67,7 +69,6 @@ public class CategoryBeanTest {
 
         assertNotNull(categoryBean);
         PowerMockito.mockStatic(FacesContextUtils.class);
-        PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenThrow(new UserNotExistsException("User not exists"));
         categoryBean.setTutorUserId("tutor@ticketsystem.de");
         categoryBean.createCategory();

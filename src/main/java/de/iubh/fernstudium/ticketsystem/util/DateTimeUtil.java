@@ -1,8 +1,5 @@
 package de.iubh.fernstudium.ticketsystem.util;
 
-import javax.ejb.Local;
-import javax.enterprise.context.ApplicationScoped;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,8 +9,6 @@ import java.time.format.DateTimeFormatter;
  * Created by ivanj on 16.07.2017.
  */
 public class DateTimeUtil {
-
-    //private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public static LocalDateTime sqlTimestampToLocalDate(Timestamp tsp){
         if(tsp == null){

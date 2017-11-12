@@ -47,13 +47,13 @@ public class CategoryDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){ return true;}
-        if (o == null || getClass() != o.getClass()) {return false;}
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         CategoryDTO that = (CategoryDTO) o;
 
-        if (categoryId != null ? !categoryId.equals(that.categoryId) : that.categoryId != null) {return false;}
-        if (categoryName != null ? !categoryName.equals(that.categoryName) : that.categoryName != null) {return false;}
+        if (categoryId != null ? !categoryId.equals(that.categoryId) : that.categoryId != null) return false;
+        if (categoryName != null ? !categoryName.equals(that.categoryName) : that.categoryName != null) return false;
         return tutor != null ? tutor.equals(that.tutor) : that.tutor == null;
     }
 

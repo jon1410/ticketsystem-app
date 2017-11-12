@@ -16,6 +16,7 @@ public class UITexts {
 
     //Ticket-Texte
     public static final String NEW_TICKET = "Neues Ticket erstellt";
+    public static final String NEW_TICKET_ERROR = "Fehler beim Erstellen eines neuen Tickets.";
     public static final String CHANGE_STAT_ERROR = "Fehler bei Stautsänderung ist aufgetreten. Vorgang abgebrochen.";
     public static final String STOP_TICKET_ERROR_SUMMARY = "Bearbeitungsvorgang nicht abgebrochen.";
     public static final String STOP_TICKET_ERROR_DETAIL = "Der Bearbeitungsvorgangs des ausgewählten Tickets kann aktuell nicht abgebrochen werden.";

@@ -22,6 +22,8 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
 @PrepareForTest(FacesContextUtils.class)
@@ -44,7 +46,7 @@ public class CategoryRepositoryNegativeTests {
     public void testDeleteCategoriesWithCategoryNotFoundException() throws CategoryNotFoundException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
-        Mockito.when(categoryService.deleteCategoryById(Mockito.anyString())).thenThrow(new CategoryNotFoundException());
+        Mockito.when(categoryService.deleteCategoryById(Mockito.anyString())).thenThrow(new CategoryNotFoundException("test"));
         PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         CategoryDTO categoryDTO = buildDTO();
         categoryRepositoryBean.deleteCategory(categoryDTO);
@@ -56,7 +58,6 @@ public class CategoryRepositoryNegativeTests {
     public void testDeleteCategoriesWithDTONull() throws CategoryNotFoundException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
-        Mockito.when(categoryService.deleteCategoryById(Mockito.anyString())).thenThrow(new CategoryNotFoundException());
         PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         categoryRepositoryBean.deleteCategory(null);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
@@ -67,7 +68,7 @@ public class CategoryRepositoryNegativeTests {
     public void testChangeCategoryWithCategoryNotFoundException() throws CategoryNotFoundException, UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
-        Mockito.when(categoryService.changeCategory(Mockito.any(CategoryDTO.class))).thenThrow(new CategoryNotFoundException());
+        Mockito.when(categoryService.changeCategory(Mockito.any(CategoryDTO.class))).thenThrow(new CategoryNotFoundException("test"));
         PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         CategoryDTO categoryDTO = buildDTO();
         categoryRepositoryBean.changeCategory(categoryDTO);
@@ -79,7 +80,7 @@ public class CategoryRepositoryNegativeTests {
     public void testChangeCategoryWithDTONull() throws CategoryNotFoundException, UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
-        Mockito.when(categoryService.changeCategory(Mockito.any(CategoryDTO.class))).thenThrow(new CategoryNotFoundException());
+        Mockito.when(categoryService.changeCategory(Mockito.any(CategoryDTO.class))).thenThrow(new CategoryNotFoundException("test"));
         PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         categoryRepositoryBean.changeCategory(null);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
@@ -90,12 +91,23 @@ public class CategoryRepositoryNegativeTests {
     public void testChangeCategoryWithUserNotExistsException() throws CategoryNotFoundException, UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
-        Mockito.when(categoryService.changeCategory(Mockito.any(CategoryDTO.class))).thenThrow(new UserNotExistsException());
+        Mockito.when(categoryService.changeCategory(Mockito.any(CategoryDTO.class))).thenThrow(new UserNotExistsException("Test"));
         PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         CategoryDTO categoryDTO = buildDTO();
         categoryRepositoryBean.changeCategory(categoryDTO);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
+    public void testGetSetMethods(){
+        String newCat = "NewCategory";
+        String newTutorUserId = "NewTutor";
+        categoryRepositoryBean.setNewCategoryName(newCat);
+        categoryRepositoryBean.setNewTutorUserId(newTutorUserId);
+
+        assertEquals(newCat, categoryRepositoryBean.getNewCategoryName());
+        assertEquals(newTutorUserId, categoryRepositoryBean.getNewTutorUserId());
     }
 
     private CategoryDTO buildDTO() {
