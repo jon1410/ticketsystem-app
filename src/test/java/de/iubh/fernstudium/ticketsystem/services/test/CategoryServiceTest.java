@@ -14,7 +14,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.needle4j.annotation.ObjectUnderTest;

@@ -27,7 +27,7 @@ public class StartUpConfig {
     private static final String USERNAME = "admin@ticketsystem.de";
 
     @PostConstruct
-    private void createAdminUser(){
+    public void createAdminUser(){
 
         UserEntity u = userDBService.findById(USERNAME);
         if(u == null){
