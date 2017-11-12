@@ -2,7 +2,6 @@ package de.iubh.fernstudium.ticketsystem.beans;
 
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
-import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.domain.event.payload.CachePayload;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -147,5 +146,45 @@ public class CurrentUserBean extends UserDTO implements Serializable {
 
     public void setRepeatedPassword(String repeatedPassword) {
         this.repeatedPassword = repeatedPassword;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CurrentUserBean that = (CurrentUserBean) o;
+
+        if (resolvedUserRole != null ? !resolvedUserRole.equals(that.resolvedUserRole) : that.resolvedUserRole != null)
+            return false;
+        if (newFirstName != null ? !newFirstName.equals(that.newFirstName) : that.newFirstName != null) return false;
+        if (newLastName != null ? !newLastName.equals(that.newLastName) : that.newLastName != null) return false;
+        if (newPassword != null ? !newPassword.equals(that.newPassword) : that.newPassword != null) return false;
+        return repeatedPassword != null ? repeatedPassword.equals(that.repeatedPassword) : that.repeatedPassword == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (resolvedUserRole != null ? resolvedUserRole.hashCode() : 0);
+        result = 31 * result + (newFirstName != null ? newFirstName.hashCode() : 0);
+        result = 31 * result + (newLastName != null ? newLastName.hashCode() : 0);
+        result = 31 * result + (newPassword != null ? newPassword.hashCode() : 0);
+        result = 31 * result + (repeatedPassword != null ? repeatedPassword.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CurrentUserBean{" +
+                "userService=" + userService +
+                ", eventProducer=" + eventProducer +
+                ", resolvedUserRole='" + resolvedUserRole + '\'' +
+                ", newFirstName='" + newFirstName + '\'' +
+                ", newLastName='" + newLastName + '\'' +
+                ", newPassword='" + newPassword + '\'' +
+                ", repeatedPassword='" + repeatedPassword + '\'' +
+                '}';
     }
 }

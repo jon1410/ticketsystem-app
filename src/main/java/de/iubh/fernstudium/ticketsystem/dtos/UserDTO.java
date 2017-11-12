@@ -4,13 +4,9 @@ import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.util.config.ValidationConfig;
 
-import javax.enterprise.context.SessionScoped;
-import javax.faces.view.facelets.ValidatorConfig;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 /**
  * Created by ivanj on 04.07.2017.
@@ -119,7 +115,7 @@ public class UserDTO{
                 "userId='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
+                ", pw='" + password + '\'' +
                 ", role=" + role +
                 '}';
     }

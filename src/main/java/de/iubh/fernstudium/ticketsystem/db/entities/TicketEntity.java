@@ -194,7 +194,7 @@ public class TicketEntity {
 
         List<Long> children = null;
         Long masterId = null;
-        if(childTickets != null && childTickets.size() > 0){
+        if(childTickets != null && !childTickets.isEmpty()){
             children = new ArrayList<>(childTickets.size());
             for(TicketEntity t : childTickets){
                 children.add(t.getId());

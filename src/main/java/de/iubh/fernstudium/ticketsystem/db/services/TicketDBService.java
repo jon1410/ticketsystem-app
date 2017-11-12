@@ -5,11 +5,8 @@ import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
-import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.Future;
 
 public interface TicketDBService {
 

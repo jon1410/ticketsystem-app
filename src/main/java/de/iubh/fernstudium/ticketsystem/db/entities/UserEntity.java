@@ -117,7 +117,7 @@ public class UserEntity {
                 "userId='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
+                ", pw='" + password + '\'' +
                 ", role=" + role +
                 '}';
     }

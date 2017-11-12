@@ -4,7 +4,6 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
-import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 import java.util.List;
 

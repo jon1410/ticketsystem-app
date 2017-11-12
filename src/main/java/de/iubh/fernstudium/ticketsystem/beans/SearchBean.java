@@ -91,7 +91,7 @@ public class SearchBean implements Serializable {
             }
         }
 
-        if(ticketSet.size() == 0){
+        if(ticketSet.isEmpty()){
             return resolveSearchInfo(UITexts.SIMPLE_SEARCH_NOT_FOUND_DETAIL);
         }
         foundTickets = new ArrayList<>(ticketSet);
@@ -111,7 +111,7 @@ public class SearchBean implements Serializable {
     public String searchDetails(){
 
         Future<List<TicketDTO>> tickets;
-        List<TicketDTO> foundTickets;
+        List<TicketDTO> foundTicketsFromSearch;
 
         LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
         LocalDateTime ldtTo = DateTimeUtil.format(dateTo);
@@ -123,7 +123,7 @@ public class SearchBean implements Serializable {
         if(StringUtils.isNotEmpty(userIdReporter)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdReporter);
-                queryBuilder = queryBuilder.and("reporter_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("reporter_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("reporter_USERID").like(userIdReporter);
             }
@@ -132,7 +132,7 @@ public class SearchBean implements Serializable {
         if(StringUtils.isNotEmpty(userIdAssignee)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdAssignee);
-                queryBuilder = queryBuilder.and("assignee_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("assignee_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("assignee_USERID").like(userIdAssignee);
             }
@@ -155,20 +155,18 @@ public class SearchBean implements Serializable {
         tickets = searchService.searchByQuery(customNativeQuery.getQueryString(), customNativeQuery.getParameters());
 
         try {
-            foundTickets = tickets.get(5, TimeUnit.SECONDS);
+            foundTicketsFromSearch = tickets.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e ) {
             LOG.error("Exception during Async-Search " + ExceptionUtils.getRootCauseMessage(e));
             return resolveSearchInfo(UITexts.DETAIL_SEARCH_NOT_FOUND_DETAIL);
         }
 
-        if(foundTickets.size() == 0){
+        if(foundTicketsFromSearch.size() == 0){
             LOG.info("Size of found tickets is ZERO: ");
             return resolveSearchInfo(UITexts.DETAIL_SEARCH_NOT_FOUND_DETAIL);
         }
-        LOG.info("Size of Tickets in Detailsearch: " + foundTickets.size());
-
-        this.foundTickets = foundTickets;
-        foundTickets = null;
+        LOG.info("Size of Tickets in Detailsearch: " + foundTicketsFromSearch.size());
+        this.foundTickets = foundTicketsFromSearch;
 
         return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
                 UITexts.SEARCH_DETAIL, null);

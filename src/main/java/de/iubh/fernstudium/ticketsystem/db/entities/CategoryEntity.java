@@ -2,7 +2,6 @@ package de.iubh.fernstudium.ticketsystem.db.entities;
 
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 
-import javax.inject.Named;
 import javax.persistence.*;
 
 @Entity

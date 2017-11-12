@@ -2,7 +2,6 @@ package de.iubh.fernstudium.ticketsystem.db.services;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
-import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package de.iubh.fernstudium.ticketsystem.services.impl;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
-import de.iubh.fernstudium.ticketsystem.db.services.UserDBService;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -13,7 +12,6 @@ import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.apache.commons.collections.CollectionUtils;
 
-import javax.ejb.Asynchronous;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;

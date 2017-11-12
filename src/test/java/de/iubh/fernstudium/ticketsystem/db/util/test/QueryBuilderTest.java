@@ -18,11 +18,9 @@ import org.needle4j.junit.NeedleBuilders;
 import org.needle4j.junit.NeedleRule;
 
 import javax.inject.Inject;
-import javax.jws.soap.SOAPBinding;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -63,7 +61,7 @@ public class QueryBuilderTest {
         if(StringUtils.isNotEmpty(userIdReporter)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdReporter);
-                queryBuilder = queryBuilder.and("reporter_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("reporter_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("reporter_USERID").like(userIdReporter);
             }
@@ -72,7 +70,7 @@ public class QueryBuilderTest {
         if(StringUtils.isNotEmpty(userIdAssignee)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdAssignee);
-                queryBuilder = queryBuilder.and("assignee_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("assignee_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("assignee_USERID").like(userIdAssignee);
             }
@@ -115,7 +113,7 @@ public class QueryBuilderTest {
         if(StringUtils.isNotEmpty(userIdReporter)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdReporter);
-                queryBuilder = queryBuilder.and("reporter_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("reporter_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("reporter_USERID").like(userIdReporter);
             }
@@ -124,7 +122,7 @@ public class QueryBuilderTest {
         if(StringUtils.isNotEmpty(userIdAssignee)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdAssignee);
-                queryBuilder = queryBuilder.and("assignee_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("assignee_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("assignee_USERID").like(userIdAssignee);
             }
@@ -167,7 +165,7 @@ public class QueryBuilderTest {
         if(StringUtils.isNotEmpty(userIdReporter)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdReporter);
-                queryBuilder = queryBuilder.and("reporter_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("reporter_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("reporter_USERID").like(userIdReporter);
             }
@@ -176,7 +174,7 @@ public class QueryBuilderTest {
         if(StringUtils.isNotEmpty(userIdAssignee)){
             try {
                 UserDTO user = userService.getUserByUserId(userIdAssignee);
-                queryBuilder = queryBuilder.and("assignee_USERID").equals(user.getUserId());
+                queryBuilder = queryBuilder.and("assignee_USERID").isEqualTo(user.getUserId());
             } catch (UserNotExistsException e) {
                 queryBuilder = queryBuilder.and("assignee_USERID").like(userIdAssignee);
             }

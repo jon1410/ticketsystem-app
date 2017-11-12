@@ -1,7 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.services.impl;
 
 import de.iubh.fernstudium.ticketsystem.beans.CategoryRepositoryBean;
-import de.iubh.fernstudium.ticketsystem.beans.CurrentUserBean;
 import de.iubh.fernstudium.ticketsystem.beans.TutorRepositoryBean;
 import de.iubh.fernstudium.ticketsystem.db.entities.HistoryEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;

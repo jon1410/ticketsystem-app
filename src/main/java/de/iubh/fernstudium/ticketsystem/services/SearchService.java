@@ -3,7 +3,6 @@ package de.iubh.fernstudium.ticketsystem.services;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Future;
 

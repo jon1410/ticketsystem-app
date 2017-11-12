@@ -4,7 +4,6 @@ import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 /**
  * Created by ivanj on 08.07.2017.

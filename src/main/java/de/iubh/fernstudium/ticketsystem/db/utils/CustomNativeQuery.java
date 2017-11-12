@@ -96,7 +96,7 @@ public class CustomNativeQuery {
             return this;
         }
 
-        public QueryBuilder equals(String value){
+        public QueryBuilder isEqualTo(String value){
             sb.append(" = ").append("? ");
             addParam(value);
             return this;
