@@ -82,13 +82,13 @@
 		<h:form id="formsuche">
 			<h3>Folgende Kriterien in der Suche berücksichtigen</h3>
 			<b:panelGrid colSpans="6,6" id="suchePanel">
-				<b:datepicker value="Von" placeholder="Von"></b:datepicker>
-				<b:datepicker value="Bis" placeholder="Bis"></b:datepicker>
-				<b:inputText placeholder="Ticketersteller"></b:inputText>
-				<b:inputText placeholder="Bearbeiter"></b:inputText>
+				<b:datepicker value="#{searchBean.dateFrom}" placeholder="Von"></b:datepicker>
+				<b:datepicker value="#{searchBean.dateTo}" placeholder="Bis"></b:datepicker>
+				<b:inputText value="#{searchBean.userIdReporter}" placeholder="Ticketersteller"></b:inputText>
+				<b:inputText value="#{searchBean.userIdAssignee}" placeholder="Bearbeiter"></b:inputText>
 				
 				<strong>Zusätzlich folgenden Status berücksichtigen</strong>				
-				<p:selectCheckboxMenu value="#{searchBean.selectedStatiForSearch}" appendTo="@this" label="stati" multiple="true">
+				<p:selectCheckboxMenu value="#{searchBean.selectedStati}" appendTo="@this" label="stati" multiple="true">
 					<f:selectItems value="#{searchBean.stati}" />
 				</p:selectCheckboxMenu>
 				

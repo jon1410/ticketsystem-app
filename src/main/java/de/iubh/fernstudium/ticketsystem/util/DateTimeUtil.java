@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Created by ivanj on 16.07.2017.
@@ -29,7 +30,8 @@ public class DateTimeUtil {
     }
 
     public static LocalDateTime format(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String pattern = "EEE MMM dd HH:mm:ss zzz yyyy";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH);
         LocalDate localDate = LocalDate.parse(date, formatter);
         return localDate.atStartOfDay();
     }
