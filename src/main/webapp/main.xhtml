@@ -36,12 +36,12 @@
 					value="#{currentUserBean.repeatedPassword}"></b:inputSecret>
 			</b:panelGrid>
 
-			<f:facet name="footer">
+			
 				<b:commandButton value="speichern" styleClass="btnNeuesPasswort"
 					update="changePassword"
 					actionListener="#{currentUserBean.changePassword()}">
 				</b:commandButton>
-			</f:facet>
+			
 		</b:modal>
 	</h:form>
 	<!-- ENDE PASSWORT ÄNDERN -->
@@ -97,10 +97,10 @@
 				</b:selectMultiMenu-->
 			</b:panelGrid>
 
-			<f:facet name="footer">
+			
 				<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
 					update=":msgs" actionListener="#{searchBean.searchDetails()}"></b:commandButton>
-			</f:facet>
+			
 		</h:form>
 	</b:modal>
 	<!-- ENDE SUCHE -->
@@ -136,9 +136,9 @@
 			<b:inputTextarea value="#{userDataBean.activeTicket.description}"></b:inputTextarea>
 			<hr/>
 			<b:inputTextarea placeholder="Kommentar"></b:inputTextarea>
-			<f:facet name="footer">
-				<b:commandButton value="Kommentar übernehmen" styleClass="btnSuchekriterien" update=":msgs"></b:commandButton>
-			</f:facet>
+			
+			<b:commandButton value="Kommentar übernehmen" styleClass="btnSuchekriterien" update=":msgs"></b:commandButton>
+			
 		</h:form>
 	</b:modal>
 	<!-- ENDE DETAIL TICKET -->
@@ -355,12 +355,12 @@
 				</b:column>
 			</b:row>
 
-			<f:facet name="footer">
-				<b:commandButton value="Änderungen übernehmen"
+			
+			<b:commandButton value="Änderungen übernehmen"
 					styleClass="btnAenderungen" update=":kategorie :yourTickets"
 					actionListener="#{currentUserBean.changeUserData()}">
-				</b:commandButton>
-			</f:facet>
+			</b:commandButton>
+			
 		</h:form>
 	</b:modal>
 	<!-- ENDE PROFIL ÄNDERN -->
@@ -402,11 +402,11 @@
 
 			</b:panelGrid>
 
-			<f:facet name="footer">
+			
 				<b:commandButton value="speichern" styleClass="btnNewUser"
 					update="newPanelGrid" action="#{userBean.createUser()}">
 				</b:commandButton>
-			</f:facet>
+			
 		</h:form>
 	</b:modal>
 	<!-- ENDE NEUER BENUTZER -->
@@ -439,11 +439,11 @@
 
 			</b:panelGrid>
 
-			<f:facet name="footer">
+			
 				<b:commandButton value="anlegen" styleClass="btnNeuesTicket"
 					action="#{ticketBean.createTicket()}">
 				</b:commandButton>
-			</f:facet>
+			
 		</h:form>
 	</b:modal>
 
@@ -567,8 +567,6 @@
 		</b:row>
 
 		<b:row>
-
-
 			<b:column col-md="6" col-xs="12" styleClass="ticket">
 				<b:panel styleClass="profilPanel color noBorder"
 					onclick="$('.profilModal').modal();">
@@ -596,12 +594,14 @@
 				</b:panel>
 			</b:column>
 		</b:row>
-
 	</b:container>
 
-	<!--ENDE BODY -->
+	
 
 	<!-- Include Script -->
 	<h:outputScript library="js" name="script.js"></h:outputScript>
+	
+	
+	<!--ENDE BODY -->
 </h:body>
 </html>
