@@ -36,8 +36,8 @@ public class QueryBuilderTest {
     @Test
     public void testQueryBuilder() throws UserNotExistsException {
 
-        String dateFrom = "2017-01-01";
-        String dateTo = "2017-10-01";
+        String dateFrom = "Wed Nov 01 12:00:00 CET 2017";
+        String dateTo = "Wed Nov 01 12:00:00 CET 2017";
         String userIdReporter = "admin";
         String userIdAssignee = "ivan";
         Map<String, TicketStatus> statusValues;
@@ -88,8 +88,8 @@ public class QueryBuilderTest {
     @Test
     public void testQueryBuilderWithLike() throws UserNotExistsException {
 
-        String dateFrom = "2017-01-01";
-        String dateTo = "2017-10-01";
+        String dateFrom = "Wed Nov 01 12:00:00 CET 2017";
+        String dateTo = "Wed Nov 01 12:00:00 CET 2017";
         String userIdReporter = "admin";
         String userIdAssignee = "ivan";
         Map<String, TicketStatus> statusValues;
@@ -140,8 +140,8 @@ public class QueryBuilderTest {
     @Test
     public void testQueryBuilder1() throws UserNotExistsException {
 
-        String dateFrom = "2017-01-01";
-        String dateTo = "2017-10-01";
+        String dateFrom = "Wed Nov 01 12:00:00 CET 2017";
+        String dateTo = "Wed Nov 01 12:00:00 CET 2017";
         String userIdReporter = null;
         String userIdAssignee = "ivan";
         Map<String, TicketStatus> statusValues;

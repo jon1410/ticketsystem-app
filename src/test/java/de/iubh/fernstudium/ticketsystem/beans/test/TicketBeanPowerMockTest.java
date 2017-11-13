@@ -60,7 +60,9 @@ public class TicketBeanPowerMockTest {
     public void testCreateTicketOK() throws CategoryNotFoundException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
-        Whitebox.setInternalState(ticketBean, "currentUserBean", new CurrentUserBean());
+        CurrentUserBean currentUserBean = new CurrentUserBean();
+        currentUserBean.setUserId("userid");
+        Whitebox.setInternalState(ticketBean, "currentUserBean", currentUserBean);
         Mockito.when(categoryService.getCategoryById(Mockito.anyString())).thenReturn(buildCategoryDTO());
         Mockito.when(ticketService.createTicket(Mockito.any(TicketDTO.class))).thenReturn(buildTicketDTO());
 

@@ -117,7 +117,7 @@ public class SearchBeanPowerMockTest {
     @Test
     public void testSearchDetailsOnlyWithDates()  {
         PowerMockito.mockStatic(FacesContextUtils.class);
-        String sDate = "2017-01-01";
+        String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
         assertEquals(sDate, searchBean.getDateFrom());
@@ -135,7 +135,7 @@ public class SearchBeanPowerMockTest {
     @Test
     public void testSearchDetailsDatesAndStatus()  {
         PowerMockito.mockStatic(FacesContextUtils.class);
-        String sDate = "2017-01-01";
+        String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
         assertEquals(sDate, searchBean.getDateFrom());
@@ -156,7 +156,7 @@ public class SearchBeanPowerMockTest {
     @Test
     public void testSearchDetailsDatesAndReporterAndAssignee() throws UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
-        String sDate = "2017-01-01";
+        String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
         assertEquals(sDate, searchBean.getDateFrom());
@@ -179,7 +179,7 @@ public class SearchBeanPowerMockTest {
     @Test
     public void testSearchDetailsDatesAndReporterAndAssigneeWithException() throws UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
-        String sDate = "2017-01-01";
+        String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
         assertEquals(sDate, searchBean.getDateFrom());
@@ -202,7 +202,7 @@ public class SearchBeanPowerMockTest {
     @Test
     public void testSearchDetailsNothingFound() throws UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
-        String sDate = "2017-01-01";
+        String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
         assertEquals(sDate, searchBean.getDateFrom());

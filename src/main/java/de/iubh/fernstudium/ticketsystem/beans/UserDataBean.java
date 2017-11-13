@@ -115,11 +115,13 @@ public class UserDataBean implements Serializable {
                     childTickets = null;
                     updateCache(ticketDTO);
                 } catch (NoSuchTicketException e) {
+                    childTickets = null;
                     LOG.error(ExceptionUtils.getRootCauseMessage(e));
                     FacesContextUtils.resolveError(UITexts.ERR_MASTER_TICKET,
                             UITexts.ERR_MASTER_TICKET, null);
                 }
             } else{
+                childTickets = null;
                 FacesContextUtils.resolveError(UITexts.ERR_MASTER_TICKET_NO_CHILD,
                         UITexts.ERR_MASTER_TICKET_NO_CHILD, null);
             }
@@ -142,6 +144,7 @@ public class UserDataBean implements Serializable {
                 fireEvent(activeTicket.getId(), HistoryAction.CA, "Kommentar: " + newComment);
                 newComment = null;
             } catch (NoSuchTicketException | UserNotExistsException e) {
+                newComment = null;
                 LOG.error(ExceptionUtils.getRootCauseMessage(e));
                 FacesContextUtils.resolveError(UITexts.ERROR_NEW_COMMENT,
                         UITexts.ERROR_NEW_COMMENT, null);
