@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -167,6 +168,9 @@ public class SearchBean implements Serializable {
         }
         LOG.info("Size of Tickets in Detailsearch: " + foundTicketsFromSearch.size());
         this.foundTickets = foundTicketsFromSearch;
+
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("$('.ergebnisModal').modal('show');");
 
         return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
                 UITexts.SEARCH_DETAIL, null);

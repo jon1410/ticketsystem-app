@@ -96,7 +96,7 @@
 				<hr/>
 			
 				<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
-					update=":msgs" actionListener="#{searchBean.searchDetails()}"></b:commandButton>
+					update=":msgs :ergebnis" actionListener="#{searchBean.searchDetails()}" oncomplete="$('.sucheModal').modal('hide');return false;"></b:commandButton>
 			
 		</h:form>
 	</b:modal>
@@ -132,9 +132,10 @@
 			</b:panelGrid>
 			<b:inputTextarea value="#{userDataBean.activeTicket.description}"></b:inputTextarea>
 			<hr/>
-			<b:inputTextarea placeholder="Kommentar"></b:inputTextarea>
+			<b:inputTextarea placeholder="Kommentar" value="#{userDataBean.newComment}"></b:inputTextarea>
 			
-			<b:commandButton value="Kommentar übernehmen" styleClass="btnSuchekriterien" update=":msgs"></b:commandButton>
+			<b:commandButton value="Kommentar übernehmen" styleClass="btnSuchekriterien" update=":msgs"
+							 actionListener="#{userDataBean.addComment}"></b:commandButton>
 			
 		</h:form>
 	</b:modal>
@@ -300,11 +301,6 @@
 					</b:dataTable>
 				</h:form>
 				<hr />
-				<h:form>
-					<b:inputTextarea placeholder="Kommentar zum ausgewählten Ticket"></b:inputTextarea>
-					<b:commandButton look="primary" value="Kommentar übernehmen"
-						style="float:right;" tooltip="Speichere den Kommentar"></b:commandButton>
-				</h:form>
 			</b:panelGrid>
 		</h:form>
 	</b:modal>
