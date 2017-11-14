@@ -7,8 +7,10 @@ import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -29,7 +31,7 @@ import static org.junit.Assert.assertTrue;
 @PrepareForTest({FacesContextUtils.class})
 public class TutorRepositoryBeanPowerMockTest {
 
-    private static List<UserDTO> userDTOList;
+    private List<UserDTO> userDTOList;
 
     @InjectMocks
     TutorRepositoryBean tutorRepositoryBean;
@@ -38,16 +40,14 @@ public class TutorRepositoryBeanPowerMockTest {
     private UserService userService;
 
 
-    @BeforeClass
-    public static void initList(){
+
+
+    @Before
+    public void init(){
         userDTOList = new ArrayList<>(5);
         for(int i=0; i<5; i++){
             userDTOList.add(buildUserDTO(i));
         }
-    }
-
-    @Before
-    public void init(){
         tutorRepositoryBean = new TutorRepositoryBean();
         MockitoAnnotations.initMocks(this);
         Mockito.when(userService.getAllTutors()).thenReturn(userDTOList);
@@ -55,26 +55,26 @@ public class TutorRepositoryBeanPowerMockTest {
     }
 
     @Test
-    public void testPostConstruct(){
+    public void test1PostConstruct(){
         assertNotNull(tutorRepositoryBean.getAllTutors());
         assertTrue(tutorRepositoryBean.getAllTutors().size() == 5);
     }
 
     @Test
-    public void testSetNewUser(){
+    public void test2SetNewUser(){
         tutorRepositoryBean.setTutor(buildUserDTO(1));
         assertTrue(tutorRepositoryBean.getAllTutors().size() == 6);
     }
 
     @Test
-    public void testSetNewUserToNullList(){
+    public void test3SetNewUserToNullList(){
         tutorRepositoryBean.setAllTutors(null);
         tutorRepositoryBean.setTutor(buildUserDTO(1));
         assertTrue(tutorRepositoryBean.getAllTutors().size() == 1);
     }
 
     @Test
-    public void testUpdateCache(){
+    public void test4UpdateCache(){
         UserDTO userDTO = buildUserDTO(1);
         userDTO.setFirstName("newFirstName");
         userDTO.setLastName("newLastName");
