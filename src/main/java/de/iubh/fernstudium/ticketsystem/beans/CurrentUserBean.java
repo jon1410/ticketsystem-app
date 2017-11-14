@@ -149,33 +149,6 @@ public class CurrentUserBean extends UserDTO implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        CurrentUserBean that = (CurrentUserBean) o;
-
-        if (resolvedUserRole != null ? !resolvedUserRole.equals(that.resolvedUserRole) : that.resolvedUserRole != null)
-            return false;
-        if (newFirstName != null ? !newFirstName.equals(that.newFirstName) : that.newFirstName != null) return false;
-        if (newLastName != null ? !newLastName.equals(that.newLastName) : that.newLastName != null) return false;
-        if (newPassword != null ? !newPassword.equals(that.newPassword) : that.newPassword != null) return false;
-        return repeatedPassword != null ? repeatedPassword.equals(that.repeatedPassword) : that.repeatedPassword == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (resolvedUserRole != null ? resolvedUserRole.hashCode() : 0);
-        result = 31 * result + (newFirstName != null ? newFirstName.hashCode() : 0);
-        result = 31 * result + (newLastName != null ? newLastName.hashCode() : 0);
-        result = 31 * result + (newPassword != null ? newPassword.hashCode() : 0);
-        result = 31 * result + (repeatedPassword != null ? repeatedPassword.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "CurrentUserBean{" +
                 "userService=" + userService +
@@ -183,8 +156,8 @@ public class CurrentUserBean extends UserDTO implements Serializable {
                 ", resolvedUserRole='" + resolvedUserRole + '\'' +
                 ", newFirstName='" + newFirstName + '\'' +
                 ", newLastName='" + newLastName + '\'' +
-                ", newPassword='" + newPassword + '\'' +
-                ", repeatedPassword='" + repeatedPassword + '\'' +
+                ", newPw='" + newPassword + '\'' +
+                ", repeatedPw='" + repeatedPassword + '\'' +
                 '}';
     }
 }

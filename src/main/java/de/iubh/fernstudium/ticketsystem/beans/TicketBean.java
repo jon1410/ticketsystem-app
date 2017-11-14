@@ -76,21 +76,4 @@ public class TicketBean extends TicketDTO implements Serializable {
         this.categoryId = categoryId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        TicketBean that = (TicketBean) o;
-
-        return categoryId != null ? categoryId.equals(that.categoryId) : that.categoryId == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
-        return result;
-    }
 }
