@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named("tutorRepositroyBean")
@@ -34,6 +35,16 @@ public class TutorRepositoryBean {
 
     public void setAllTutors(List<UserDTO> allTutors) {
         this.allTutors = allTutors;
+    }
+
+    public void setTutor(UserDTO newTutor){
+
+        if(allTutors == null){
+            allTutors = new ArrayList<>();
+        }
+        if(newTutor != null){
+            allTutors.add(newTutor);
+        }
     }
 
     public void updateCache(UserDTO userDTO){

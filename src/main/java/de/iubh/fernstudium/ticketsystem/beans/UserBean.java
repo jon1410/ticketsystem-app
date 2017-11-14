@@ -31,6 +31,9 @@ public class UserBean extends UserDTO{
     @Inject
     private UserService userService;
 
+    @Inject
+    private TutorRepositoryBean tutorRepositoryBean;
+
     @Override
     public String getRole() {
         //notwendig für main.xhtml selectOne, sonst NPE
@@ -73,7 +76,7 @@ public class UserBean extends UserDTO{
             userService.generateNewPassword(mailAdressForNewPw);
         } catch (UserNotExistsException e) {
            LOG.error(ExceptionUtils.getRootCauseMessage(e));
-            return FacesContextUtils.resolveInfo(UITexts.PW_RESET_ERROR_SUMMARY,
+            return FacesContextUtils.resolveError(UITexts.PW_RESET_ERROR_SUMMARY,
                     UITexts.PW_RESET_ERROR_DETAILS, FacesContextUtils.REDIRECT_LOGIN);
         }
         return FacesContextUtils.resolveInfo(UITexts.PW_RESET_INFO_SUMMARY,
@@ -96,6 +99,9 @@ public class UserBean extends UserDTO{
             boolean createUser = userService.createUser(super.getUserId(),
                     super.getFirstName(), super.getLastName(), super.getPassword(), super.getUserRole());
             if(createUser){
+                if(super.getUserRole() == UserRole.TU){
+                    tutorRepositoryBean.setTutor(this);
+                }
                 return FacesContextUtils.resolveInfo(UITexts.CREATE_USER_INFO_SUMMARY, UITexts.CREATE_USER_INFO_DETAIL, redirect);
             }else{
                 return errorCreateUser(redirect);

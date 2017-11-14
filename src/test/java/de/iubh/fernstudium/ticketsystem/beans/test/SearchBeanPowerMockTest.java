@@ -24,13 +24,17 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.primefaces.context.RequestContext;
 
+import javax.faces.context.FacesContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -46,6 +50,10 @@ public class SearchBeanPowerMockTest {
     private TicketService ticketService;
     @Mock
     private UserService userService;
+    @Mock
+    private RequestContext requestContext;
+    @Mock
+    private FacesContext facesContext;
 
     private LocalDateTime creationTime;
 
@@ -117,6 +125,10 @@ public class SearchBeanPowerMockTest {
     @Test
     public void testSearchDetailsOnlyWithDates()  {
         PowerMockito.mockStatic(FacesContextUtils.class);
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
         String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
@@ -130,11 +142,16 @@ public class SearchBeanPowerMockTest {
         assertTrue(searchBean.getFoundTickets().size() == 3);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
     }
 
     @Test
     public void testSearchDetailsDatesAndStatus()  {
         PowerMockito.mockStatic(FacesContextUtils.class);
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
         String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
@@ -151,11 +168,16 @@ public class SearchBeanPowerMockTest {
         assertTrue(searchBean.getFoundTickets().size() == 3);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
     }
 
     @Test
     public void testSearchDetailsDatesAndReporterAndAssignee() throws UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
         String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);
@@ -174,11 +196,16 @@ public class SearchBeanPowerMockTest {
         assertTrue(searchBean.getFoundTickets().size() == 3);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
     }
 
     @Test
     public void testSearchDetailsDatesAndReporterAndAssigneeWithException() throws UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
         String sDate = "Wed Nov 01 12:00:00 CET 2017";
         searchBean.setDateFrom(sDate);
         searchBean.setDateTo(sDate);

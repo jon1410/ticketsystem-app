@@ -61,6 +61,19 @@ public class TutorRepositoryBeanPowerMockTest {
     }
 
     @Test
+    public void testSetNewUser(){
+        tutorRepositoryBean.setTutor(buildUserDTO(1));
+        assertTrue(tutorRepositoryBean.getAllTutors().size() == 6);
+    }
+
+    @Test
+    public void testSetNewUserToNullList(){
+        tutorRepositoryBean.setAllTutors(null);
+        tutorRepositoryBean.setTutor(buildUserDTO(1));
+        assertTrue(tutorRepositoryBean.getAllTutors().size() == 1);
+    }
+
+    @Test
     public void testUpdateCache(){
         UserDTO userDTO = buildUserDTO(1);
         userDTO.setFirstName("newFirstName");
