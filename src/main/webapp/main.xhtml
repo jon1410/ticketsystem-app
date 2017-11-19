@@ -36,12 +36,12 @@
 					value="#{currentUserBean.repeatedPassword}"></b:inputSecret>
 			</b:panelGrid>
 
-			
-				<b:commandButton value="speichern" styleClass="btnNeuesPasswort"
-					update="changePassword"
-					actionListener="#{currentUserBean.changePassword()}">
-				</b:commandButton>
-			
+
+			<b:commandButton value="speichern" styleClass="btnNeuesPasswort"
+				update="changePassword"
+				actionListener="#{currentUserBean.changePassword()}">
+			</b:commandButton>
+
 		</b:modal>
 	</h:form>
 	<!-- ENDE PASSWORT ÄNDERN -->
@@ -50,13 +50,14 @@
 
 	<!-- ERGEBNIS SUCHE -->
 	<b:modal title="Suchergebnisse" styleClass="ergebnisModal fade"
-		closeOnEscape="true" id="ergebnis" backdrop="false">
+		closeOnEscape="true" id="ergebnis" backdrop="false" size="modal-lg">
 		<h:form id="formErgebnis">
 			<h3>Hier sind Ihre Ergebnisse</h3>
 			<b:panelGrid colSpans="12" id="ergebnisPanel">
 				<b:dataTable value="#{searchBean.foundTickets}" var="ergebnis">
 					<b:dataTableColumn label="Titel" value="#{ergebnis.title}"></b:dataTableColumn>
-					<b:dataTableColumn label="Status" value="#{ergebnis.ticketStatus.resolvedText}"></b:dataTableColumn>
+					<b:dataTableColumn label="Status"
+						value="#{ergebnis.ticketStatus.resolvedText}"></b:dataTableColumn>
 					<b:dataTableColumn label="Ersteller"
 						value="#{ergebnis.reporter.userId}"></b:dataTableColumn>
 					<b:dataTableColumn label="Datum">
@@ -68,8 +69,6 @@
 						value="#{ergebnis.assignee.userId}"></b:dataTableColumn>
 				</b:dataTable>
 			</b:panelGrid>
-
-
 		</h:form>
 	</b:modal>
 	<!-- ENDE ERGEBNIS SUCHE -->
@@ -84,59 +83,90 @@
 			<b:panelGrid colSpans="6,6" id="suchePanel">
 				<b:datepicker value="#{searchBean.dateFrom}" placeholder="Von"></b:datepicker>
 				<b:datepicker value="#{searchBean.dateTo}" placeholder="Bis"></b:datepicker>
-				<b:inputText value="#{searchBean.userIdReporter}" placeholder="Ticketersteller"></b:inputText>
-				<b:inputText value="#{searchBean.userIdAssignee}" placeholder="Bearbeiter"></b:inputText>
-				
-				<strong>Zusätzlich folgenden Status berücksichtigen</strong>				
-				<p:selectCheckboxMenu value="#{searchBean.selectedStati}" appendTo="@this" label="stati" multiple="true">
+				<b:inputText value="#{searchBean.userIdReporter}"
+					placeholder="Ticketersteller"></b:inputText>
+				<b:inputText value="#{searchBean.userIdAssignee}"
+					placeholder="Bearbeiter"></b:inputText>
+
+				<strong>Zusätzlich folgenden Status berücksichtigen</strong>
+				<p:selectCheckboxMenu value="#{searchBean.selectedStati}"
+					appendTo="@this" label="stati" multiple="true">
 					<f:selectItems value="#{searchBean.stati}" />
 				</p:selectCheckboxMenu>
-				
+
 			</b:panelGrid>
-				<hr/>
-			
-				<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
-					update=":msgs :ergebnis" actionListener="#{searchBean.searchDetails()}" oncomplete="$('.sucheModal').modal('hide');return false;"></b:commandButton>
-			
+			<hr />
+
+			<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
+				update=":msgs :ergebnis"
+				actionListener="#{searchBean.searchDetails()}"
+				oncomplete="$('.sucheModal').modal('hide');return false;"></b:commandButton>
+
 		</h:form>
 	</b:modal>
 	<!-- ENDE SUCHE -->
-	
-	
+
+
 	<!-- DETAIL TICKET -->
 	<b:modal title="Details" styleClass="detailModal fade"
-		closeOnEscape="true" id="ticketDetails" backdrop="false">
+		closeOnEscape="true" id="ticketDetails" backdrop="false"
+		size="modal-lg">
 		<h:form id="formDetail">
 			<h3>Detail zu #{userDataBean.activeTicket.title}</h3>
 			<b:panelGrid colSpans="3,3,3,3" id="detailPanel">
-				<b:commandButton value="Bearbeitung starten" look="success" actionListener="#{userDataBean.startProgress}" update=":yourTickets :formDetail"></b:commandButton>
-				<b:commandButton value="Ticket abschließen" look="warning" actionListener="#{userDataBean.finishTicket}"></b:commandButton>
-				<b:commandButton value="Ticket zurückgeben" look="danger" actionListener="#{userDataBean.resolveTicket}"></b:commandButton>
+				<b:commandButton value="Bearbeitung starten" look="success"
+					actionListener="#{userDataBean.startProgress}"
+					update=":yourTickets :formDetail"></b:commandButton>
+				<b:commandButton value="Ticket abschließen" look="warning"
+					actionListener="#{userDataBean.finishTicket}"></b:commandButton>
+				<b:commandButton value="Ticket zurückgeben" look="danger"
+					actionListener="#{userDataBean.resolveTicket}"></b:commandButton>
 				<b:commandButton value="Histroie" look="default"></b:commandButton>
 			</b:panelGrid>
 			<b:panelGrid colSpans="6,6">
 				<h:outputText value="ID" />
 				<h:outputText value="#{userDataBean.activeTicket.id}" />
-				
+
 				<h:outputText value="Status" />
-				<h:outputText value="#{userDataBean.activeTicket.ticketStatus.resolvedText}" />
-				
+				<h:outputText
+					value="#{userDataBean.activeTicket.ticketStatus.resolvedText}" />
+
 				<h:outputText value="Datum" />
-				<h:outputText value="#{userDataBean.activeTicket.creationTimeAsString}" >
-					<f:convertDateTime dateStyle="medium"/>
+				<h:outputText
+					value="#{userDataBean.activeTicket.creationTimeAsString}">
+					<f:convertDateTime dateStyle="medium" />
 				</h:outputText>
-				
+
 				<h:outputText value="Besitzer" />
 				<h:outputText value="#{userDataBean.activeTicket.reporter.lastName}" />
-				
+
+				<h:outputText value="Kommentar" />
+				<h:outputText value="#{userDataBean.activeTicket.comments}" />
+
+				<h:outputText value="MasterTicket" />
+				<h:outputText value="#{userDataBean.activeTicket.masterTicketId}" />
+
+				<h:outputText value="Kindticket" />
+				<h:outputText value="#{userDataBean.activeTicket.childTickets}" />
+
 			</b:panelGrid>
+			<h4>Historie</h4>
+			<p:dataList value="#{userDataBean.historyOfActiveTicket}"
+				var="verlauf" itemType="none">
+				<h:outputText value="#{verlauf.title}"></h:outputText>
+			</p:dataList>
+			<hr />
 			<b:inputTextarea value="#{userDataBean.activeTicket.description}"></b:inputTextarea>
-			<hr/>
-			<b:inputTextarea placeholder="Kommentar" value="#{userDataBean.newComment}"></b:inputTextarea>
-			
-			<b:commandButton value="Kommentar übernehmen" styleClass="btnSuchekriterien" update=":msgs"
-							 actionListener="#{userDataBean.addComment}"></b:commandButton>
-			
+			<h4>Zu Masterticket zuordnen</h4>
+			<b:inputText placeholder="Gib hier die ID des Mastertickets ein"
+				value="#{userDataBean.childTickets}"></b:inputText>
+			<hr />
+			<b:inputTextarea placeholder="Kommentar"
+				value="#{userDataBean.newComment}"></b:inputTextarea>
+			<hr />
+			<b:commandButton value="Übernehmen" styleClass="btnSuchekriterien"
+				update=":msgs" actionListener="#{userDataBean.addComment}"></b:commandButton>
+
 		</h:form>
 	</b:modal>
 	<!-- ENDE DETAIL TICKET -->
@@ -154,29 +184,32 @@
 							<b:panel title="Neu">
 								<h4>Hier kannst du neue Kategorien definieren</h4>
 								<hr />
-								
-									
-									<b:panelGrid colSpans="6,6">
-										
+
+
+								<b:panelGrid colSpans="6,6">
+
 									<b:inputText placeholder="ID"
 										value="#{categoryBean.categoryId}"></b:inputText>
 
 									<b:inputText placeholder="Name"
-											value="#{categoryBean.categoryName}"></b:inputText>
+										value="#{categoryBean.categoryName}"></b:inputText>
 
-									</b:panelGrid>
+								</b:panelGrid>
 
-									<b:panelGrid colSpans="12">
-	
-									<p:selectOneListbox id="tutorFilter" value="#{categoryBean.tutorUserId}" filter="true" filterMatchMode="contains">
-										<f:selectItems value="#{tutorRepositroyBean.allTutors}" var="tutor"
-													   itemLabel="#{tutor.lastName}" itemValue="#{tutor.userId}" />
+								<b:panelGrid colSpans="12">
+
+									<p:selectOneListbox id="tutorFilter"
+										value="#{categoryBean.tutorUserId}" filter="true"
+										filterMatchMode="contains" styleClass="listboxen">
+										<f:selectItems value="#{tutorRepositroyBean.allTutors}"
+											var="tutor" itemLabel="#{tutor.lastName}"
+											itemValue="#{tutor.userId}" />
 									</p:selectOneListbox>
-									</b:panelGrid>
-					
-									<b:commandButton value="speichern" styleClass="btnsKategorie"
-										actionListener="#{categoryBean.createCategory()}"></b:commandButton>
-								
+								</b:panelGrid>
+
+								<b:commandButton value="speichern" styleClass="btnsKategorie"
+									actionListener="#{categoryBean.createCategory()}"></b:commandButton>
+
 							</b:panel>
 							<b:panel title="Anzeigen">
 								<h4>Ansicht aller aktuellen Kategorien</h4>
@@ -218,46 +251,29 @@
 							<b:panel title="Ändern">
 								<h4>Ändere Kategorien</h4>
 								<hr />
-								<p:dataTable value="#{categoryRepositoryBean.allCategories}"
-									var="category" emptyMessage="Keine Datensätze gefunden">
 
-									<p:ajax event="rowEdit"
-										listener="#{categoryRepositoryBean.onRowEdit}"
-										update=":msgs" />
 
-									<p:column headerText="Id">
-										<h:outputText value="#{category.categoryId}" />
-									</p:column>
+								<b:dataTable value="#{categoryRepositoryBean.allCategories}"
+									var="category">
 
-									<p:column headerText="Name">
-										<p:cellEditor>
-											<f:facet name="output">
-												<h:outputText value="#{category.categoryName}" />
-											</f:facet>
-											<f:facet name="input">
-												<p:inputText value="#{category.categoryName}"
-													style="width:100%" />
-											</f:facet>
-										</p:cellEditor>
-									</p:column>
+									<b:dataTableColumn value="#{category.categoryId}" label="ID"></b:dataTableColumn>
 
-									<p:column headerText="Bearbeiter">
-										<p:cellEditor>
-											<f:facet name="output">
-												<h:outputText value="#{category.tutor.lastName}" />
-											</f:facet>
-											<f:facet name="input">
-												<p:inputText id="modelInput"
-													value="#{category.tutor.lastName}" style="width:100%" />
-											</f:facet>
-										</p:cellEditor>
-									</p:column>
+									<b:dataTableColumn label="Name">
+										<p:inplace id="name" editor="true">
+											<p:inputText value="#{category.categoryName}" required="true"
+												label="text" />
+										</p:inplace>
+									</b:dataTableColumn>
 
-									<p:column style="width:32px">
-										<p:rowEditor />
-									</p:column>
+									<b:dataTableColumn label="Bearbeiter">
+										<p:inplace id="bearbeiter" editor="true">
+											<p:inputText value="#{category.tutor.lastName}"
+												required="true" label="text" />
+										</p:inplace>
+									</b:dataTableColumn>
 
-								</p:dataTable>
+
+								</b:dataTable>
 							</b:panel>
 						</b:accordion>
 					</b:panelGrid>
@@ -272,12 +288,13 @@
 
 	<!-- TICKETS -->
 	<b:modal title="Deine bisherigen Tickets" styleClass="tickets fade"
-		closeOnEscape="true" id="ticketsPanel" backdrop="false">
+		closeOnEscape="true" id="ticketsPanel" backdrop="false"
+		size="modal-lg">
 		<h:form id="yourTickets">
 			<b:panelGrid colSpans="12" id="ticketsGrid">
 				<h:form id="tableForm">
-					<b:dataTable searching="true" pageLengthMenu="5,10" pageLength="5"
-						value="#{userDataBean.tickets}" var="ticket">
+					<b:dataTable pageLength="5" pageLengthMenu="5,10"
+						value="#{userDataBean.tickets}" var="ticket" lang="de">
 						<b:dataTableColumn label="ID">
 							<h:outputText value="#{ticket.id}" />
 						</b:dataTableColumn>
@@ -287,11 +304,15 @@
 						<b:dataTableColumn label="Status">
 							<h:outputText value="#{ticket.ticketStatus}" />
 						</b:dataTableColumn>
+						<b:dataTableColumn label="Historie">
+							<b:commandButton value="anzeigen" look="default"></b:commandButton>
+						</b:dataTableColumn>
 						<b:dataTableColumn label="">
 							<!-- only if current user == reporter of Ticket !! -->
 							<b:commandButton look="info" value="Details"
 								tooltip="Schau dir den fortschritt deines Tickets an"
-								actionListener="#{userDataBean.setActiveTicket(ticket)}" oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
+								actionListener="#{userDataBean.setActiveTicket(ticket)}"
+								oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
 							<b:commandButton look="danger" value="abbrechen"
 								tooltip="Beendet den aktuellen Vorgang des Tickets"
 								actionListener="#{userDataBean.terminateTicket(ticket)}"></b:commandButton>
@@ -348,12 +369,12 @@
 				</b:column>
 			</b:row>
 
-			
+
 			<b:commandButton value="Änderungen übernehmen"
-					styleClass="btnAenderungen" update=":kategorie :yourTickets"
-					actionListener="#{currentUserBean.changeUserData()}">
+				styleClass="btnAenderungen" update=":kategorie :yourTickets"
+				actionListener="#{currentUserBean.changeUserData()}">
 			</b:commandButton>
-			
+
 		</h:form>
 	</b:modal>
 	<!-- ENDE PROFIL ÄNDERN -->
@@ -395,11 +416,11 @@
 
 			</b:panelGrid>
 
-			
-				<b:commandButton value="speichern" styleClass="btnNewUser"
-					update="newPanelGrid" action="#{userBean.createUser()}">
-				</b:commandButton>
-			
+
+			<b:commandButton value="speichern" styleClass="btnNewUser"
+				update="newPanelGrid" action="#{userBean.createUser()}">
+			</b:commandButton>
+
 		</h:form>
 	</b:modal>
 	<!-- ENDE NEUER BENUTZER -->
@@ -408,7 +429,7 @@
 	<!-- NEUES TICKET -->
 	<b:modal title="Ein neues Ticket erstellen"
 		styleClass="neuesTicket fade" closeOnEscape="true" id="neuTicket"
-		backdrop="false">
+		backdrop="false" size="modal-lg">
 		<h:form id="neuesTicketForm">
 			<b:panelGrid colSpans="12" id="ticketPanel">
 				<b:message for="ticketName"></b:message>
@@ -423,20 +444,21 @@
 				</b:inputTextarea>
 
 				<b:message for="kategorie"></b:message>
-				<p:selectOneListbox id="katFilter"
-									value="#{ticketBean.categoryId}" filter="true" filterMatchMode="contains">
-					<f:selectItems value="#{categoryRepositoryBean.allCategories}" var="kategory"
-								   itemLabel="#{kategory.categoryName}" itemValue="#{kategory.categoryId}" />
+				<p:selectOneListbox id="katFilter" value="#{ticketBean.categoryId}"
+					filter="true" filterMatchMode="contains" styleClass="listboxen">
+					<f:selectItems value="#{categoryRepositoryBean.allCategories}"
+						var="kategory" itemLabel="#{kategory.categoryName}"
+						itemValue="#{kategory.categoryId}" />
 				</p:selectOneListbox>
 
 
 			</b:panelGrid>
 
-			
-				<b:commandButton value="anlegen" styleClass="btnNeuesTicket"
-					action="#{ticketBean.createTicket()}">
-				</b:commandButton>
-			
+
+			<b:commandButton value="anlegen" styleClass="btnNeuesTicket"
+				action="#{ticketBean.createTicket()}">
+			</b:commandButton>
+
 		</h:form>
 	</b:modal>
 
@@ -524,7 +546,8 @@
 
 		<b:row>
 			<b:column col-md="6" col-xs="12">
-				<b:panel styleClass="panelMessages color noBorder" onclick="$('.tickets').modal();">
+				<b:panel styleClass="panelMessages color noBorder"
+					onclick="$('.tickets').modal();">
 					<b:panelGrid colSpans="2,10" styleClass="panelQuick"
 						tooltip="Deine aktuellen noch offenen Tickets">
 						<h:outputText
@@ -589,12 +612,12 @@
 		</b:row>
 	</b:container>
 
-	
+
 
 	<!-- Include Script -->
 	<h:outputScript library="js" name="script.js"></h:outputScript>
-	
-	
+
+
 	<!--ENDE BODY -->
 </h:body>
 </html>

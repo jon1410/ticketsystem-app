@@ -346,6 +346,10 @@ input[type="color"]:focus {
 	font-size: 60px;
 }
 
+.listboxen{
+	width: 100%;
+}
+
 /*End Panel Settings*/
 
 /*Media Screen for Mobile Devices*/
