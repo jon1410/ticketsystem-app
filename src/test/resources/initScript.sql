@@ -2,6 +2,9 @@ insert into TICKET_USER (USERID, FIRST_NAME, LAST_NAME, PW, ROLE  )
 VALUES ('tutor', 'tutor', 'tutor', 'tutor', 'TU');
 
 insert into TICKET_USER (USERID, FIRST_NAME, LAST_NAME, PW, ROLE  )
+VALUES ('tutor1', 'tutor1', 'tutor1', 'tutor1', 'TU');
+
+insert into TICKET_USER (USERID, FIRST_NAME, LAST_NAME, PW, ROLE  )
 VALUES ('admin', 'admin', 'admin', 'admin', 'AD');
 
 insert into TICKET_USER (USERID, FIRST_NAME, LAST_NAME, PW, ROLE  )

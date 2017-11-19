@@ -12,7 +12,10 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.powermock.reflect.Whitebox;
 
+import java.util.List;
+
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserDBServiceTest extends JPAHibernateTestManager {
@@ -30,6 +33,9 @@ public class UserDBServiceTest extends JPAHibernateTestManager {
         UserEntity ue = new UserEntity("testUser", "test", "test",
                 "test", UserRole.AD);
         userDBService.persistUser(ue);
+        UserEntity ue1 = new UserEntity("testUser1", "test", "test",
+                "test", UserRole.TU);
+        userDBService.persistUser(ue1);
         em.getTransaction().commit();
     }
 
@@ -51,4 +57,23 @@ public class UserDBServiceTest extends JPAHibernateTestManager {
         UserEntity ue1 = userDBService.findById("testUser");
         Assert.assertEquals("newPW", ue1.getPassword());
     }
+
+    @Test
+    public void test4UpdateUser(){
+        userDBService.updateUser("testUser1", "newFirst", "newLast", UserRole.ST);
+    }
+
+    @Test
+    public void test5DeleteUser(){
+        userDBService.deleteUser("testUser1");
+    }
+
+    @Test
+    public void test6FindByRole(){
+        List<UserEntity> userEntities = userDBService.findByRole(UserRole.AD);
+        assertNotNull(userEntities);
+        assertTrue(userEntities.size() == 1);
+    }
+
+
 }

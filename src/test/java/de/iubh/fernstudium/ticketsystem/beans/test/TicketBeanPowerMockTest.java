@@ -30,6 +30,8 @@ import org.powermock.reflect.Whitebox;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -57,14 +59,23 @@ public class TicketBeanPowerMockTest {
     }
 
     @Test
+    public void testCreateTicketCategoryNotFoundException() throws CategoryNotFoundException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        when(categoryService.getCategoryById(anyString())).thenThrow(new CategoryNotFoundException("test"));
+        ticketBean.createTicket();
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
     public void testCreateTicketOK() throws CategoryNotFoundException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
         CurrentUserBean currentUserBean = new CurrentUserBean();
         currentUserBean.setUserId("userid");
         Whitebox.setInternalState(ticketBean, "currentUserBean", currentUserBean);
-        Mockito.when(categoryService.getCategoryById(Mockito.anyString())).thenReturn(buildCategoryDTO());
-        Mockito.when(ticketService.createTicket(Mockito.any(TicketDTO.class))).thenReturn(buildTicketDTO());
+        when(categoryService.getCategoryById(Mockito.anyString())).thenReturn(buildCategoryDTO());
+        when(ticketService.createTicket(Mockito.any(TicketDTO.class))).thenReturn(buildTicketDTO());
 
         ticketBean.setCategoryId("testId");
         assertEquals("testId", ticketBean.getCategoryId());

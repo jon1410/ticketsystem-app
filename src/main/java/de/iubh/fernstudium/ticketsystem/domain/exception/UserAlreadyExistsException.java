@@ -19,8 +19,4 @@ public class UserAlreadyExistsException extends Exception {
     public UserAlreadyExistsException(Throwable cause) {
         super(cause);
     }
-
-    public UserAlreadyExistsException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

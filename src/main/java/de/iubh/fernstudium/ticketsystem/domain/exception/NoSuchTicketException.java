@@ -19,8 +19,4 @@ public class NoSuchTicketException extends Exception {
     public NoSuchTicketException(Throwable cause) {
         super(cause);
     }
-
-    public NoSuchTicketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

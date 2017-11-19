@@ -12,8 +12,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class HistoryDTOTest {
 
@@ -42,6 +41,13 @@ public class HistoryDTOTest {
 
         HistoryEntity historyEntity = historyDTO.toEntity();
         assertNotNull(historyEntity);
+
+        HistoryDTO historyDTO1 = new HistoryDTO(1L, buildTicketDTO(), ldt, HistoryAction.AC, "Details", buildUserDTO());
+
+        assertTrue(historyDTO.equals(historyDTO));
+        assertTrue(historyDTO.equals(historyDTO1));
+        assertFalse(historyDTO.equals(null));
+        assertFalse(historyDTO.hashCode() == 0);
     }
 
     private TicketDTO buildTicketDTO() {

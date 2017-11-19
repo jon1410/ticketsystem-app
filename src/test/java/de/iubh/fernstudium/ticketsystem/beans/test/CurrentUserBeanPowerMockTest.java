@@ -22,6 +22,7 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @RunWith(PowerMockRunner.class)
@@ -85,7 +86,7 @@ public class CurrentUserBeanPowerMockTest {
     public void testChangePwNOK() throws UserNotExistsException, InvalidPasswordException {
         PowerMockito.mockStatic(FacesContextUtils.class);
         currentUserBean.setNewPassword("newPw");
-        currentUserBean.setRepeatedPassword("xy");
+        currentUserBean.setRepeatedPassword("newPw");
 
         Mockito.when(userService.changePassword(Mockito.anyString(),Mockito.anyString(),Mockito.anyString())).thenReturn(false);
         currentUserBean.changePassword();
@@ -97,7 +98,7 @@ public class CurrentUserBeanPowerMockTest {
     public void testChangePwUserNotExistsException() throws UserNotExistsException, InvalidPasswordException {
         PowerMockito.mockStatic(FacesContextUtils.class);
         currentUserBean.setNewPassword("newPw");
-        currentUserBean.setRepeatedPassword("xy");
+        currentUserBean.setRepeatedPassword("newPw");
 
         Mockito.when(userService.changePassword(Mockito.anyString(),Mockito.anyString(),Mockito.anyString())).thenThrow(new UserNotExistsException("test"));
         currentUserBean.changePassword();
@@ -126,6 +127,11 @@ public class CurrentUserBeanPowerMockTest {
         FacesContextUtils.logout(logoutString);
     }
 
+    @Test
+    public void testToString(){
+        String s = currentUserBean.toString();
+        assertNotNull(s);
+    }
 
     private UserDTO buildUserDTO() {
         return new UserDTO("userid", "firstName", "lastName", "pw", UserRole.TU);

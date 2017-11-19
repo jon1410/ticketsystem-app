@@ -2,9 +2,6 @@ package de.iubh.fernstudium.ticketsystem.db.utils;
 
 public class QueryUtils {
 
-    private QueryUtils() {
-    }
-
     public static String buildFullTextQuery(String tableColumn) {
 
         tableColumn = "(" + tableColumn + ")";

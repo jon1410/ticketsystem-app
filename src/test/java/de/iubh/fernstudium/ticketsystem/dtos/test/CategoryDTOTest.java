@@ -23,6 +23,7 @@ public class CategoryDTOTest {
         assertEquals(categoryDTO, categoryDTO1);
         categoryDTO.setCategoryName("xy");
         assertNotEquals(categoryDTO, categoryDTO1);
+        assertFalse(categoryDTO.hashCode() == 0);
     }
 
     private UserDTO buildUserDTO() {
