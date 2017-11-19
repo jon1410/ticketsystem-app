@@ -56,7 +56,7 @@ public class UserDataBean implements Serializable {
         LOG.info("Initializing Tickets for userId: " + userId);
         try {
             tickets = ticketService.getOpenTicketsForUserId(userId);
-            reportedByLoggedInUser = ticketService.getTicketsReportedByUserId(userId); //ToDO: evtl. hier Liste truncaten???
+            reportedByLoggedInUser = ticketService.getTicketsReportedByUserId(userId);
             LOG.info(String.format("%d Tickets loaded for User: %s", tickets.size(), userId));
         } catch (UserNotExistsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));

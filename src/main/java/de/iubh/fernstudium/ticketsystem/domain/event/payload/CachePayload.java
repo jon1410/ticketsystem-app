@@ -5,9 +5,6 @@ import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 public class CachePayload {
 
-    //CDI does not know Generic-Events
-    //public T payload;
-
     private UserDTO userDTO;
     private CategoryDTO categoryDTO;
 
