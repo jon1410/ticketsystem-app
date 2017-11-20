@@ -7,11 +7,12 @@ import de.iubh.fernstudium.ticketsystem.util.config.ValidationConfig;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Created by ivanj on 04.07.2017.
  */
-public class UserDTO{
+public class UserDTO implements Serializable {
 
     @Pattern(regexp = ValidationConfig.EMAIL_REGEX)
     protected String userId;

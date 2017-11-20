@@ -4,9 +4,10 @@ import de.iubh.fernstudium.ticketsystem.db.entities.HistoryEntity;
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class HistoryDTO {
+public class HistoryDTO implements Serializable {
 
     private Long id;
     private TicketDTO ticketDTO;

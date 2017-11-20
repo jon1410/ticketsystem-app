@@ -3,12 +3,13 @@ package de.iubh.fernstudium.ticketsystem.dtos;
 import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Created by ivanj on 08.07.2017.
  */
-public class CommentDTO {
+public class CommentDTO implements Serializable {
 
     private Long id;
     private LocalDateTime creationDate;

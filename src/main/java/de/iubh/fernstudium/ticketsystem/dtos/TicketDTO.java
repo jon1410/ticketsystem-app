@@ -7,6 +7,7 @@ import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by ivanj on 03.07.2017.
  */
-public class TicketDTO {
+public class TicketDTO implements Serializable {
 
     @Inject
     private TicketDBService ticketDBService;
