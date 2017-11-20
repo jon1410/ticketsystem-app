@@ -111,6 +111,13 @@ public class CategoryDBServiceTest extends JPAHibernateTestManager {
         assertTrue(categoryEntities.size() == 1);
     }
 
+    @Test
+    public void test9GetCategoryByName(){
+        List<CategoryEntity> categoryEntities = categoryDBService.getCategoryByName("Name");
+        assertNotNull(categoryEntities);
+        assertTrue(categoryEntities.size() == 1);
+    }
+
     private UserEntity buildTutor() {
         return new UserEntity("tutor1", "tutor1", "tutor1", "tutor1", UserRole.TU);
     }

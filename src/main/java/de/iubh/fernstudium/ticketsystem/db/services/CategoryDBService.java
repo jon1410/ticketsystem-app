@@ -65,4 +65,12 @@ public interface CategoryDBService {
      */
     List<CategoryEntity> getAllCategories();
 
+    /**
+     * Liefert alle Kategorien mit angegebenem Namen
+     *
+     * @param categoryName
+     * @return Liste an {@link CategoryEntity}
+     */
+    List<CategoryEntity> getCategoryByName(String categoryName);
+
 }

@@ -12,4 +12,5 @@ public class QueryUtilsTest {
         String expected = "select * from TICKET where match (TEST) against (? in boolean mode) ";
         assertEquals(expected, QueryUtils.buildFullTextQuery("TEST"));
     }
+
 }

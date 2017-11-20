@@ -64,4 +64,12 @@ public interface CategoryService {
      * @return Liste an {@link CategoryDTO}
      */
     List<CategoryDTO> getAllCategories();
+
+    /**
+     * Liefert alle Kategorien mit angegebenem Namen
+     *
+     * @param categoryName
+     * @return Liste an {@link CategoryDTO}
+     */
+    List<CategoryDTO> getCategoryByName(String categoryName);
 }

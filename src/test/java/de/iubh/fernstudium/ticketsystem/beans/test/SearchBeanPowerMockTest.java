@@ -9,6 +9,7 @@ import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
+import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import de.iubh.fernstudium.ticketsystem.services.SearchService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
@@ -35,6 +36,7 @@ import java.util.concurrent.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -50,6 +52,8 @@ public class SearchBeanPowerMockTest {
     private TicketService ticketService;
     @Mock
     private UserService userService;
+    @Mock
+    private CategoryService categoryService;
     @Mock
     private RequestContext requestContext;
     @Mock
@@ -172,6 +176,34 @@ public class SearchBeanPowerMockTest {
     }
 
     @Test
+    public void testSearchDetailsDatesStatusAndCategory()  {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        String sDate = "Wed Nov 01 12:00:00 CET 2017";
+        searchBean.setDateFrom(sDate);
+        searchBean.setDateTo(sDate);
+        searchBean.setCategoryText("aCategory");
+        assertEquals(sDate, searchBean.getDateFrom());
+        assertEquals(sDate, searchBean.getDateTo());
+        String[] selectedStati = {TicketStatus.NEW.getResolvedText(), TicketStatus.CLO.getResolvedText()};
+        searchBean.setSelectedStati(selectedStati);
+        assertTrue(searchBean.getSelectedStati().length == 2);
+
+        Mockito.when(searchService.searchByQuery(Mockito.anyString(), Mockito.anyList())).thenReturn(buildFuture(3));
+        when(categoryService.getCategoryByName(anyString())).thenReturn(buildCategoryDTOList());
+
+        searchBean.searchDetails();
+        assertNotNull(searchBean.getFoundTickets());
+        assertTrue(searchBean.getFoundTickets().size() == 3);
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
     public void testSearchDetailsDatesAndReporterAndAssignee() throws UserNotExistsException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
@@ -274,4 +306,14 @@ public class SearchBeanPowerMockTest {
     private UserDTO buildUserDTO() {
         return new UserDTO("userid", "firstName", "lastName", "pw", UserRole.TU);
     }
+
+    private List<CategoryDTO> buildCategoryDTOList() {
+        List<CategoryDTO> categoryDTOList = new ArrayList<>(5);
+
+        for (int i = 0; i < 5; i++) {
+            categoryDTOList.add(new CategoryDTO("c"+i, "name", buildUserDTO()));
+        }
+        return categoryDTOList;
+    }
+
 }

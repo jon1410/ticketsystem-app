@@ -78,4 +78,13 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public List<CategoryDTO> getCategoryByName(String categoryName) {
+        List<CategoryEntity> categoryEntities = categoryDBService.getCategoryByName(categoryName);
+        if(CollectionUtils.isNotEmpty(categoryEntities)){
+            return categoryEntities.stream().map(CategoryEntity::toDto).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
 }
