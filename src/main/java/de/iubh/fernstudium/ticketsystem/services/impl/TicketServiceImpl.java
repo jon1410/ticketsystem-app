@@ -54,12 +54,6 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketDTO> getHistoricTicketsByUserId(String userId) {
-        //TODO evtl. in HistoryService verschieben bzw. kann über Suchfunktion abgebildet werden
-        return null;
-    }
-
-    @Override
     public void changeStatus(Long ticketId, TicketStatus newStatus) throws NoSuchTicketException {
         if(!ticketDBService.changeStauts(ticketId, newStatus)){
             throw new NoSuchTicketException("Ticket mit ID: " + ticketId + " wurde nicht gefunden.");

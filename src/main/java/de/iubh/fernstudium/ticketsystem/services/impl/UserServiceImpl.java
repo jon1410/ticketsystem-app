@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         UserDTO user = this.getUserByUserId(mailAdress);
 
         if(!emailService.isMailConfigured()){
-            System.out.println("### Neues Passwort ist: " + newPw);
+            LOG.info("### Neues Passwort ist: " + newPw);
         }
 
         String hashedPwNew = passwordUtil.hashPw(newPw);

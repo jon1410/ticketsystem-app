@@ -39,14 +39,6 @@ public interface TicketService {
     List<TicketDTO> getTicketsReportedByUserId(String userId) throws UserNotExistsException;
 
     /**
-     * Ermittelt alle historischen Tickets zu einem User
-     *
-     * @param userId
-     * @return java.util.List von {@link TicketDTO}
-     */
-    List<TicketDTO> getHistoricTicketsByUserId(String userId);
-
-    /**
      * Ändert den Status eines Tickets
      *
      * @param ticketId

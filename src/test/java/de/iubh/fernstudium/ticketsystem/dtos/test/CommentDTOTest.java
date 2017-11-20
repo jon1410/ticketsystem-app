@@ -41,7 +41,6 @@ public class CommentDTOTest {
         CommentEntity commentEntity = commentDTO.toEntity();
         assertNotNull(commentEntity);
         assertEquals(commentDTO, commentDTO1);
-        Thread.sleep(10);
         commentDTO.setChangeDate(LocalDateTime.now());
         assertNotEquals(commentDTO, commentDTO1);
         assertFalse(commentDTO.equals(commentDTO1));
