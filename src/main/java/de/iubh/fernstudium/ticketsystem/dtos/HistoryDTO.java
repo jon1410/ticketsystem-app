@@ -7,7 +7,7 @@ import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class HistoryDTO implements Serializable {
+public class HistoryDTO {
 
     private Long id;
     private TicketDTO ticketDTO;

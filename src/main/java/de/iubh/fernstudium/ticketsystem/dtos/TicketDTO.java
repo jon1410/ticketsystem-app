@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by ivanj on 03.07.2017.
  */
-public class TicketDTO implements Serializable {
+public class TicketDTO {
 
     @Inject
     private TicketDBService ticketDBService;

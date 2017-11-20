@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 /**
  * Created by ivanj on 08.07.2017.
  */
-public class CommentDTO implements Serializable {
+public class CommentDTO {
 
     private Long id;
     private LocalDateTime creationDate;
