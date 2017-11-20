@@ -117,7 +117,7 @@ public class SearchBean implements Serializable {
         LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
         LocalDateTime ldtTo = DateTimeUtil.format(dateTo);
         CustomNativeQuery.QueryBuilder queryBuilder = CustomNativeQuery.builder()
-                .selectAll().from("ticket").where("CREA_TSP")
+                .selectAll().from("TICKET").where("CREA_TSP")
                 .between(DateTimeUtil.localDtToSqlTimestamp(ldtFrom), DateTimeUtil.localDtToSqlTimestamp(ldtTo));
 
 
