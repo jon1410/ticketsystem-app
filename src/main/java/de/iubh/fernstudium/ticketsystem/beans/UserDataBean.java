@@ -34,8 +34,6 @@ public class UserDataBean implements Serializable {
     private static final Logger LOG = LogManager.getLogger(UserDataBean.class);
 
     @Inject
-    private UserService userService;
-    @Inject
     private TicketService ticketService;
     @Inject
     private CurrentUserBean currentUserBean;
@@ -150,6 +148,11 @@ public class UserDataBean implements Serializable {
                         UITexts.ERROR_NEW_COMMENT, null);
             }
         }
+    }
+
+    public void showHistory(){
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("$('.histModal').modal('show');");
     }
 
     public void updateCache(TicketDTO dto){

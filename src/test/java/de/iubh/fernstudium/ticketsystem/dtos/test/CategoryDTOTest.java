@@ -24,6 +24,9 @@ public class CategoryDTOTest {
         categoryDTO.setCategoryName("xy");
         assertNotEquals(categoryDTO, categoryDTO1);
         assertFalse(categoryDTO.hashCode() == 0);
+        assertFalse(categoryDTO.equals(categoryDTO1));
+        assertFalse(categoryDTO.equals(null));
+        assertTrue(categoryDTO.equals(categoryDTO));
     }
 
     private UserDTO buildUserDTO() {

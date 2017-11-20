@@ -333,6 +333,18 @@ public class UserDataBeanPowerMockTest {
         RequestContext.releaseThreadLocalCache();
     }
 
+
+    @Test
+    public void testShowHistory(){
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        userDataBean.showHistory();
+        verify(requestContext, times(1)).execute(anyString());
+
+        RequestContext.releaseThreadLocalCache();
+    }
+
     private List<HistoryDTO> buildHistoryDTOList() {
 
         List<HistoryDTO> historyDTOS = new ArrayList<>();

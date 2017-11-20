@@ -2,7 +2,9 @@ package de.iubh.fernstudium.ticketsystem.dtos;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 
-public class CategoryDTO {
+import java.io.Serializable;
+
+public class CategoryDTO implements Serializable {
 
     private String categoryId;
     private String categoryName;

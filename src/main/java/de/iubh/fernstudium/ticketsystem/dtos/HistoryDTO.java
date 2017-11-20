@@ -75,6 +75,14 @@ public class HistoryDTO {
         this.details = details;
     }
 
+    public String getHistoryActionResolvedText(){
+        return action.getResolvedText();
+    }
+
+    public String getEventTimeAsString(){
+        return this.eventTime.toString();
+    }
+
     public HistoryEntity toEntity(){
         return new HistoryEntity(ticketDTO.toEntity(), DateTimeUtil.localDtToSqlTimestamp(eventTime), action, details, userDTO.toEntity());
     }

@@ -13,6 +13,7 @@ public class UITexts {
     public static final String CREATE_USER_ERROR_DETAIL = "Neuer Benutzer konnte nicht angelegt werden, ";
     public static final String CREATE_USER_INFO_SUMMARY = "Registrierung erfolgreich.";
     public static final String CREATE_USER_INFO_DETAIL = "Neuer Benutzer angelegt.";
+    public static final String NOT_A_TUTOR = "Benutzer ist kein Tutor! Keine Änderung durchgeführt";
 
     //Ticket-Texte
     public static final String NEW_TICKET = "Neues Ticket erstellt";
@@ -56,4 +57,6 @@ public class UITexts {
 
     //Sonst
     public static final String CREATE_USER_TRY_AGAIN = "bitte probiere es später noch einmal";
+    public static final String CHANGE_EXEC = "Änderung durchgeführt!";
+
 }

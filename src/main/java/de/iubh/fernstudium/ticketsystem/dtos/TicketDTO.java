@@ -144,6 +144,22 @@ public class TicketDTO {
         this.creationTimeAsString = creationTimeAsString;
     }
 
+    public List<Long> getChildTicketsIds() {
+        return childTicketsIds;
+    }
+
+    public void setChildTicketsIds(List<Long> childTicketsIds) {
+        this.childTicketsIds = childTicketsIds;
+    }
+
+    public Long getMasterTicketId() {
+        return masterTicketId;
+    }
+
+    public void setMasterTicketId(Long masterTicketId) {
+        this.masterTicketId = masterTicketId;
+    }
+
     /**
      * Erzeugt eine Entity aus dem DTO
      */
