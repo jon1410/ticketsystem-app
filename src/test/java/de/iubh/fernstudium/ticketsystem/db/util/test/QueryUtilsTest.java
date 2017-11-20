@@ -9,7 +9,7 @@ public class QueryUtilsTest {
 
     @Test
     public void testQueryUtils(){
-        String expected = "select * from ticket where match (TEST) against (? in boolean mode) ";
+        String expected = "select * from TICKET where match (TEST) against (? in boolean mode) ";
         assertEquals(expected, QueryUtils.buildFullTextQuery("TEST"));
     }
 }

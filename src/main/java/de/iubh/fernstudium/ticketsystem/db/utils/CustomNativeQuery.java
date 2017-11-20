@@ -5,7 +5,7 @@ import java.util.*;
 
 public class CustomNativeQuery {
 
-    static final String TABLE_NAME = "ticket ";
+    static final String TABLE_NAME = "TICKET ";
     static final String SELECT_ALL = "select * ";
     static final String SELECT = "select ";
     static final String FROM = "from ";
