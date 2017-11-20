@@ -28,12 +28,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 
 @SessionScoped
 @Named("searchBean")
@@ -51,10 +54,8 @@ public class SearchBean implements Serializable {
     private CategoryService categoryService;
 
     //Detail-Suche
-    @NotNull
-    private String dateFrom; //muss dd.MM.yyyy sein
-    @NotNull
-    private String dateTo; //muss dd.MM.yyyy sein
+    private String dateFrom;
+    private String dateTo;
     private List<String> stati;
     private String selectedStatiForSearch;
     private String[] selectedStati;
@@ -122,9 +123,20 @@ public class SearchBean implements Serializable {
 
         Future<List<TicketDTO>> tickets;
         List<TicketDTO> foundTicketsFromSearch;
+        LocalDateTime ldtFrom;
+        LocalDateTime ldtTo;
+        if(StringUtils.isNotEmpty(dateFrom)){
+            ldtFrom = DateTimeUtil.format(dateFrom);
+        }else{
+            ldtFrom = LocalDate.now().with(firstDayOfYear()).atStartOfDay();
+        }
 
-        LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
-        LocalDateTime ldtTo = DateTimeUtil.format(dateTo);
+        if(StringUtils.isNotEmpty(dateTo)){
+            ldtTo = DateTimeUtil.format(dateTo);
+        }else{
+            ldtTo = LocalDateTime.now();
+        }
+
         CustomNativeQuery.QueryBuilder queryBuilder = CustomNativeQuery.builder()
                 .selectAll().from("TICKET").where("CREA_TSP")
                 .between(DateTimeUtil.localDtToSqlTimestamp(ldtFrom), DateTimeUtil.localDtToSqlTimestamp(ldtTo));

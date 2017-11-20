@@ -150,6 +150,23 @@ public class SearchBeanPowerMockTest {
     }
 
     @Test
+    public void testSearchDetailsWithDatesNull()  {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        Mockito.when(searchService.searchByQuery(Mockito.anyString(), Mockito.anyList())).thenReturn(buildFuture(3));
+
+        searchBean.searchDetails();
+        assertNotNull(searchBean.getFoundTickets());
+        assertTrue(searchBean.getFoundTickets().size() == 3);
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
     public void testSearchDetailsDatesAndStatus()  {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
