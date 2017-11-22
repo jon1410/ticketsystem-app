@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.beans.test;
 
+import com.sun.org.apache.regexp.internal.RE;
 import de.iubh.fernstudium.ticketsystem.beans.CurrentUserBean;
 import de.iubh.fernstudium.ticketsystem.beans.UserDataBean;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
@@ -30,6 +31,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 import org.primefaces.context.RequestContext;
 
 import javax.faces.context.FacesContext;
@@ -342,6 +344,35 @@ public class UserDataBeanPowerMockTest {
         userDataBean.showHistory();
         verify(requestContext, times(1)).execute(anyString());
 
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testCheckLoggedInUser(){
+        when(currentUserBean.getUserId()).thenReturn(null);
+        assertEquals(FacesContextUtils.REDIRECT_LOGIN, userDataBean.checkLoggedInUser());
+    }
+
+    @Test
+    public void testCheckLoggedInUserCurrentUserBeanNull(){
+        currentUserBean = null;
+        Whitebox.setInternalState(userDataBean, "currentUserBean", currentUserBean);
+        assertEquals(FacesContextUtils.REDIRECT_LOGIN, userDataBean.checkLoggedInUser());
+    }
+
+    @Test
+    public void testCheckLoginOK(){
+        when(currentUserBean.getUserId()).thenReturn("test");
+        assertNull(userDataBean.checkLoggedInUser());
+    }
+
+    @Test
+    public void testTerminateActiveTicket(){
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+        userDataBean.setActiveTicket(buildTicketDTO());
+        userDataBean.terminateActiveTicket();
+        verify(eventProducer, times(1)).produceHistoryEvent(anyLong(), any(HistoryAction.class), anyString());
         RequestContext.releaseThreadLocalCache();
     }
 

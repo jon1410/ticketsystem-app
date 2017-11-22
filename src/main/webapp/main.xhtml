@@ -8,6 +8,10 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:hf="http://highfaces.org">
 
+<f:metadata>
+	<f:viewAction action="#{userDataBean.checkLoggedInUser}"/>
+</f:metadata>
+
 <h:head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,8 +41,9 @@
 
 
 			<b:commandButton value="speichern" styleClass="btnNeuesPasswort"
-				update="changePassword"
-				actionListener="#{currentUserBean.changePassword()}">
+				update="changePassword :msgs"
+				actionListener="#{currentUserBean.changePassword()}"
+				oncomplete="$('.passwordModal').modal('hide');return false;">
 			</b:commandButton>
 
 		</b:modal>
@@ -64,7 +69,7 @@
 							<f:convertDateTime dateStyle="medium" />
 						</h:outputText>
 					</b:dataTableColumn>
-					<b:dataTableColumn label="Beauftragter"
+					<b:dataTableColumn label="Bearbeiter"
 						value="#{ergebnis.assignee.userId}"></b:dataTableColumn>
 				</b:dataTable>
 			</b:panelGrid>
@@ -114,15 +119,21 @@
 		size="modal-lg">
 		<h:form id="formDetail">
 			<h3>Detail zu #{userDataBean.activeTicket.title}</h3>
-			<b:panelGrid colSpans="3,3,3,3" id="detailPanel">
+			<b:panelGrid colSpans="4,4,4" id="detailPanel1">
 				<b:commandButton value="Bearbeitung starten" look="success"
 					actionListener="#{userDataBean.startProgress}"
-					update=":yourTickets :formDetail"></b:commandButton>
+					update=":yourTickets :formDetail :histDetail"></b:commandButton>
 				<b:commandButton value="Ticket abschließen" look="warning"
-					actionListener="#{userDataBean.finishTicket}"></b:commandButton>
-				<b:commandButton value="Ticket zurückgeben" look="danger"
-					actionListener="#{userDataBean.resolveTicket}"></b:commandButton>
-				<b:commandButton value="Histroie" look="default" actionListener="#{userDataBean.showHistory}"
+					actionListener="#{userDataBean.finishTicket}" update=":yourTickets :formDetail :histDetail"></b:commandButton>
+				<b:commandButton value="Ticket zurückgeben" look="info"
+					actionListener="#{userDataBean.resolveTicket}" update=":yourTickets :formDetail :histDetail"></b:commandButton>
+			</b:panelGrid>
+			<b:panelGrid colSpans="6,6" id="detailPanel2">
+				<b:commandButton look="danger" value="Ticket abbrechen"
+								 tooltip="Beendet den aktuellen Vorgang des Tickets"
+								 actionListener="#{userDataBean.terminateActiveTicket()}"
+								 update=":yourTickets :formDetail :histDetail"></b:commandButton>
+				<b:commandButton value="Historie" look="default" actionListener="#{userDataBean.showHistory}"
 								 oncomplete="$('.detailModal').modal('hide');return false;"></b:commandButton>
 			</b:panelGrid>
 			<b:panelGrid colSpans="6,6">
@@ -345,20 +356,14 @@
 						<b:dataTableColumn label="Status">
 							<h:outputText value="#{ticket.ticketStatus.resolvedText}" />
 						</b:dataTableColumn>
-						<b:dataTableColumn label="Historie">
-							<b:commandButton value="anzeigen" look="default"></b:commandButton>
+						<b:dataTableColumn label="Kategorie">
+							<h:outputText value="#{ticket.category.categoryName}" />
 						</b:dataTableColumn>
-						<b:dataTableColumn label="">
-							<!-- only if current user == reporter of Ticket !! -->
+						<b:dataTableColumn label="Details">
 							<b:commandButton look="info" value="Details"
-								tooltip="Schau dir den fortschritt deines Tickets an"
-								actionListener="#{userDataBean.setActiveTicket(ticket)}"
-								oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
-							<b:commandButton look="danger" value="abbrechen"
-								tooltip="Beendet den aktuellen Vorgang des Tickets"
-								actionListener="#{userDataBean.terminateTicket(ticket)}"></b:commandButton>
-							<b:commandButton look="warning" value="An Reporter zurückgeben"
-								tooltip="Gibt das Ticket an den Ersteller zurück"></b:commandButton>
+											 tooltip="Schau dir den fortschritt deines Tickets an"
+											 actionListener="#{userDataBean.setActiveTicket(ticket)}"
+											 oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
 						</b:dataTableColumn>
 					</b:dataTable>
 				</h:form>
@@ -386,20 +391,14 @@
 						<b:dataTableColumn label="Status">
 							<h:outputText value="#{ticket.ticketStatus.resolvedText}" />
 						</b:dataTableColumn>
-						<b:dataTableColumn label="Historie">
-							<b:commandButton value="anzeigen" look="default"></b:commandButton>
+						<b:dataTableColumn label="Kategorie">
+							<h:outputText value="#{ticket.category.categoryName}" />
 						</b:dataTableColumn>
-						<b:dataTableColumn label="">
-							<!-- only if current user == reporter of Ticket !! -->
+						<b:dataTableColumn label="Details">
 							<b:commandButton look="info" value="Details"
 											 tooltip="Schau dir den fortschritt deines Tickets an"
 											 actionListener="#{userDataBean.setActiveTicket(ticket)}"
 											 oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
-							<b:commandButton look="danger" value="abbrechen"
-											 tooltip="Beendet den aktuellen Vorgang des Tickets"
-											 actionListener="#{userDataBean.terminateTicket(ticket)}"></b:commandButton>
-							<b:commandButton look="warning" value="An Reporter zurückgeben"
-											 tooltip="Gibt das Ticket an den Ersteller zurück"></b:commandButton>
 						</b:dataTableColumn>
 					</b:dataTable>
 				</h:form>
@@ -555,8 +554,8 @@
 						<b:navLink header="Einstellungen"></b:navLink>
 						<b:navLink value="Sucheinstellungen"
 							onclick="$('.sucheModal').modal()"></b:navLink>
-						<b:navLink value="Kategorien"
-							onclick="$('.kategorienModal').modal()"></b:navLink>
+						<b:navLink value="Kategorien" onclick="$('.kategorienModal').modal()"
+								   rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}"></b:navLink>
 						<b:navLink />
 						<b:navLink value="User erstellen" onclick="$('.newUser').modal()"
 							rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}"></b:navLink>

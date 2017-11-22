@@ -49,6 +49,13 @@ public class UserDataBean implements Serializable {
     private String newComment;
     private List<Long> childTickets;
 
+    public String checkLoggedInUser(){
+        if(currentUserBean == null || currentUserBean.getUserId() == null){
+            return FacesContextUtils.REDIRECT_LOGIN;
+        }
+        return null;
+    }
+
     public void init(String userId){
 
         LOG.info("Initializing Tickets for userId: " + userId);
@@ -58,6 +65,13 @@ public class UserDataBean implements Serializable {
             LOG.info(String.format("%d Tickets loaded for User: %s", tickets.size(), userId));
         } catch (UserNotExistsException e) {
             LOG.error(ExceptionUtils.getRootCauseMessage(e));
+        }
+    }
+
+    public void terminateActiveTicket(){
+        if(hasActiveTicket()){
+            terminateTicket(activeTicket);
+            activeTicket.setTicketStatus(TicketStatus.UST);
         }
     }
 
