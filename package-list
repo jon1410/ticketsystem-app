@@ -1,0 +1,15 @@
+de.iubh.fernstudium.ticketsystem.beans
+de.iubh.fernstudium.ticketsystem.beans.utils
+de.iubh.fernstudium.ticketsystem.db.entities
+de.iubh.fernstudium.ticketsystem.db.services
+de.iubh.fernstudium.ticketsystem.db.services.impl
+de.iubh.fernstudium.ticketsystem.db.utils
+de.iubh.fernstudium.ticketsystem.domain
+de.iubh.fernstudium.ticketsystem.domain.event.payload
+de.iubh.fernstudium.ticketsystem.domain.exception
+de.iubh.fernstudium.ticketsystem.domain.history
+de.iubh.fernstudium.ticketsystem.dtos
+de.iubh.fernstudium.ticketsystem.services
+de.iubh.fernstudium.ticketsystem.services.impl
+de.iubh.fernstudium.ticketsystem.util
+de.iubh.fernstudium.ticketsystem.util.config
