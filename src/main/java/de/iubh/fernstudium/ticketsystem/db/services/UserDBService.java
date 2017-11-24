@@ -17,7 +17,8 @@ public interface UserDBService {
     /**
      * Ändert das Passwort des Users
      *
-     * @param userId, newPassword
+     * @param userId
+     * @param newPassword
      */
     void changePassword(String userId, String newPassword);
 
@@ -39,7 +40,10 @@ public interface UserDBService {
     /**
      * Ändert die Daten eines Users
      *
-     * @param userId, firstName, lastName, newRole
+     * @param userId
+     * @param firstName
+     * @param lastName
+     * @param newRole
      */
     void updateUser(String userId, String firstName, String lastName, UserRole newRole);
 

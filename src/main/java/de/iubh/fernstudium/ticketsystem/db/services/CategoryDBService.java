@@ -13,6 +13,7 @@ public interface CategoryDBService {
      *
      * @param categoryId
      * @return CategoryEntity
+     * @throws CategoryNotFoundException
      */
     CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException;
 
@@ -21,6 +22,7 @@ public interface CategoryDBService {
      *
      * @param categoryId
      * @return boolean
+     * @throws CategoryNotFoundException
      */
     boolean changeTutor(String categoryId, UserEntity newTutor) throws CategoryNotFoundException;
 
@@ -30,6 +32,7 @@ public interface CategoryDBService {
      * @param courseId
      * @param newCategoryName
      * @return boolean
+     * @throws CategoryNotFoundException
      */
     boolean changeCategoryName(String courseId, String newCategoryName) throws CategoryNotFoundException;
 
@@ -47,6 +50,7 @@ public interface CategoryDBService {
      *
      * @param categoryId
      * @return boolean
+     * @throws CategoryNotFoundException
      */
     boolean deleteCategory(String categoryId) throws CategoryNotFoundException;
 

@@ -15,6 +15,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+/**
+ * führt Logins der Benutzer durch
+ */
 @Named("loginBean")
 @RequestScoped
 public class LoginBean {

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Created by ivanj on 08.07.2017.
+ * Data-Transfer-Object für einen Kommentar
  */
 public class CommentDTO {
 

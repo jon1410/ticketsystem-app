@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
- * Created by ivanj on 04.07.2017.
+ * Data-Transfer-Object für einen User
  */
 public class UserDTO implements Serializable {
 

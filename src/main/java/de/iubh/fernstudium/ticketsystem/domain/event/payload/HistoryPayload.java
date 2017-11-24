@@ -5,6 +5,9 @@ import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
 import java.time.LocalDateTime;
 
+/**
+ * Payload für das Schreiben einer Historie
+ */
 public class HistoryPayload {
 
     private Long ticketId;

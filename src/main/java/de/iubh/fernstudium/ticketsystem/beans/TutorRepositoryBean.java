@@ -12,6 +12,9 @@ import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Dient als Cache für alle Tutoren im System
+ */
 @Named("tutorRepositroyBean")
 @ApplicationScoped
 public class TutorRepositoryBean {

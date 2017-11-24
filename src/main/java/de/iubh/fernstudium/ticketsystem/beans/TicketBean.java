@@ -20,6 +20,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Dient dem Erzeugen von Tickets
+ */
 @Named("ticketBean")
 @RequestScoped
 public class TicketBean extends TicketDTO implements Serializable {

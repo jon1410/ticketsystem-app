@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Created by ivanj on 16.07.2017.
+ * Hilfsklasse zur Datumskonvertierung zwischen {@link LocalDateTime} und {@link Timestamp}
  */
 public class DateTimeUtil {
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ivanj on 03.07.2017.
+ * Data-Transfer-Object für ein Ticket
  */
 public class TicketDTO {
 

@@ -3,6 +3,9 @@ package de.iubh.fernstudium.ticketsystem.beans.utils;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+/**
+ * Utilities für den FacesContext, sowie Redirect-Config
+ */
 public class FacesContextUtils {
 
     public static final String REDIRECT_LOGIN = "/login.xhtml?faces-redirect=true";

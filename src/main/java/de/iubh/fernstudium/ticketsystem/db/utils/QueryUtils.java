@@ -1,5 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.db.utils;
 
+/**
+ * Auslagern des FullText-Queries für bessere Testbarkeit
+ */
 public class QueryUtils {
 
     public static String buildFullTextQuery(String tableColumn) {

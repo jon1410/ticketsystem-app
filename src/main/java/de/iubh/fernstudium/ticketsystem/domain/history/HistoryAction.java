@@ -1,5 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.domain.history;
 
+/**
+ * Enumeration von Aktionen des Users, zu denen eine Historie geschrieben werden soll
+ */
 public enum HistoryAction {
 
     SC("Statusänderung"),

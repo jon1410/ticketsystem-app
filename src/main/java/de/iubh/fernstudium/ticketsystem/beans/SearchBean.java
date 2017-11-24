@@ -38,6 +38,9 @@ import java.util.concurrent.TimeoutException;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 
+/**
+ * Bean, welches die Funktionalität für die Suche bereitstellt
+ */
 @SessionScoped
 @Named("searchBean")
 public class SearchBean implements Serializable {

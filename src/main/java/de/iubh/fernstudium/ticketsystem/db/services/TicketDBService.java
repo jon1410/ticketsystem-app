@@ -120,6 +120,7 @@ public interface TicketDBService {
      *
      * @param masterTicketId
      * @param childTickets
+     * @throws NoSuchTicketException
      */
     TicketEntity createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException;
 
@@ -128,6 +129,7 @@ public interface TicketDBService {
      *
      * @param masterTicketId
      * @param childTicketId
+     * @throws NoSuchTicketException
      */
     TicketEntity createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException;
 

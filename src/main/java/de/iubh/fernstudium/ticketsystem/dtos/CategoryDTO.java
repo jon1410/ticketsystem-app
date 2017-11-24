@@ -4,6 +4,9 @@ import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 
 import java.io.Serializable;
 
+/**
+ * Data-Transfer-Object für eine Kategorie
+ */
 public class CategoryDTO implements Serializable {
 
     private String categoryId;

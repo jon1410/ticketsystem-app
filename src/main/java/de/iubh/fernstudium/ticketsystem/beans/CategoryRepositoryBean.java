@@ -25,6 +25,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Dieses Bean dient als Cache für alle Kategorien und führt Änderungen an diesen durch
+ */
 @SessionScoped
 @Named("categoryRepositoryBean")
 public class CategoryRepositoryBean implements Serializable {
@@ -41,15 +44,27 @@ public class CategoryRepositoryBean implements Serializable {
     @Inject
     private UserService userService;
 
+    /**
+     * {@link PostConstruct} - Methode
+     * Initialisiert alle Katogrien nach Login
+     */
     @PostConstruct
     public void initCategories(){
         allCategories = categoryService.getAllCategories();
     }
 
+    /**
+     * Liefert alle geladenen Kategorien der Session
+     * @return Liste an {@link CategoryDTO}
+     */
     public List<CategoryDTO> getAllCategories() {
         return allCategories;
     }
 
+    /**
+     * Löscht eine Kategorie
+     * @param categoryDTO
+     */
     public void deleteCategory(CategoryDTO categoryDTO){
         try {
             if(categoryDTO == null){
@@ -63,6 +78,10 @@ public class CategoryRepositoryBean implements Serializable {
         allCategories.remove(categoryDTO);
     }
 
+    /**
+     * Ändert eine Kategorie, basierend auf dem
+     * aktuell ausgewählten DTO
+     */
     public void changeCategory(){
         if(currentDTO == null){
             FacesContextUtils.resolveError(UITexts.CHANGE_CATEGORY_ERROR, UITexts.CHANGE_CATEGORY_ERROR, null);
@@ -113,10 +132,18 @@ public class CategoryRepositoryBean implements Serializable {
         FacesContextUtils.resolveInfo(UITexts.CHANGE_EXEC, UITexts.CHANGE_EXEC, null);
     }
 
+    /**
+     * Erzeugt eine neue Kategorie
+     * @param categoryDTO
+     */
     public void addNewCategory(CategoryDTO categoryDTO){
         allCategories.add(categoryDTO);
     }
 
+    /**
+     * Updatet den Cache, wenn ein User mit Rolle = Tutor geändert wurde
+     * @param userDTO
+     */
     public void updateCache(UserDTO userDTO) {
         for(CategoryDTO c : allCategories){
             if(c.getTutor().getUserId().equals(userDTO.getUserId())){
@@ -125,6 +152,10 @@ public class CategoryRepositoryBean implements Serializable {
         }
     }
 
+    /**
+     * Update des Caches, wenn eine Kategorie geändert wurde
+     * @param categoryDTO
+     */
     public void updateCache(CategoryDTO categoryDTO) {
         for(int i=0; i<allCategories.size(); i++){
             CategoryDTO c = allCategories.get(i);

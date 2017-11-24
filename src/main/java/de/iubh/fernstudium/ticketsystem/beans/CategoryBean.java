@@ -15,6 +15,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+/**
+ * Bean zum erstellen von Kategorien
+ */
 @Named("categoryBean")
 @RequestScoped
 public class CategoryBean extends CategoryDTO{
@@ -31,6 +34,9 @@ public class CategoryBean extends CategoryDTO{
 
     private String tutorUserId;
 
+    /**
+     * Erzeugt eine neue Kategorie
+     */
     public void createCategory(){
         UserDTO userDTO = null;
         try {

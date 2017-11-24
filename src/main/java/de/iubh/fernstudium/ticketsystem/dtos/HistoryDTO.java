@@ -7,6 +7,9 @@ import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Data-Transfer-Object für einen Historien-Eintrag
+ */
 public class HistoryDTO {
 
     private Long id;

@@ -27,6 +27,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Verwaltet die Daten des aktuell angemeldeten Benutzers
+ */
 @Named("userDataBean")
 @SessionScoped
 public class UserDataBean implements Serializable {

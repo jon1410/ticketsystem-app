@@ -1,5 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.domain;
 
+/**
+ * Statische Text-Definitionen, welcher der User als Messages in der UI sehen kann
+ */
 public class UITexts {
 
     //Login-Texte
