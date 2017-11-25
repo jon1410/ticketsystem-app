@@ -6,6 +6,7 @@ import de.iubh.fernstudium.ticketsystem.beans.UserDataBean;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
+import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
@@ -13,6 +14,7 @@ import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.HistoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
+import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import de.iubh.fernstudium.ticketsystem.services.HistoryService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
@@ -39,9 +41,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -63,6 +63,8 @@ public class UserDataBeanPowerMockTest {
     private EventProducer eventProducer;
     @Mock
     private HistoryService historyService;
+    @Mock
+    private CategoryService categoryService;
     @Mock
     private RequestContext requestContext;
     @Mock
@@ -373,6 +375,109 @@ public class UserDataBeanPowerMockTest {
         userDataBean.setActiveTicket(buildTicketDTO());
         userDataBean.terminateActiveTicket();
         verify(eventProducer, times(1)).produceHistoryEvent(anyLong(), any(HistoryAction.class), anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testChangeCategoryOK() throws CategoryNotFoundException, NoSuchTicketException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        userDataBean.setActiveTicket(buildTicketDTO());
+        userDataBean.setNewCategoryId("cid");
+        assertNotNull(userDataBean.getNewCategoryId());
+
+        CategoryDTO categoryDTO = buildCategoryDTO();
+        categoryDTO.setCategoryId("newId");
+        TicketDTO ticketDTO = buildTicketDTO();
+        ticketDTO.setCategory(categoryDTO);
+
+        when(categoryService.getCategoryById(anyString())).thenReturn(categoryDTO);
+        when(ticketService.changeCategoryOfTicket(anyLong(), any(CategoryDTO.class))).thenReturn(ticketDTO);
+
+        userDataBean.changeCateogry();
+
+        assertEquals("newId", userDataBean.getActiveTicket().getCategory().getCategoryId());
+
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testChangeCategoryNOKException() throws CategoryNotFoundException, NoSuchTicketException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        userDataBean.setActiveTicket(buildTicketDTO());
+        userDataBean.setNewCategoryId("cid");
+        assertNotNull(userDataBean.getNewCategoryId());
+
+        CategoryDTO categoryDTO = buildCategoryDTO();
+        categoryDTO.setCategoryId("newId");
+        TicketDTO ticketDTO = buildTicketDTO();
+        ticketDTO.setCategory(categoryDTO);
+
+        when(categoryService.getCategoryById(anyString())).thenReturn(categoryDTO);
+        when(ticketService.changeCategoryOfTicket(anyLong(), any(CategoryDTO.class))).thenThrow(new NoSuchTicketException("test"));
+
+        userDataBean.changeCateogry();
+
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testChangeCategoryNOKNoSuchTicketException() throws CategoryNotFoundException, NoSuchTicketException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        userDataBean.setActiveTicket(buildTicketDTO());
+        userDataBean.setNewCategoryId("cid");
+        assertNotNull(userDataBean.getNewCategoryId());
+
+        CategoryDTO categoryDTO = buildCategoryDTO();
+        categoryDTO.setCategoryId("newId");
+        TicketDTO ticketDTO = buildTicketDTO();
+        ticketDTO.setCategory(categoryDTO);
+
+        when(categoryService.getCategoryById(anyString())).thenThrow(new CategoryNotFoundException("test"));
+
+        userDataBean.changeCateogry();
+
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testChangeNOKNoActiveTicket(){
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        userDataBean.changeCateogry();
+
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testChangeNOKNoNewCategory(){
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+        userDataBean.setActiveTicket(buildTicketDTO());
+
+        userDataBean.changeCateogry();
+
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
         RequestContext.releaseThreadLocalCache();
     }
 

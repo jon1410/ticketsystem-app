@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.services;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
 import java.util.List;
@@ -84,5 +85,15 @@ public interface TicketService {
      * @throws NoSuchTicketException
      */
     TicketDTO createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException;
+
+    /**
+     * Ändert die Kategorie zu einem Ticket
+     *
+     * @param ticketId
+     * @param categoryDTO
+     * @return geändertes TicketDTO
+     * @throws NoSuchTicketException
+     */
+    TicketDTO changeCategoryOfTicket(Long ticketId, CategoryDTO categoryDTO) throws NoSuchTicketException;
 
 }

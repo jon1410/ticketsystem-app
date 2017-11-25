@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.db.services;
 
+import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
@@ -132,5 +133,15 @@ public interface TicketDBService {
      * @throws NoSuchTicketException
      */
     TicketEntity createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException;
+
+    /**
+     * Ändert die Kategorie zu einem Ticket
+     *
+     * @param ticketId
+     * @param categoryEntity
+     * @return geänderte Entity
+     * @throws NoSuchTicketException
+     */
+    TicketEntity changeCategoryOfTicket(Long ticketId, CategoryEntity categoryEntity) throws NoSuchTicketException;
 
 }

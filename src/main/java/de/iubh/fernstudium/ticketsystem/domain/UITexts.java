@@ -53,9 +53,11 @@ public class UITexts {
     //Kategorie-Texte
     public static final String CREATE_CATEGORY_ERROR_USER = "Fehler beim Erzeugen der Kategorie, angegebener Tutor existiert nicht.";
     public static final String CHANGE_CATEGORY_ERROR = "Fehler beim Ändern der Kategorie, bitte wende dich an den Support.";
+    public static final String CHANGE_CATEGORY_OK = "Kategorie wurde erfolgreich geändert.";
     public static final String DELETE_CATEGORY_ERROR_SUMMARY = "Fehler beim Löschen der Kategorie";
     public static final String DELETE_CATEGORY_ERROR_DETAIL = "Die Kategorie konnte nicht gelöscht werden, bitte versuche es später noch einmal.";
     public static final String DELETE_CATEGORY_DB_ERROR_DETAIL = "Diese Kategorie wird noch verwendet und kann nicht gelöscht werden!";
+    public static final String NO_NEW_CATEGORY = "Bitte wähle eine neue Kategorie aus!";
 
 
     //Sonst

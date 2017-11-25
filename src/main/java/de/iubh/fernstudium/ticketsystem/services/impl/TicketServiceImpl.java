@@ -5,6 +5,7 @@ import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
@@ -86,6 +87,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public TicketDTO createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException {
         TicketEntity ticketEntity =ticketDBService.createMasterTicket(masterTicketId, childTicketId);
+        return ticketEntity.toDto();
+    }
+
+    @Override
+    public TicketDTO changeCategoryOfTicket(Long ticketId, CategoryDTO categoryDTO) throws NoSuchTicketException {
+        TicketEntity ticketEntity = ticketDBService.changeCategoryOfTicket(ticketId, categoryDTO.toEntity());
         return ticketEntity.toDto();
     }
 
