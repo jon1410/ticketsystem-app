@@ -90,7 +90,7 @@
 
 				<strong>Zusätzlich folgenden Status berücksichtigen</strong>
 				<p:selectCheckboxMenu value="#{searchBean.selectedStati}"
-					appendTo="@this" label="stati" multiple="true">
+					style="width:100%;" appendTo="@this" label="stati" multiple="true">
 					<f:selectItems value="#{searchBean.stati}" />
 				</p:selectCheckboxMenu>
 
@@ -114,12 +114,12 @@
 		<h:form id="formDetail">
 			<h3>Detail zu #{userDataBean.activeTicket.title}</h3>
 			<b:panelGrid colSpans="3,3,3,3" id="detailPanel">
-				<b:commandButton value="Bearbeitung starten" look="success"
+				<b:commandButton value="Bearbeitung starten" look="info"
 					actionListener="#{userDataBean.startProgress}"
 					update=":yourTickets :formDetail"></b:commandButton>
-				<b:commandButton value="Ticket abschließen" look="warning"
+				<b:commandButton value="Ticket abschließen" look="info"
 					actionListener="#{userDataBean.finishTicket}"></b:commandButton>
-				<b:commandButton value="Ticket zurückgeben" look="danger"
+				<b:commandButton value="Ticket zurückgeben" look="info"
 					actionListener="#{userDataBean.resolveTicket}"></b:commandButton>
 				<b:commandButton value="Histroie" look="default"></b:commandButton>
 			</b:panelGrid>
@@ -144,23 +144,31 @@
 				<h:outputText value="#{userDataBean.activeTicket.comments}" />
 
 				<h:outputText value="MasterTicket" />
-				<h:outputText value="#{userDataBean.activeTicket.masterTicketId}" />
+				<b:inputText placeholder="Gib hier die ID des Mastertickets ein"
+				value="#{userDataBean.childTickets}"></b:inputText>
 
 				<h:outputText value="Kindticket" />
-				<h:outputText value="#{userDataBean.activeTicket.childTickets}" />
+				<b:inputText></b:inputText>
 
 			</b:panelGrid>
 			<h4>Historie</h4>
-			<p:dataList value="#{userDataBean.historyOfActiveTicket}"
-				var="verlauf" itemType="none">
-				<h:outputText value="#{verlauf.title}"></h:outputText>
-			</p:dataList>
-			<hr />
+			<b:accordion>
+				<b:tab title="Verlauf">
+					<b:dataTable value="#{userDataBean.historyOfActiveTicket}" var="verlauf">
+						<b:dataTableColumn label="Datum">
+							<h:outputText value="#{verlauf.eventTime}">
+								<f:convertDateTime dateStyle="medium"/>
+							</h:outputText>
+						</b:dataTableColumn>
+						<b:dataTableColumn label="Details">
+							<h:outputText value="#{verlauf.details}"/>
+						</b:dataTableColumn>
+					</b:dataTable>
+				</b:tab>
+			</b:accordion>
 			<b:inputTextarea value="#{userDataBean.activeTicket.description}"></b:inputTextarea>
-			<h4>Zu Masterticket zuordnen</h4>
-			<b:inputText placeholder="Gib hier die ID des Mastertickets ein"
-				value="#{userDataBean.childTickets}"></b:inputText>
 			<hr />
+			<h4>Kommentar</h4>
 			<b:inputTextarea placeholder="Kommentar"
 				value="#{userDataBean.newComment}"></b:inputTextarea>
 			<hr />
@@ -169,7 +177,8 @@
 
 		</h:form>
 	</b:modal>
-	<!-- ENDE DETAIL TICKET -->
+ 	<!--  ENDE DETAIL TICKET-->
+	
 
 
 
@@ -184,20 +193,15 @@
 							<b:panel title="Neu">
 								<h4>Hier kannst du neue Kategorien definieren</h4>
 								<hr />
-
-
 								<b:panelGrid colSpans="6,6">
-
 									<b:inputText placeholder="ID"
 										value="#{categoryBean.categoryId}"></b:inputText>
 
 									<b:inputText placeholder="Name"
 										value="#{categoryBean.categoryName}"></b:inputText>
-
 								</b:panelGrid>
 
 								<b:panelGrid colSpans="12">
-
 									<p:selectOneListbox id="tutorFilter"
 										value="#{categoryBean.tutorUserId}" filter="true"
 										filterMatchMode="contains" styleClass="listboxen">
@@ -206,7 +210,7 @@
 											itemValue="#{tutor.userId}" />
 									</p:selectOneListbox>
 								</b:panelGrid>
-
+								<hr />
 								<b:commandButton value="speichern" styleClass="btnsKategorie"
 									actionListener="#{categoryBean.createCategory()}"></b:commandButton>
 
@@ -431,29 +435,24 @@
 		styleClass="neuesTicket fade" closeOnEscape="true" id="neuTicket"
 		backdrop="false" size="modal-lg">
 		<h:form id="neuesTicketForm">
-			<b:panelGrid colSpans="12" id="ticketPanel">
-				<b:message for="ticketName"></b:message>
+			<b:panelGrid colSpans="6,6" id="ticketPanel">
+			
 				<b:inputText placeholder="Ticketname" required="true"
 					id="ticketName" label="Ticketname" renderLabel="false"
 					value="#{ticketBean.title}"></b:inputText>
 
-				<b:message for="beschreibung"></b:message>
-				<b:inputTextarea placeholder="Beschreibung des Tickets"
-					id="beschreibung" required="true" label="Beschreibung"
-					renderLabel="false" value="#{ticketBean.description}">
-				</b:inputTextarea>
-
-				<b:message for="kategorie"></b:message>
-				<p:selectOneListbox id="katFilter" value="#{ticketBean.categoryId}"
+				<p:selectOneListbox id="katFilter" value="#{ticketBean.categoryId}" label="Kategorie"
 					filter="true" filterMatchMode="contains" styleClass="listboxen">
 					<f:selectItems value="#{categoryRepositoryBean.allCategories}"
 						var="kategory" itemLabel="#{kategory.categoryName}"
 						itemValue="#{kategory.categoryId}" />
 				</p:selectOneListbox>
-
-
 			</b:panelGrid>
-
+			<b:inputTextarea placeholder="Beschreibung des Tickets"
+				id="beschreibung" required="true" label="Beschreibung"
+				renderLabel="false" value="#{ticketBean.description}">
+			</b:inputTextarea>
+			<hr />
 
 			<b:commandButton value="anlegen" styleClass="btnNeuesTicket"
 				action="#{ticketBean.createTicket()}">
