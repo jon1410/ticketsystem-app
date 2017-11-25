@@ -10,6 +10,7 @@ public enum HistoryAction {
     CR("Ticket erstellt"),
     CL("Ticket abgeschlossen"),
     CA("Kommentar hinzugefügt"),
+    CC("Kategorie geändert"),
     UC("Abbruch durch Einmelder");
 
     private String resolvedText;

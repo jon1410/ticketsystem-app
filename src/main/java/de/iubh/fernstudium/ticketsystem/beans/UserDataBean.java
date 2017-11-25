@@ -73,6 +73,7 @@ public class UserDataBean implements Serializable {
                     CategoryDTO categoryDTO = categoryService.getCategoryById(newCategoryId);
                     TicketDTO ticketDTO = ticketService.changeCategoryOfTicket(activeTicket.getId(), categoryDTO);
                     activeTicket = ticketDTO;
+                    fireEvent(activeTicket.getId(), HistoryAction.CC, "Neue Kategorie: " + categoryDTO.getCategoryName());
                     FacesContextUtils.resolveInfo(UITexts.CHANGE_CATEGORY_OK, UITexts.CHANGE_CATEGORY_OK, null);
                 } catch (CategoryNotFoundException | NoSuchTicketException e) {
                     LOG.error(ExceptionUtils.getRootCauseMessage(e));

@@ -399,6 +399,7 @@ public class UserDataBeanPowerMockTest {
         userDataBean.changeCateogry();
 
         assertEquals("newId", userDataBean.getActiveTicket().getCategory().getCategoryId());
+        verify(eventProducer, times(1)).produceHistoryEvent(anyLong(), any(HistoryAction.class), anyString());
 
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveInfo(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
