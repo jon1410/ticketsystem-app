@@ -40,6 +40,10 @@ public class CommentDTO {
         return creationDate;
     }
 
+    public String getCreationDateAsString(){
+        return creationDate.toString();
+    }
+
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
@@ -62,6 +66,10 @@ public class CommentDTO {
 
     public LocalDateTime getChangeDate() {
         return changeDate;
+    }
+
+    public String getChangeDateAsString(){
+        return changeDate.toString();
     }
 
     public void setChangeDate(LocalDateTime changeDate) {

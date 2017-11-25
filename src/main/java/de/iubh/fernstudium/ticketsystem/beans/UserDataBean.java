@@ -57,6 +57,7 @@ public class UserDataBean implements Serializable {
     private List<HistoryDTO> historyOfActiveTicket;
     private String newComment;
     private String newCategoryId;
+    private long newMasterTicketId;
     private List<Long> childTickets;
 
     public String checkLoggedInUser() {
@@ -73,6 +74,7 @@ public class UserDataBean implements Serializable {
                     CategoryDTO categoryDTO = categoryService.getCategoryById(newCategoryId);
                     TicketDTO ticketDTO = ticketService.changeCategoryOfTicket(activeTicket.getId(), categoryDTO);
                     activeTicket = ticketDTO;
+                    updateCache(ticketDTO);
                     fireEvent(activeTicket.getId(), HistoryAction.CC, "Neue Kategorie: " + categoryDTO.getCategoryName());
                     FacesContextUtils.resolveInfo(UITexts.CHANGE_CATEGORY_OK, UITexts.CHANGE_CATEGORY_OK, null);
                 } catch (CategoryNotFoundException | NoSuchTicketException e) {
@@ -148,6 +150,27 @@ public class UserDataBean implements Serializable {
         reportedByLoggedInUser.add(ticketDTO);
     }
 
+    public void addMasterTicketToActiveTicket(){
+        if (hasActiveTicket()) {
+            if(newMasterTicketId > 0){
+                try {
+                    ticketService.createMasterTicket(newMasterTicketId, activeTicket.getId());
+                    TicketDTO ticketDTO = ticketService.getTicketByID(activeTicket.getId());
+                    activeTicket = ticketDTO;
+                    updateCache(ticketDTO);
+                    fireEvent(activeTicket.getId(), HistoryAction.CM, "MasterticketID: " + newMasterTicketId);
+                } catch (NoSuchTicketException e) {
+                    LOG.error(ExceptionUtils.getRootCauseMessage(e));
+                    FacesContextUtils.resolveError(UITexts.ERR_MASTER_TICKET,
+                            UITexts.ERR_MASTER_TICKET, null);
+                }
+            }
+        }else{
+            FacesContextUtils.resolveError(UITexts.NO_ACTIVE_TICKET,
+                    UITexts.NO_ACTIVE_TICKET, null);
+        }
+    }
+
     public void createMasterTicket() {
         if (hasActiveTicket()) {
             if (CollectionUtils.isNotEmpty(childTickets)) {
@@ -181,8 +204,16 @@ public class UserDataBean implements Serializable {
         if (hasActiveTicket()) {
             try {
                 TicketDTO ticketDTO = ticketService.addComment(activeTicket.getId(), this.newComment, currentUserBean.getUserId());
+                activeTicket = ticketDTO;
                 updateCache(ticketDTO);
-                fireEvent(activeTicket.getId(), HistoryAction.CA, "Kommentar: " + newComment);
+                String historyDetails;
+                if(newComment.length() < 980){
+                    historyDetails = newComment;
+                }else{
+                    int i = ticketDTO.getComments().size() - 1;
+                    historyDetails = "ID - " + ticketDTO.getComments().get(i).getId();
+                }
+                fireEvent(activeTicket.getId(), HistoryAction.CA, "Kommentar: " + historyDetails);
                 newComment = null;
             } catch (NoSuchTicketException | UserNotExistsException e) {
                 newComment = null;
@@ -276,6 +307,14 @@ public class UserDataBean implements Serializable {
 
     public void setNewCategoryId(String newCategoryId) {
         this.newCategoryId = newCategoryId;
+    }
+
+    public long getNewMasterTicketId() {
+        return newMasterTicketId;
+    }
+
+    public void setNewMasterTicketId(long newMasterTicketId) {
+        this.newMasterTicketId = newMasterTicketId;
     }
 
     private void fireEvent(Long ticketId, HistoryAction historyAction, String details) {

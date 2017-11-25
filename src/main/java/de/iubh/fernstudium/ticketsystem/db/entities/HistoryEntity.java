@@ -31,7 +31,7 @@ public class HistoryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity userEntity;
 
-    @Column(name = "ACTION_DETAILS")
+    @Column(name = "ACTION_DETAILS", length = 1000)
     private String details;
 
     public HistoryEntity() {

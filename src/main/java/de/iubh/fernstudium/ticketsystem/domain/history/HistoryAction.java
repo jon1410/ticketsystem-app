@@ -11,6 +11,7 @@ public enum HistoryAction {
     CL("Ticket abgeschlossen"),
     CA("Kommentar hinzugefügt"),
     CC("Kategorie geändert"),
+    CM("Masterticket erstellt"),
     UC("Abbruch durch Einmelder");
 
     private String resolvedText;
