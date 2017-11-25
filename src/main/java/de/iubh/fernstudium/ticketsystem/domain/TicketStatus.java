@@ -1,7 +1,7 @@
 package de.iubh.fernstudium.ticketsystem.domain;
 
 /**
- * Created by ivanj on 03.07.2017.
+ * Alle Ticket-Stati als Enumeration
  */
 public enum TicketStatus {
 

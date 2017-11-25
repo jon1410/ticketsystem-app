@@ -17,6 +17,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Pattern;
 
+/**
+ * Bean zum durchführen von User-Operationen, bei denen kein Benutzer eingelogged sein muss
+ */
 @Named("userBean")
 @RequestScoped
 public class UserBean extends UserDTO{

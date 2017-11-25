@@ -3,7 +3,7 @@ package de.iubh.fernstudium.ticketsystem.util;
 import de.iubh.fernstudium.ticketsystem.domain.exception.InvalidPasswordException;
 
 /**
- * Created by ivanj on 04.07.2017.
+ * Passwort Utility und Wrapper über die BCrypt-Library für Hashing- und Dehashing von Passwörtern
  */
 public interface PasswordUtil {
 
@@ -21,7 +21,7 @@ public interface PasswordUtil {
      * Hashed das PW mit BCrypt
      *
      * @param password
-     * @return
+     * @return das Passwort gehashed
      */
     String hashPw(String password);
 

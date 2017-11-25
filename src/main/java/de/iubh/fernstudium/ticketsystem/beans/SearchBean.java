@@ -6,12 +6,15 @@ import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
+import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import de.iubh.fernstudium.ticketsystem.services.SearchService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +26,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -31,6 +36,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
+
+/**
+ * Bean, welches die Funktionalität für die Suche bereitstellt
+ */
 @SessionScoped
 @Named("searchBean")
 public class SearchBean implements Serializable {
@@ -43,15 +53,18 @@ public class SearchBean implements Serializable {
     private TicketService ticketService;
     @Inject
     private UserService userService;
+    @Inject
+    private CategoryService categoryService;
 
     //Detail-Suche
-    private String dateFrom; //muss dd.MM.yyyy sein
-    private String dateTo; //muss dd.MM.yyyy sein
+    private String dateFrom;
+    private String dateTo;
     private List<String> stati;
     private String selectedStatiForSearch;
     private String[] selectedStati;
     private String userIdReporter;
     private String userIdAssignee;
+    private String categoryText;
 
     private String searchString;
     private List<TicketDTO> foundTickets;
@@ -113,11 +126,22 @@ public class SearchBean implements Serializable {
 
         Future<List<TicketDTO>> tickets;
         List<TicketDTO> foundTicketsFromSearch;
+        LocalDateTime ldtFrom;
+        LocalDateTime ldtTo;
+        if(StringUtils.isNotEmpty(dateFrom)){
+            ldtFrom = DateTimeUtil.format(dateFrom);
+        }else{
+            ldtFrom = LocalDate.now().with(firstDayOfYear()).atStartOfDay();
+        }
 
-        LocalDateTime ldtFrom = DateTimeUtil.format(dateFrom);
-        LocalDateTime ldtTo = DateTimeUtil.format(dateTo);
+        if(StringUtils.isNotEmpty(dateTo)){
+            ldtTo = DateTimeUtil.format(dateTo);
+        }else{
+            ldtTo = LocalDateTime.now();
+        }
+
         CustomNativeQuery.QueryBuilder queryBuilder = CustomNativeQuery.builder()
-                .selectAll().from("ticket").where("CREA_TSP")
+                .selectAll().from("TICKET").where("CREA_TSP")
                 .between(DateTimeUtil.localDtToSqlTimestamp(ldtFrom), DateTimeUtil.localDtToSqlTimestamp(ldtTo));
 
 
@@ -139,6 +163,14 @@ public class SearchBean implements Serializable {
             }
         }
 
+        if(StringUtils.isNotEmpty(categoryText)){
+            List<CategoryDTO> categoryDTOList = categoryService.getCategoryByName(categoryText);
+            if(CollectionUtils.isNotEmpty(categoryDTOList)){
+                String[] catIds = categoryDTOList.stream().map(c -> c.getCategoryId()).toArray(String[]::new);
+                queryBuilder = queryBuilder.and("category_CATEGID").in(catIds);
+            }
+        }
+
         List<String> statusValuesAsString = null;
         if(selectedStati != null && selectedStati.length  > 0){
             statusValuesAsString = new ArrayList<>(selectedStati.length);
@@ -154,6 +186,7 @@ public class SearchBean implements Serializable {
         LOG.info("Starting search Service Details: " + customNativeQuery.getQueryString());
         LOG.info("Parameters are: " + customNativeQuery.getParameters().toString());
         tickets = searchService.searchByQuery(customNativeQuery.getQueryString(), customNativeQuery.getParameters());
+        restoreSearchValuesToNull();
 
         try {
             foundTicketsFromSearch = tickets.get(5, TimeUnit.SECONDS);
@@ -174,6 +207,14 @@ public class SearchBean implements Serializable {
 
         return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
                 UITexts.SEARCH_DETAIL, null);
+    }
+
+    private void restoreSearchValuesToNull() {
+        this.dateTo = null;
+        this.dateFrom = null;
+        this.userIdAssignee = null;
+        this.userIdReporter = null;
+        this.selectedStati = null;
     }
 
     public List<TicketDTO> getFoundTickets() {
@@ -246,5 +287,13 @@ public class SearchBean implements Serializable {
 
     public void setSelectedStati(String[] selectedStati) {
         this.selectedStati = selectedStati;
+    }
+
+    public String getCategoryText() {
+        return categoryText;
+    }
+
+    public void setCategoryText(String categoryText) {
+        this.categoryText = categoryText;
     }
 }

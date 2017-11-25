@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.services;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface TicketService {
      * Ermittelt alle offenen Tickets zu einem User
      *
      * @param userId
-     * @return java.util.List von {@link TicketDTO}
+     * @return java.util.List von  TicketDTOs
      * @throws UserNotExistsException
      */
     List<TicketDTO> getOpenTicketsForUserId(String userId) throws UserNotExistsException;
@@ -34,23 +35,17 @@ public interface TicketService {
      * Liefert alle Tickets, die von einem Benutzer eingemeldet wurden
      *
      * @param userId
-     * @return Liste von {@link TicketDTO}
+     * @return Liste von TicketDTO
+     * @throws UserNotExistsException
      */
     List<TicketDTO> getTicketsReportedByUserId(String userId) throws UserNotExistsException;
-
-    /**
-     * Ermittelt alle historischen Tickets zu einem User
-     *
-     * @param userId
-     * @return java.util.List von {@link TicketDTO}
-     */
-    List<TicketDTO> getHistoricTicketsByUserId(String userId);
 
     /**
      * Ändert den Status eines Tickets
      *
      * @param ticketId
      * @param newStatus
+     * @throws NoSuchTicketException
      */
     void changeStatus(Long ticketId, TicketStatus newStatus) throws NoSuchTicketException;
 
@@ -61,6 +56,7 @@ public interface TicketService {
      * @param comment
      * @param userId
      * @throws NoSuchTicketException
+     * @throws UserNotExistsException
      */
     TicketDTO addComment(long ticketId, String comment, String userId) throws NoSuchTicketException, UserNotExistsException;
 
@@ -77,6 +73,7 @@ public interface TicketService {
      *
      * @param masterTicketId
      * @param childTickets
+     * @throws NoSuchTicketException
      */
     TicketDTO createMasterTicket(Long masterTicketId, List<Long> childTickets) throws NoSuchTicketException;
 
@@ -85,7 +82,18 @@ public interface TicketService {
      *
      * @param masterTicketId
      * @param childTicketId
+     * @throws NoSuchTicketException
      */
     TicketDTO createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException;
+
+    /**
+     * Ändert die Kategorie zu einem Ticket
+     *
+     * @param ticketId
+     * @param categoryDTO
+     * @return geändertes TicketDTO
+     * @throws NoSuchTicketException
+     */
+    TicketDTO changeCategoryOfTicket(Long ticketId, CategoryDTO categoryDTO) throws NoSuchTicketException;
 
 }

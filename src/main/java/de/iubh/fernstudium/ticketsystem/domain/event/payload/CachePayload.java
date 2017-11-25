@@ -3,6 +3,9 @@ package de.iubh.fernstudium.ticketsystem.domain.event.payload;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 
+/**
+ * Payload für Cache-Updates
+ */
 public class CachePayload {
 
     private UserDTO userDTO;

@@ -4,8 +4,12 @@ import de.iubh.fernstudium.ticketsystem.db.entities.HistoryEntity;
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Data-Transfer-Object für einen Historien-Eintrag
+ */
 public class HistoryDTO {
 
     private Long id;
@@ -73,6 +77,14 @@ public class HistoryDTO {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getHistoryActionResolvedText(){
+        return action.getResolvedText();
+    }
+
+    public String getEventTimeAsString(){
+        return this.eventTime.toString();
     }
 
     public HistoryEntity toEntity(){

@@ -1,5 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.domain.history;
 
+/**
+ * Enumeration von Aktionen des Users, zu denen eine Historie geschrieben werden soll
+ */
 public enum HistoryAction {
 
     SC("Statusänderung"),
@@ -7,6 +10,7 @@ public enum HistoryAction {
     CR("Ticket erstellt"),
     CL("Ticket abgeschlossen"),
     CA("Kommentar hinzugefügt"),
+    CC("Kategorie geändert"),
     UC("Abbruch durch Einmelder");
 
     private String resolvedText;

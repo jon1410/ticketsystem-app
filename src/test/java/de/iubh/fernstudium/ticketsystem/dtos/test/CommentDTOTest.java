@@ -28,6 +28,9 @@ public class CommentDTOTest {
         assertEquals(ldt, commentDTO.getCreationDate());
         assertEquals(new Long(1), commentDTO.getId());
         assertEquals("Comment", commentDTO.getComment());
+
+        assertFalse(commentDTO.hashCode() == 0);
+        assertNotNull(commentDTO.toString());
     }
 
     @Test
@@ -38,9 +41,11 @@ public class CommentDTOTest {
         CommentEntity commentEntity = commentDTO.toEntity();
         assertNotNull(commentEntity);
         assertEquals(commentDTO, commentDTO1);
-        Thread.sleep(10);
-        commentDTO.setChangeDate(LocalDateTime.now());
+        commentDTO.setComment("newComment");
         assertNotEquals(commentDTO, commentDTO1);
+        assertFalse(commentDTO.equals(commentDTO1));
+        assertFalse(commentDTO.equals(null));
+        assertTrue(commentDTO.equals(commentDTO));
     }
 
     private UserDTO buildUserDTO() {

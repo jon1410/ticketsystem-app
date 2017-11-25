@@ -5,8 +5,7 @@ import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class UserDTOTest {
 
@@ -24,5 +23,12 @@ public class UserDTOTest {
         UserEntity userEntity = userDTO.toEntity();
         assertNotNull(userDTO);
         assertEquals("id", userEntity.getUserId());
+
+        assertFalse(userDTO.hashCode() == 0);
+        assertTrue(userDTO.equals(userDTO1));
+        userDTO1.setLastName("newLastName");
+        assertFalse(userDTO.equals(userDTO1));
+        assertFalse(userDTO.equals(null));
+        assertTrue(userDTO.equals(userDTO));
     }
 }

@@ -9,6 +9,8 @@ import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +26,11 @@ public class CategoryDTOTest {
         categoryDTO.setCategoryName("xy");
         assertNotEquals(categoryDTO, categoryDTO1);
         assertFalse(categoryDTO.hashCode() == 0);
+        assertFalse(categoryDTO.equals(categoryDTO1));
+        assertFalse(categoryDTO.equals(null));
+        assertTrue(categoryDTO.equals(categoryDTO));
     }
+
 
     private UserDTO buildUserDTO() {
         return new UserDTO("userid", "firstName", "lastName", "pw", UserRole.TU);

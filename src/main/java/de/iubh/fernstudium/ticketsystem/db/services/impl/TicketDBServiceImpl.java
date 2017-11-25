@@ -1,5 +1,6 @@
 package de.iubh.fernstudium.ticketsystem.db.services.impl;
 
+import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.CommentEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
@@ -155,6 +156,13 @@ public class TicketDBServiceImpl implements TicketDBService{
         master.setChildTickets(children);
         setMasterTicketToChildren(children, master);
         return master;
+    }
+
+    @Override
+    public TicketEntity changeCategoryOfTicket(Long ticketId, CategoryEntity categoryEntity) throws NoSuchTicketException {
+        TicketEntity ticketEntity = this.getTicketById(ticketId);
+        ticketEntity.setCategory(categoryEntity);
+        return ticketEntity;
     }
 
 

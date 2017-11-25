@@ -3,17 +3,21 @@ package de.iubh.fernstudium.ticketsystem.beans;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
+import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
 import de.iubh.fernstudium.ticketsystem.domain.history.HistoryAction;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.HistoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
+import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import de.iubh.fernstudium.ticketsystem.services.HistoryService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.services.impl.EventProducer;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,14 +31,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Verwaltet die Daten des aktuell angemeldeten Benutzers
+ */
 @Named("userDataBean")
 @SessionScoped
 public class UserDataBean implements Serializable {
 
     private static final Logger LOG = LogManager.getLogger(UserDataBean.class);
 
-    @Inject
-    private UserService userService;
     @Inject
     private TicketService ticketService;
     @Inject
@@ -43,15 +48,44 @@ public class UserDataBean implements Serializable {
     private EventProducer eventProducer;
     @Inject
     private HistoryService historyService;
+    @Inject
+    private CategoryService categoryService;
 
     private List<TicketDTO> tickets; // entspricht den offenen Tickets des aktuellen Users
     private List<TicketDTO> reportedByLoggedInUser;
     private TicketDTO activeTicket;
     private List<HistoryDTO> historyOfActiveTicket;
     private String newComment;
+    private String newCategoryId;
     private List<Long> childTickets;
 
-    public void init(String userId){
+    public String checkLoggedInUser() {
+        if (currentUserBean == null || currentUserBean.getUserId() == null) {
+            return FacesContextUtils.REDIRECT_LOGIN;
+        }
+        return null;
+    }
+
+    public void changeCateogry() {
+        if (hasActiveTicket()) {
+            if (StringUtils.isNotEmpty(newCategoryId)) {
+                try {
+                    CategoryDTO categoryDTO = categoryService.getCategoryById(newCategoryId);
+                    TicketDTO ticketDTO = ticketService.changeCategoryOfTicket(activeTicket.getId(), categoryDTO);
+                    activeTicket = ticketDTO;
+                    fireEvent(activeTicket.getId(), HistoryAction.CC, "Neue Kategorie: " + categoryDTO.getCategoryName());
+                    FacesContextUtils.resolveInfo(UITexts.CHANGE_CATEGORY_OK, UITexts.CHANGE_CATEGORY_OK, null);
+                } catch (CategoryNotFoundException | NoSuchTicketException e) {
+                    LOG.error(ExceptionUtils.getRootCauseMessage(e));
+                    FacesContextUtils.resolveError(UITexts.CHANGE_CATEGORY_ERROR, UITexts.CHANGE_CATEGORY_ERROR, null);
+                }
+            }else {
+                FacesContextUtils.resolveError(UITexts.NO_NEW_CATEGORY, UITexts.NO_NEW_CATEGORY, null);
+            }
+        }
+    }
+
+    public void init(String userId) {
 
         LOG.info("Initializing Tickets for userId: " + userId);
         try {
@@ -63,7 +97,14 @@ public class UserDataBean implements Serializable {
         }
     }
 
-    public void terminateTicket(TicketDTO ticketDTO){
+    public void terminateActiveTicket() {
+        if (hasActiveTicket()) {
+            terminateTicket(activeTicket);
+            activeTicket.setTicketStatus(TicketStatus.UST);
+        }
+    }
+
+    public void terminateTicket(TicketDTO ticketDTO) {
         try {
             ticketService.changeStatus(ticketDTO.getId(), TicketStatus.UST);
         } catch (NoSuchTicketException e) {
@@ -73,12 +114,12 @@ public class UserDataBean implements Serializable {
         eventProducer.produceHistoryEvent(ticketDTO.getId(), HistoryAction.UC, null);
     }
 
-    public void startProgress(){
+    public void startProgress() {
 
         changeStatus(TicketStatus.IPU);
     }
 
-    public void resolveTicket(){
+    public void resolveTicket() {
         UserDTO newAssignee = activeTicket.getReporter();
         activeTicket.setAssignee(newAssignee);
         fireEvent(activeTicket.getId(), HistoryAction.AC, "Neuer Bearbeiter: " + newAssignee.getUserId());
@@ -87,28 +128,28 @@ public class UserDataBean implements Serializable {
         requestContext.execute("$('.detailModal').modal('hide');");
     }
 
-    public void finishTicket(){
+    public void finishTicket() {
         changeStatus(TicketStatus.CLO);
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("$('.detailModal').modal('hide');");
     }
 
-    public void addTicket(TicketDTO ticketDTO){
-        if(tickets == null){
+    public void addTicket(TicketDTO ticketDTO) {
+        if (tickets == null) {
             tickets = new ArrayList<>();
         }
         tickets.add(ticketDTO);
     }
 
-    public void addTicketToReporter(TicketDTO ticketDTO){
-        if(reportedByLoggedInUser == null){
+    public void addTicketToReporter(TicketDTO ticketDTO) {
+        if (reportedByLoggedInUser == null) {
             reportedByLoggedInUser = new ArrayList<>();
         }
         reportedByLoggedInUser.add(ticketDTO);
     }
 
-    public void createMasterTicket(){
-        if(hasActiveTicket()){
+    public void createMasterTicket() {
+        if (hasActiveTicket()) {
             if (CollectionUtils.isNotEmpty(childTickets)) {
                 try {
                     TicketDTO ticketDTO = ticketService.createMasterTicket(activeTicket.getId(), childTickets);
@@ -120,7 +161,7 @@ public class UserDataBean implements Serializable {
                     FacesContextUtils.resolveError(UITexts.ERR_MASTER_TICKET,
                             UITexts.ERR_MASTER_TICKET, null);
                 }
-            } else{
+            } else {
                 childTickets = null;
                 FacesContextUtils.resolveError(UITexts.ERR_MASTER_TICKET_NO_CHILD,
                         UITexts.ERR_MASTER_TICKET_NO_CHILD, null);
@@ -128,16 +169,16 @@ public class UserDataBean implements Serializable {
         }
     }
 
-    public void addChildTicket(TicketDTO ticketDTO){
-        if(CollectionUtils.isEmpty(childTickets)){
+    public void addChildTicket(TicketDTO ticketDTO) {
+        if (CollectionUtils.isEmpty(childTickets)) {
             childTickets = new ArrayList<>();
         }
         childTickets.add(ticketDTO.getId());
     }
 
-    public void addComment(){
+    public void addComment() {
 
-        if(hasActiveTicket()) {
+        if (hasActiveTicket()) {
             try {
                 TicketDTO ticketDTO = ticketService.addComment(activeTicket.getId(), this.newComment, currentUserBean.getUserId());
                 updateCache(ticketDTO);
@@ -152,10 +193,15 @@ public class UserDataBean implements Serializable {
         }
     }
 
-    public void updateCache(TicketDTO dto){
-        for(int i=0; i<tickets.size(); i++){
+    public void showHistory() {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("$('.histModal').modal('show');");
+    }
+
+    public void updateCache(TicketDTO dto) {
+        for (int i = 0; i < tickets.size(); i++) {
             TicketDTO t = tickets.get(i);
-            if(t.getId() == dto.getId()){
+            if (t.getId() == dto.getId()) {
                 tickets.set(i, dto);
                 break;
             }
@@ -190,10 +236,10 @@ public class UserDataBean implements Serializable {
     }
 
     public List<HistoryDTO> getHistoryOfActiveTicket() {
-        if(CollectionUtils.isEmpty(historyOfActiveTicket)){
-            if(activeTicket != null){
+        if (CollectionUtils.isEmpty(historyOfActiveTicket)) {
+            if (activeTicket != null) {
                 historyOfActiveTicket = historyService.getHistoryForTicket(activeTicket.getId());
-            }else{
+            } else {
                 historyOfActiveTicket = new ArrayList<>();
             }
         }
@@ -224,20 +270,28 @@ public class UserDataBean implements Serializable {
         this.childTickets = childTickets;
     }
 
-    private void fireEvent(Long ticketId, HistoryAction historyAction, String details){
+    public String getNewCategoryId() {
+        return newCategoryId;
+    }
+
+    public void setNewCategoryId(String newCategoryId) {
+        this.newCategoryId = newCategoryId;
+    }
+
+    private void fireEvent(Long ticketId, HistoryAction historyAction, String details) {
         eventProducer.produceHistoryEvent(ticketId, historyAction, details);
     }
 
     private void changeStatus(TicketStatus newStatus) {
 
-        if(hasActiveTicket()){
+        if (hasActiveTicket()) {
             try {
                 ticketService.changeStatus(activeTicket.getId(), newStatus);
                 this.activeTicket.setTicketStatus(newStatus);
                 fireEvent(activeTicket.getId(), HistoryAction.SC, "Neuer Status: " + newStatus.getResolvedText());
-                if(newStatus == TicketStatus.CLO || newStatus == TicketStatus.UST){
+                if (newStatus == TicketStatus.CLO || newStatus == TicketStatus.UST) {
                     removeTicketFromCache(activeTicket.getId());
-                }else{
+                } else {
                     updateCache(activeTicket);
                 }
             } catch (NoSuchTicketException e) {
@@ -247,8 +301,8 @@ public class UserDataBean implements Serializable {
         }
     }
 
-    private boolean hasActiveTicket(){
-        if(activeTicket == null){
+    private boolean hasActiveTicket() {
+        if (activeTicket == null) {
             FacesContextUtils.resolveError(UITexts.NO_ACTIVE_TICKET,
                     UITexts.NO_ACTIVE_TICKET, null);
             return false;
@@ -256,9 +310,9 @@ public class UserDataBean implements Serializable {
         return true;
     }
 
-    private void removeTicketFromCache(Long ticketId){
-        for(int i=0; i< tickets.size(); i++){
-            if(tickets.get(i).getId() == ticketId){
+    private void removeTicketFromCache(Long ticketId) {
+        for (int i = 0; i < tickets.size(); i++) {
+            if (tickets.get(i).getId() == ticketId) {
                 tickets.remove(i);
             }
         }

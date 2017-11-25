@@ -42,7 +42,9 @@ public interface UserService {
      *
      * @param userId
      * @param password
-     * @throws InvalidPasswordException, {@link UserNotExistsException}
+     * @throws InvalidPasswordException
+     * @throws  UserNotExistsException
+     * @throws InvalidCredentialsException
      * @return boolean, wenn Credentials korrekt
      */
     UserDTO login(String userId, String password) throws UserNotExistsException, InvalidPasswordException, InvalidCredentialsException;
@@ -70,17 +72,18 @@ public interface UserService {
     /**
      * Ändert Vor- und/oder Nachnamen eines Users, sowie möglicherweise seine Rolle
      *
-     * @param UserId
+     * @param userId
      * @param firstName
      * @param lastName
+     * @param newRole
      * @return true, wenn Daten geändert werden konnten
      */
-    boolean changeUserData(String UserId, String firstName, String lastName, UserRole newRole);
+    boolean changeUserData(String userId, String firstName, String lastName, UserRole newRole);
 
     /**
      * Lädt alle User mit der Rolle "Tutor" im Datenbestand
      *
-     * @return List {@link UserDTO}
+     * @return List an UserDTOs
      */
     List<UserDTO> getAllTutors();
 
@@ -88,6 +91,7 @@ public interface UserService {
      * Generiert ein neues Passwort und verschickt dieses per Email an den User
      *
      * @param mailAdress
+     * @throws UserNotExistsException
      */
     void generateNewPassword(String mailAdress) throws UserNotExistsException;
 }

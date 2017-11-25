@@ -5,6 +5,7 @@ import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
+import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
@@ -54,12 +55,6 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketDTO> getHistoricTicketsByUserId(String userId) {
-        //TODO evtl. in HistoryService verschieben bzw. kann über Suchfunktion abgebildet werden
-        return null;
-    }
-
-    @Override
     public void changeStatus(Long ticketId, TicketStatus newStatus) throws NoSuchTicketException {
         if(!ticketDBService.changeStauts(ticketId, newStatus)){
             throw new NoSuchTicketException("Ticket mit ID: " + ticketId + " wurde nicht gefunden.");
@@ -92,6 +87,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public TicketDTO createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException {
         TicketEntity ticketEntity =ticketDBService.createMasterTicket(masterTicketId, childTicketId);
+        return ticketEntity.toDto();
+    }
+
+    @Override
+    public TicketDTO changeCategoryOfTicket(Long ticketId, CategoryDTO categoryDTO) throws NoSuchTicketException {
+        TicketEntity ticketEntity = ticketDBService.changeCategoryOfTicket(ticketId, categoryDTO.toEntity());
         return ticketEntity.toDto();
     }
 

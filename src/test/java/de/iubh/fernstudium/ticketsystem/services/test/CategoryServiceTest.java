@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CategoryServiceTest {
@@ -44,7 +46,7 @@ public class CategoryServiceTest {
 
     @Test
     public void testGetCategoryByIdOK() throws CategoryNotFoundException {
-        Mockito.when(categoryDBService.getCategoryById(Mockito.anyString())).thenReturn(buildEntity());
+        when(categoryDBService.getCategoryById(Mockito.anyString())).thenReturn(buildEntity());
         CategoryDTO dto = categoryService.getCategoryById("test");
         assertNotNull(dto);
         assertEquals("ID", dto.getCategoryId());
@@ -54,15 +56,15 @@ public class CategoryServiceTest {
     public void testChangeTutorOK() throws CategoryNotFoundException, UserNotExistsException {
         UserEntity userEntity = buildUserEntity();
         assertNotNull(userEntity.toDto());
-        Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenReturn(userEntity.toDto());
-        Mockito.when(categoryDBService.changeTutor(Mockito.anyString(), Mockito.any(UserEntity.class))).thenReturn(true);
+        when(userService.getUserByUserId(Mockito.anyString())).thenReturn(userEntity.toDto());
+        when(categoryDBService.changeTutor(Mockito.anyString(), Mockito.any(UserEntity.class))).thenReturn(true);
         categoryService.changeTutor("Test", "newTutor");
         Mockito.verify(categoryDBService, Mockito.times(1)).changeTutor(Mockito.anyString(), Mockito.any(UserEntity.class));
     }
 
     @Test
     public void testChangeCategoryNameOK() throws CategoryNotFoundException, UserNotExistsException {
-        Mockito.when(categoryDBService.changeCategoryName(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+        when(categoryDBService.changeCategoryName(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
         categoryService.changeCategoryName("test", "newName");
         Mockito.verify(categoryDBService, Mockito.times(1)).changeCategoryName(Mockito.anyString(), Mockito.anyString());
     }
@@ -71,9 +73,9 @@ public class CategoryServiceTest {
     public void testChangeCategoryNull() throws CategoryNotFoundException, UserNotExistsException{
         UserEntity userEntity = buildUserEntity();
         assertNotNull(userEntity.toDto());
-        Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenReturn(userEntity.toDto());
-        Mockito.when(categoryDBService.getCategoryById(Mockito.anyString())).thenReturn(buildEntity());
-        Mockito.when(categoryDBService.changeCategory(Mockito.any(CategoryEntity.class))).thenReturn(buildEntity());
+        when(userService.getUserByUserId(Mockito.anyString())).thenReturn(userEntity.toDto());
+        when(categoryDBService.getCategoryById(Mockito.anyString())).thenReturn(buildEntity());
+        when(categoryDBService.changeCategory(Mockito.any(CategoryEntity.class))).thenReturn(buildEntity());
         CategoryEntity categoryEntity = buildEntity();
         CategoryDTO categoryDTO = categoryService.changeCategory(categoryEntity.toDto());
         assertNull(categoryDTO); //weil Entities gleich sind, somit keine Änderung!
@@ -87,9 +89,9 @@ public class CategoryServiceTest {
         CategoryEntity categoryEntity1 = buildEntity();
         CategoryEntity categoryEntity2 = buildEntity();
 
-        Mockito.when(userService.getUserByUserId(Mockito.anyString())).thenReturn(userEntity.toDto());
-        Mockito.when(categoryDBService.getCategoryById(Mockito.anyString())).thenReturn(categoryEntity);
-        Mockito.when(categoryDBService.changeCategory(Mockito.any(CategoryEntity.class))).thenReturn(categoryEntity1);
+        when(userService.getUserByUserId(Mockito.anyString())).thenReturn(userEntity.toDto());
+        when(categoryDBService.getCategoryById(Mockito.anyString())).thenReturn(categoryEntity);
+        when(categoryDBService.changeCategory(Mockito.any(CategoryEntity.class))).thenReturn(categoryEntity1);
 
         categoryEntity2.setCategoryName("newName");
         CategoryDTO categoryDTO = categoryService.changeCategory(categoryEntity2.toDto());
@@ -98,28 +100,42 @@ public class CategoryServiceTest {
 
     @Test
     public void testDeleteCategoryByIdOK() throws CategoryNotFoundException, UserNotExistsException{
-        Mockito.when(categoryDBService.deleteCategory(Mockito.anyString())).thenReturn(true);
+        when(categoryDBService.deleteCategory(Mockito.anyString())).thenReturn(true);
         assertTrue(categoryService.deleteCategoryById("testID"));
     }
 
     @Test
     public void testAddCategoryOK() throws CategoryNotFoundException, UserNotExistsException{
-        Mockito.when(categoryDBService.addCategory(Mockito.any(CategoryEntity.class))).thenReturn(true);
+        when(categoryDBService.addCategory(Mockito.any(CategoryEntity.class))).thenReturn(true);
         CategoryEntity categoryEntity = buildEntity();
         assertTrue(categoryService.addCategory(categoryEntity.toDto()));
     }
 
     @Test
     public void testGetAllCategories(){
-        Mockito.when(categoryDBService.getAllCategories()).thenReturn(buildList(5));
+        when(categoryDBService.getAllCategories()).thenReturn(buildList(5));
         List<CategoryDTO> categoryDTOList = categoryService.getAllCategories();
         assertTrue(categoryDTOList.size() == 5);
     }
 
     @Test
     public void testGetAllCategoriesSizeZero(){
-        Mockito.when(categoryDBService.getAllCategories()).thenReturn(buildList(0));
+        when(categoryDBService.getAllCategories()).thenReturn(buildList(0));
         List<CategoryDTO> categoryDTOList = categoryService.getAllCategories();
+        assertTrue(CollectionUtils.isEmpty(categoryDTOList));
+    }
+
+    @Test
+    public void testGetCategoryByName(){
+        when(categoryDBService.getCategoryByName(anyString())).thenReturn(buildList(2));
+        List<CategoryDTO> categoryDTOList = categoryService.getCategoryByName("test");
+        assertTrue(categoryDTOList.size() == 2);
+    }
+
+    @Test
+    public void testGetCategoryByNameSizeZero(){
+        when(categoryDBService.getCategoryByName(anyString())).thenReturn(buildList(0));
+        List<CategoryDTO> categoryDTOList = categoryService.getCategoryByName("test");
         assertTrue(CollectionUtils.isEmpty(categoryDTOList));
     }
 

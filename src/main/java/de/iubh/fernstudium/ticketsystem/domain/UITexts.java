@@ -1,5 +1,8 @@
 package de.iubh.fernstudium.ticketsystem.domain;
 
+/**
+ * Statische Text-Definitionen, welcher der User als Messages in der UI sehen kann
+ */
 public class UITexts {
 
     //Login-Texte
@@ -13,6 +16,7 @@ public class UITexts {
     public static final String CREATE_USER_ERROR_DETAIL = "Neuer Benutzer konnte nicht angelegt werden, ";
     public static final String CREATE_USER_INFO_SUMMARY = "Registrierung erfolgreich.";
     public static final String CREATE_USER_INFO_DETAIL = "Neuer Benutzer angelegt.";
+    public static final String NOT_A_TUTOR = "Benutzer ist kein Tutor! Keine Änderung durchgeführt";
 
     //Ticket-Texte
     public static final String NEW_TICKET = "Neues Ticket erstellt";
@@ -49,11 +53,15 @@ public class UITexts {
     //Kategorie-Texte
     public static final String CREATE_CATEGORY_ERROR_USER = "Fehler beim Erzeugen der Kategorie, angegebener Tutor existiert nicht.";
     public static final String CHANGE_CATEGORY_ERROR = "Fehler beim Ändern der Kategorie, bitte wende dich an den Support.";
+    public static final String CHANGE_CATEGORY_OK = "Kategorie wurde erfolgreich geändert.";
     public static final String DELETE_CATEGORY_ERROR_SUMMARY = "Fehler beim Löschen der Kategorie";
     public static final String DELETE_CATEGORY_ERROR_DETAIL = "Die Kategorie konnte nicht gelöscht werden, bitte versuche es später noch einmal.";
     public static final String DELETE_CATEGORY_DB_ERROR_DETAIL = "Diese Kategorie wird noch verwendet und kann nicht gelöscht werden!";
+    public static final String NO_NEW_CATEGORY = "Bitte wähle eine neue Kategorie aus!";
 
 
     //Sonst
     public static final String CREATE_USER_TRY_AGAIN = "bitte probiere es später noch einmal";
+    public static final String CHANGE_EXEC = "Änderung durchgeführt!";
+
 }

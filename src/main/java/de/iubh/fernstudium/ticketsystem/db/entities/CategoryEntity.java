@@ -5,9 +5,10 @@ import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
 import javax.persistence.*;
 
 @Entity
-@NamedQueries(
-        @NamedQuery(name = "findAllCategories", query = "select c from CategoryEntity c")
-)
+@NamedQueries({
+        @NamedQuery(name = "findAllCategories", query = "select c from CategoryEntity c"),
+        @NamedQuery(name = "findCategoryByName", query = "select c from CategoryEntity c where c.categoryName like concat('%', :categoryName, '%')")
+})
 @Table(name = "CATEGORY")
 public class CategoryEntity {
 

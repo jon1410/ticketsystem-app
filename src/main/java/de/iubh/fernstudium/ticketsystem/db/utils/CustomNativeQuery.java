@@ -3,9 +3,14 @@ package de.iubh.fernstudium.ticketsystem.db.utils;
 import java.sql.Timestamp;
 import java.util.*;
 
+/**
+ * Eine Klasse, die eine Fluent-Api zum Erstellen von
+ * SQL-Queries zur Verfügung stellt und via Builder-Pattern
+ * das entsprechende SQL zusammenbaut für JPA
+ */
 public class CustomNativeQuery {
 
-    static final String TABLE_NAME = "ticket ";
+    static final String TABLE_NAME = "TICKET ";
     static final String SELECT_ALL = "select * ";
     static final String SELECT = "select ";
     static final String FROM = "from ";

@@ -38,6 +38,8 @@ public class HistoryDTOTest {
         assertEquals(new Long(1), historyDTO.getId());
         assertNotNull(historyDTO.getTicketDTO());
         assertNotNull(historyDTO.getUserDTO());
+        assertNotNull(historyDTO.getEventTimeAsString());
+        assertNotNull(historyDTO.getHistoryActionResolvedText());
 
         HistoryEntity historyEntity = historyDTO.toEntity();
         assertNotNull(historyEntity);

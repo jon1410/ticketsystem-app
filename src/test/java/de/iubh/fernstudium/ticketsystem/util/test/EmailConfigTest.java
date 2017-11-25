@@ -9,6 +9,6 @@ public class EmailConfigTest {
 
     @Test
     public void testJNDIRef(){
-        assertEquals("java:jboss/mail/Default", EmailConfig.JNDI_MAIL);
+        assertEquals(EmailConfig.JNDI_MAIL, "java:jboss/mail/Default") ;
     }
 }

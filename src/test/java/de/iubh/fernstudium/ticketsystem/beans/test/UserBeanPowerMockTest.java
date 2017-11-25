@@ -147,4 +147,5 @@ public class UserBeanPowerMockTest {
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
     }
+
 }

@@ -67,4 +67,11 @@ public class CategoryDBServiceImpl implements CategoryDBService {
         return q.getResultList();
     }
 
+    @Override
+    public List<CategoryEntity> getCategoryByName(String categoryName) {
+        Query q = em.createNamedQuery("findCategoryByName", CategoryEntity.class)
+                .setParameter("categoryName", categoryName);
+        return q.getResultList();
+    }
+
 }

@@ -7,12 +7,13 @@ import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.util.DateTimeUtil;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ivanj on 03.07.2017.
+ * Data-Transfer-Object für ein Ticket
  */
 public class TicketDTO {
 
@@ -142,6 +143,22 @@ public class TicketDTO {
 
     public void setCreationTimeAsString(String creationTimeAsString) {
         this.creationTimeAsString = creationTimeAsString;
+    }
+
+    public List<Long> getChildTicketsIds() {
+        return childTicketsIds;
+    }
+
+    public void setChildTicketsIds(List<Long> childTicketsIds) {
+        this.childTicketsIds = childTicketsIds;
+    }
+
+    public Long getMasterTicketId() {
+        return masterTicketId;
+    }
+
+    public void setMasterTicketId(Long masterTicketId) {
+        this.masterTicketId = masterTicketId;
     }
 
     /**

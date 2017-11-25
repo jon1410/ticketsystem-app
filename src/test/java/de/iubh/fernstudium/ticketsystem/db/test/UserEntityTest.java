@@ -22,7 +22,7 @@ public class UserEntityTest {
     public void testGetSet(){
         UserEntity userEntity = new UserEntity();
         userEntity.setRole(UserRole.TU);
-        assertEquals(userEntity.getRole(), UserRole.TU);
+        assertEquals(UserRole.TU, userEntity.getRole());
 
         userEntity.setPassword("pw");
         assertEquals("pw", userEntity.getPassword());
