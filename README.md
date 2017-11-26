@@ -5,7 +5,7 @@ Ziel war es, ein einfaches Ticketing-System zu entwickeln.
 
 # Hosting
 Gehosted mit AWS:
-http://54.93.228.243:8080/ticketsystem-mvc-app/
+http://52.59.239.220:8080/ticketsystem-mvc-app/
 
 # Relevant Links
 [Project on SonarCloud](https://sonarcloud.io/dashboard?id=de.iubh.fernstudium.isef%3Aticketsystem-mvc-app)
