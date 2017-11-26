@@ -1,10 +1,20 @@
 package de.iubh.fernstudium.ticketsystem.util.test;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.StringJoiner;
 
 public class FullTextQueryBuilderTest {
+
+    @Test
+    public void testSplit(){
+        String s = "in Bearbeitung durch Student,in Bearbeitung durch IUBH,neu";
+        String[] sA = StringUtils.split(s, ",");
+        for (String aS: sA ) {
+            System.out.println(aS);
+        }
+    }
 
     @Test
     public void testStringJoiner(){

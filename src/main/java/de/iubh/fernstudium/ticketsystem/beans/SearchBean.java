@@ -124,6 +124,11 @@ public class SearchBean implements Serializable {
 
     public String searchDetails(){
 
+        //um nicht den gesamten Code zu ändern, kleiner Hack
+        if(StringUtils.isNotEmpty(selectedStatiForSearch)){
+            selectedStati = StringUtils.split(selectedStatiForSearch, ",");
+        }
+
         Future<List<TicketDTO>> tickets;
         List<TicketDTO> foundTicketsFromSearch;
         LocalDateTime ldtFrom;
