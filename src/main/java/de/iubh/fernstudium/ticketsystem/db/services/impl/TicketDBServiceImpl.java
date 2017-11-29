@@ -9,6 +9,7 @@ import de.iubh.fernstudium.ticketsystem.db.utils.QueryUtils;
 import de.iubh.fernstudium.ticketsystem.db.utils.TypedQueryParameters;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
+import sun.security.krb5.internal.Ticket;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Stateless
-public class TicketDBServiceImpl implements TicketDBService{
+public class TicketDBServiceImpl implements TicketDBService {
 
     @PersistenceContext
     private EntityManager em;
@@ -43,7 +44,7 @@ public class TicketDBServiceImpl implements TicketDBService{
     @Override
     public boolean changeStauts(Long ticketId, TicketStatus newStatus) {
         TicketEntity ticketEntity = this.getTicketById(ticketId);
-        if(ticketEntity == null){
+        if (ticketEntity == null) {
             return false;
         }
         ticketEntity.setTicketStatus(newStatus);
@@ -53,11 +54,11 @@ public class TicketDBServiceImpl implements TicketDBService{
     @Override
     public TicketEntity addComment(Long ticketId, CommentEntity comment) {
         TicketEntity ticketEntity = this.getTicketById(ticketId);
-        if(ticketEntity == null){
+        if (ticketEntity == null) {
             return null;
         }
         List<CommentEntity> comments = ticketEntity.getComments();
-        if(comments == null){
+        if (comments == null) {
             comments = new ArrayList<>();
         }
         comments.add(comment);
@@ -130,9 +131,9 @@ public class TicketDBServiceImpl implements TicketDBService{
     public List<TicketEntity> searchByCustomQuery(String query, List<Object> params) {
         Query newQuery = em.createNativeQuery(query, TicketEntity.class);
 
-        for(int i=0; i<params.size(); i++){
+        for (int i = 0; i < params.size(); i++) {
             Object o = params.get(i);
-            newQuery.setParameter(i+1, o);
+            newQuery.setParameter(i + 1, o);
         }
         return newQuery.getResultList();
     }
@@ -150,11 +151,25 @@ public class TicketDBServiceImpl implements TicketDBService{
 
     @Override
     public TicketEntity createMasterTicket(Long masterTicketId, Long childTicketId) throws NoSuchTicketException {
-
+        TicketEntity child = this.getTicketById(childTicketId);
         TicketEntity master = this.getTicketById(masterTicketId);
+
+        //wenn das Kind bereits einen Master hat, diesen entfernen
+        if (child.getMasterTicket() != null) {
+            TicketEntity oldTicketMaster = child.getMasterTicket();
+            List<TicketEntity> childrenOfOldMaster = oldTicketMaster.getChildTickets();
+            for (int i = 0; i < childrenOfOldMaster.size(); i++) {
+                if (childrenOfOldMaster.get(i).getId() == childTicketId) {
+                    childrenOfOldMaster.remove(i);
+                }
+            }
+        }
+
+        //neuen Master setzen
         List<TicketEntity> children = checkChildren(master.getChildTickets(), childTicketId);
         master.setChildTickets(children);
         setMasterTicketToChildren(children, master);
+
         return master;
     }
 
@@ -166,9 +181,9 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
 
-    private List<TicketEntity> getTicketsByIds(List<Long> childTickets) throws NoSuchTicketException{
+    private List<TicketEntity> getTicketsByIds(List<Long> childTickets) throws NoSuchTicketException {
         List<TicketEntity> tickets = new ArrayList<>(childTickets.size());
-        for(Long id : childTickets){
+        for (Long id : childTickets) {
             TicketEntity t = this.getTicketById(id);
             tickets.add(t);
         }
@@ -176,19 +191,19 @@ public class TicketDBServiceImpl implements TicketDBService{
     }
 
     private void setMasterTicketToChildren(List<TicketEntity> children, TicketEntity masterTicket) {
-        for(TicketEntity t : children){
+        for (TicketEntity t : children) {
             t.setMasterTicket(masterTicket);
         }
     }
 
-    private List<TicketEntity> checkChildren(List<TicketEntity> childTickets, Long childTicketId) {
+    private List<TicketEntity> checkChildren(List<TicketEntity> childTicketsOfMaster, Long childTicketId) {
         TicketEntity child = this.getTicketById(childTicketId);
-        if(childTickets != null){
-            childTickets.add(child);
-        }else{
-            childTickets = new ArrayList<>(1);
-            childTickets.add(child);
+        if (childTicketsOfMaster != null) {
+            childTicketsOfMaster.add(child);
+        } else {
+            childTicketsOfMaster = new ArrayList<>(1);
+            childTicketsOfMaster.add(child);
         }
-        return new LinkedList<>(childTickets);
+        return new LinkedList<>(childTicketsOfMaster);
     }
 }

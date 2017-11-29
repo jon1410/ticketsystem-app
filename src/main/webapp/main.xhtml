@@ -60,6 +60,9 @@
                     <b:dataTableColumn label="Titel" value="#{ergebnis.title}"></b:dataTableColumn>
                     <b:dataTableColumn label="Status"
                                        value="#{ergebnis.ticketStatus.resolvedText}"></b:dataTableColumn>
+                    <b:dataTableColumn label="Kategorie">
+                        <h:outputText value="#{ergebnis.category.categoryName}"/>
+                    </b:dataTableColumn>
                     <b:dataTableColumn label="Ersteller"
                                        value="#{ergebnis.reporter.userId}"></b:dataTableColumn>
                     <b:dataTableColumn label="Datum">
@@ -69,6 +72,11 @@
                     </b:dataTableColumn>
                     <b:dataTableColumn label="Bearbeiter"
                                        value="#{ergebnis.assignee.userId}"></b:dataTableColumn>
+                    <b:dataTableColumn label="Details">
+                        <b:commandButton look="info" value="Details"
+                                         actionListener="#{userDataBean.setActiveTicket(ergebnis)}"
+                                         oncomplete="$('.ergebnisModal').modal('hide'); return false;"></b:commandButton>
+                    </b:dataTableColumn>
                 </b:dataTable>
             </b:panelGrid>
         </h:form>
@@ -91,6 +99,7 @@
                              placeholder="Bearbeiter"></b:inputText>
                 <b:inputText value="#{searchBean.categoryText}"
                              placeholder="Kategorie"></b:inputText>
+                <h:panelGroup />
 
                 <strong>Zusätzlich folgenden Status berücksichtigen</strong>
 
@@ -107,7 +116,7 @@
             <hr/>
 
             <b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
-                             update=":msgs :ergebnis"
+                             update=":msgs :ergebnis :formErgebnis"
                              actionListener="#{searchBean.searchDetails()}"
                              oncomplete="$('.sucheModal').modal('hide');return false;"></b:commandButton>
 
@@ -125,13 +134,17 @@
             <b:panelGrid colSpans="4,4,4" id="detailPanel1">
                 <b:commandButton value="Bearbeitung starten" look="info"
                                  actionListener="#{userDataBean.startProgress}"
-                                 update=":yourTickets :formDetail :histDetail"></b:commandButton>
+                                 update=":yourTickets :formDetail :histDetail"
+                                 rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}">
+                </b:commandButton>
                 <b:commandButton value="Ticket abschließen" look="info"
                                  actionListener="#{userDataBean.finishTicket}"
                                  update=":yourTickets :formDetail :histDetail"></b:commandButton>
                 <b:commandButton value="Ticket zurückgeben" look="info"
                                  actionListener="#{userDataBean.resolveTicket}"
-                                 update=":yourTickets :formDetail :histDetail"></b:commandButton>
+                                 update=":yourTickets :formDetail :histDetail"
+                                 rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}">
+                </b:commandButton>
             </b:panelGrid>
             <b:panelGrid colSpans="6,6" id="detailPanel2">
                 <b:commandButton look="danger" value="Ticket abbrechen"

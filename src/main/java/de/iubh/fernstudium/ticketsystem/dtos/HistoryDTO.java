@@ -84,7 +84,7 @@ public class HistoryDTO {
     }
 
     public String getEventTimeAsString(){
-        return this.eventTime.toString();
+        return DateTimeUtil.formatForUI(eventTime);
     }
 
     public HistoryEntity toEntity(){

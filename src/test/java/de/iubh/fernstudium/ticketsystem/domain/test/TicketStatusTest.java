@@ -20,9 +20,11 @@ public class TicketStatusTest {
         assertEquals("in Bearbeitung durch IUBH", TicketStatus.IPU.getResolvedText());
         assertEquals("in Bearbeitung durch Student", TicketStatus.IPS.getResolvedText());
         assertEquals("gelöst", TicketStatus.RES.getResolvedText());
-        assertEquals("geschlossen", TicketStatus.CLO.getResolvedText());
+        assertEquals("abgeschlossen", TicketStatus.CLO.getResolvedText());
         assertEquals("gelöscht", TicketStatus.DEL.getResolvedText());
         assertEquals("automatisch durch System gelöscht", TicketStatus.DLS.getResolvedText());
+        assertEquals("Lösungsvorschlag IUBH", TicketStatus.RET.getResolvedText());
+        assertEquals("abgebrochen durch IUBH", TicketStatus.UTU);
     }
 
     @Test
@@ -31,9 +33,11 @@ public class TicketStatusTest {
         assertTrue(TicketStatus.fromString("in Bearbeitung durch IUBH") == TicketStatus.IPU);
         assertTrue(TicketStatus.fromString("in Bearbeitung durch Student") == TicketStatus.IPS);
         assertTrue(TicketStatus.fromString("gelöst") == TicketStatus.RES);
-        assertTrue(TicketStatus.fromString("geschlossen") == TicketStatus.CLO);
+        assertTrue(TicketStatus.fromString("abgeschlossen") == TicketStatus.CLO);
         assertTrue(TicketStatus.fromString("gelöscht") == TicketStatus.DEL);
         assertTrue(TicketStatus.fromString("automatisch durch System gelöscht") == TicketStatus.DLS);
+        assertTrue(TicketStatus.fromString("Lösungsvorschlag IUBH") == TicketStatus.RET);
+        assertTrue(TicketStatus.fromString("abgebrochen durch IUBH") == TicketStatus.UTU);
         assertNull(TicketStatus.fromString("existiertNicht"));
     }
 }

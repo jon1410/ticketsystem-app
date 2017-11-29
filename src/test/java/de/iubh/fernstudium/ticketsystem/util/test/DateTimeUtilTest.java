@@ -61,11 +61,10 @@ public class DateTimeUtilTest {
         assertNotNull(tsp);
     }
 
-//    @Test
-//    public void testFormatJSF(){
-//        String pattern = "EEE MMM dd HH:mm:ss zzz yyyy";
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH);
-//        LocalDate localDate = LocalDate.parse("Wed Nov 01 12:00:00 CET 2017", formatter);
-//        System.out.println(localDate.atStartOfDay().toString());
-//    }
+    @Test
+    public void formatToString(){
+        LocalDateTime ldt = LocalDateTime.now();
+        String s = DateTimeUtil.formatForUI(ldt);
+        assertNotNull(s);
+    }
 }

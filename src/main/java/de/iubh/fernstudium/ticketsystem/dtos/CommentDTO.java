@@ -41,7 +41,7 @@ public class CommentDTO {
     }
 
     public String getCreationDateAsString(){
-        return creationDate.toString();
+        return DateTimeUtil.formatForUI(creationDate);
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
@@ -69,7 +69,7 @@ public class CommentDTO {
     }
 
     public String getChangeDateAsString(){
-        return changeDate.toString();
+        return DateTimeUtil.formatForUI(changeDate);
     }
 
     public void setChangeDate(LocalDateTime changeDate) {

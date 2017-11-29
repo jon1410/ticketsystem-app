@@ -9,10 +9,12 @@ public enum TicketStatus {
     IPU("in Bearbeitung durch IUBH"),
     IPS("in Bearbeitung durch Student"),
     RES("gelöst"),
-    CLO("geschlossen"),
+    RET("Lösungsvorschlag IUBH"),
+    CLO("abgeschlossen"),
     DEL("gelöscht"),
     DLS("automatisch durch System gelöscht"),
-    UST("abgebrochen durch Einmelder");
+    UTU("abgebrochen durch IUBH"),
+    UST("abgebrochen durch Student");
 
     private String resolvedText;
 

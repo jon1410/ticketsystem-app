@@ -3,6 +3,7 @@ package de.iubh.fernstudium.ticketsystem.beans;
 import de.iubh.fernstudium.ticketsystem.beans.utils.FacesContextUtils;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UITexts;
+import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.UserNotExistsException;
@@ -102,13 +103,19 @@ public class UserDataBean implements Serializable {
     public void terminateActiveTicket() {
         if (hasActiveTicket()) {
             terminateTicket(activeTicket);
-            activeTicket.setTicketStatus(TicketStatus.UST);
         }
     }
 
     public void terminateTicket(TicketDTO ticketDTO) {
         try {
-            ticketService.changeStatus(ticketDTO.getId(), TicketStatus.UST);
+            TicketStatus ticketStatus;
+            if(currentUserBean.getUserRole() == UserRole.ST){
+                ticketStatus = TicketStatus.UST;
+            }else{
+                ticketStatus = TicketStatus.UTU;
+            }
+            ticketService.changeStatus(ticketDTO.getId(), ticketStatus);
+            activeTicket.setTicketStatus(ticketStatus);
         } catch (NoSuchTicketException e) {
             FacesContextUtils.resolveError(UITexts.STOP_TICKET_ERROR_SUMMARY, UITexts.STOP_TICKET_ERROR_DETAIL, null);
         }
@@ -125,15 +132,15 @@ public class UserDataBean implements Serializable {
         UserDTO newAssignee = activeTicket.getReporter();
         activeTicket.setAssignee(newAssignee);
         fireEvent(activeTicket.getId(), HistoryAction.AC, "Neuer Bearbeiter: " + newAssignee.getUserId());
-        changeStatus(TicketStatus.RES);
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.execute("$('.detailModal').modal('hide');");
+        changeStatus(TicketStatus.RET);
+        //RequestContext requestContext = RequestContext.getCurrentInstance();
+        //requestContext.execute("$('.detailModal').modal('hide');");
     }
 
     public void finishTicket() {
         changeStatus(TicketStatus.CLO);
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.execute("$('.detailModal').modal('hide');");
+       // RequestContext requestContext = RequestContext.getCurrentInstance();
+       // requestContext.execute("$('.detailModal').modal('hide');");
     }
 
     public void addTicket(TicketDTO ticketDTO) {

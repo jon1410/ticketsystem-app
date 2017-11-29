@@ -138,7 +138,7 @@ public class TicketDTO {
     }
 
     public String getCreationTimeAsString() {
-        return creationTime.toString();
+        return DateTimeUtil.formatForUI(creationTime);
     }
 
     public void setCreationTimeAsString(String creationTimeAsString) {
@@ -166,7 +166,7 @@ public class TicketDTO {
      */
     public TicketEntity toEntity(){
         List<CommentEntity> commentEntities = null;
-        if(comments != null && comments.size() > 0){
+        if(comments != null && !comments.isEmpty()){
             commentEntities = new ArrayList<>(comments.size());
             for(CommentDTO c : comments){
                 commentEntities.add(c.toEntity());
@@ -175,7 +175,7 @@ public class TicketDTO {
 
         List<TicketEntity> children = null;
         TicketEntity ticketEntity = null;
-        if(childTicketsIds != null && childTicketsIds.size() > 0){
+        if(childTicketsIds != null && !childTicketsIds.isEmpty()){
             children = new ArrayList<>(childTicketsIds.size());
             for(Long id : childTicketsIds){
                 TicketEntity t = ticketDBService.getTicketById(id);

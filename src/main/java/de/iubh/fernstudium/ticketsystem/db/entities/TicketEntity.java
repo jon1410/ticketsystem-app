@@ -185,7 +185,7 @@ public class TicketEntity {
 
     public TicketDTO toDto(){
         List<CommentDTO> commentDTOList = null;
-        if(comments != null && comments.size() > 1){
+        if(comments != null && !comments.isEmpty()){
             commentDTOList = new ArrayList<>(comments.size());
             for(CommentEntity c : comments){
                 commentDTOList.add(c.toDto());

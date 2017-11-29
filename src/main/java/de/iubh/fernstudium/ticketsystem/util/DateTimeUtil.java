@@ -36,4 +36,9 @@ public class DateTimeUtil {
         return localDate.atStartOfDay();
     }
 
+    public static String formatForUI(LocalDateTime localDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        return formatter.format(localDateTime);
+    }
+
 }
