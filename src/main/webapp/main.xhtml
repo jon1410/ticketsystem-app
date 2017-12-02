@@ -54,7 +54,7 @@
     <b:modal title="Suchergebnisse" styleClass="ergebnisModal fade"
              closeOnEscape="true" id="ergebnis" backdrop="false" size="modal-lg">
         <h:form id="formErgebnis">
-            <h3>Hier sind Ihre Ergebnisse</h3>
+            <h3>Hier sind deine Suchergebnisse</h3>
             <b:panelGrid colSpans="12" id="ergebnisPanel">
                 <b:dataTable value="#{searchBean.foundTickets}" var="ergebnis">
                     <b:dataTableColumn label="Titel" value="#{ergebnis.title}"></b:dataTableColumn>
@@ -418,7 +418,7 @@
 
 
     <!-- TICKETS -->
-    <b:modal title="Deine bisherigen Tickets" styleClass="tickets fade"
+    <b:modal title="Dir zugewiesene Tickets" styleClass="tickets fade"
              closeOnEscape="true" id="ticketsPanel" backdrop="false"
              size="modal-lg">
         <h:form id="yourTickets">
@@ -453,7 +453,7 @@
     <!-- ENDE TICKETS -->
 
     <!-- TICKETS eingemeldet -->
-    <b:modal title="Deine eingemeldeten Tickets" styleClass="ticketsReported fade"
+    <b:modal title="Deine eingereichten Tickets" styleClass="ticketsReported fade"
              closeOnEscape="true" id="ticketsPanelReported" backdrop="false"
              size="modal-lg">
         <h:form id="yourReportedTickets">
@@ -520,8 +520,9 @@
 
 
             <b:commandButton value="Änderungen übernehmen"
-                             styleClass="btnAenderungen" update=":kategorie :yourTickets"
-                             actionListener="#{currentUserBean.changeUserData()}">
+                             styleClass="btnAenderungen" update=":kategorie :yourTickets :msgs :welcome"
+                             actionListener="#{currentUserBean.changeUserData()}"
+                             oncomplete="$('.profilModal').modal('hide');return false;">
             </b:commandButton>
 
         </h:form>
@@ -567,7 +568,7 @@
 
 
             <b:commandButton value="speichern" styleClass="btnNewUser"
-                             update="newPanelGrid" action="#{userBean.createUser()}">
+                             update="newPanelGrid :msgs" action="#{userBean.createUser()}">
             </b:commandButton>
 
         </h:form>
@@ -683,7 +684,7 @@
     <!-- BODY -->
     <b:container styleClass="bodyContainer">
         <b:row>
-            <b:column col-md="6" col-xs="12" styleClass="columnLogoFirst">
+            <b:column  id="welcome" col-md="6" col-xs="12" styleClass="columnLogoFirst">
                 <h4>Willkommen #{currentUserBean.firstName}</h4>
                 <b:panel styleClass="logoIubh">
                     <b:image library="img" name="iubh-logo.jpg"
@@ -699,13 +700,13 @@
                 <b:panel styleClass="panelMessages color noBorder"
                          onclick="$('.tickets').modal();">
                     <b:panelGrid colSpans="2,10" styleClass="panelQuick"
-                                 tooltip="Deine aktuellen noch offenen Tickets">
+                                 tooltip="Dir zugewiesene Tickets">
                         <h:outputText
                                 style="font-size:5.0em;  margin:auto auto;display: inline-block;z-index:10000;"
                                 value="#{userDataBean.tickets.size() == null ? 0 : userDataBean.tickets.size()}"></h:outputText>
                         <h:outputText
                                 style="font-size:1.8em; margin-top:20px;display: inline-block;position: relative;"
-                                value="Meine offenen Tickets"/>
+                                value="Meine zugewiesenen Tickets"/>
                     </b:panelGrid>
                     <b:iconAwesome name="fa-envelope" size="5x"
                                    style="position:relative;margin-top:-90px;margin-right:20px;float:right;opacity:0.3;"
