@@ -58,6 +58,12 @@ public class UserServiceTest {
         UserDTO userDTO = userService.getUserByUserId("xxx");
     }
 
+    @Test(expected = UserNotExistsException.class)
+    public void testGetUserIdNotExistsNull() throws UserNotExistsException {
+        Mockito.when(userDBService.findById(Mockito.anyString())).thenReturn(null);
+        UserDTO userDTO = userService.getUserByUserId("xxx");
+    }
+
     @Test
     public void testCreateUserOK() throws UserAlreadyExistsException {
         boolean b = userService.createUser("admin",

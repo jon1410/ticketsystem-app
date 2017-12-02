@@ -24,7 +24,7 @@ public class TicketStatusTest {
         assertEquals("gelöscht", TicketStatus.DEL.getResolvedText());
         assertEquals("automatisch durch System gelöscht", TicketStatus.DLS.getResolvedText());
         assertEquals("Lösungsvorschlag IUBH", TicketStatus.RET.getResolvedText());
-        assertEquals("abgebrochen durch IUBH", TicketStatus.UTU);
+        assertEquals("abgebrochen durch IUBH", TicketStatus.UTU.getResolvedText());
     }
 
     @Test

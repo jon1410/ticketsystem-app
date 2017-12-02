@@ -5,6 +5,7 @@ import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.dtos.CategoryDTO;
+import de.iubh.fernstudium.ticketsystem.dtos.CommentDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.TicketDTO;
 import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import org.junit.Before;
@@ -20,6 +21,8 @@ import org.needle4j.junit.NeedleRule;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyLong;
@@ -75,6 +78,15 @@ public class TicketDTOTest {
         assertNotNull(ticketDTO.getMasterTicketId());
 
         when(ticketDBService.getTicketById(anyLong())).thenReturn(new TicketEntity());
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        commentDTOS.add(new CommentDTO(buildUserDTO(), "comment"));
+
+        List<Long> children = new ArrayList<>();
+        children.add(new Long(5L));
+        children.add(new Long(6L));
+
+        ticketDTO.setComments(commentDTOS);
+        ticketDTO.setChildTicketsIds(children);
         assertNotNull(ticketDTO.toEntity());
 
         assertFalse(ticketDTO.hashCode() == 0);

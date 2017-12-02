@@ -154,6 +154,14 @@ public class TicketServiceTest {
         assertNotNull(dto);
     }
 
+    @Test
+    public void testChangeCategoryOfTicket() throws NoSuchTicketException {
+        when(ticketDBService.changeCategoryOfTicket(anyLong(), any(CategoryEntity.class))).thenReturn(buildTicketEntity());
+        CategoryEntity categoryEntity = buildCategoryEntity();
+        TicketDTO ticketDTO  = ticketService.changeCategoryOfTicket(1L, categoryEntity.toDto());
+        assertNotNull(ticketDTO);
+    }
+
     private List<TicketEntity> buildTicketEntityList(int size) {
         List<TicketEntity> ticketEntityList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {

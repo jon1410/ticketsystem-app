@@ -81,9 +81,31 @@ public class UserDataBeanPowerMockTest {
 
     @Test
     public void testTerminateTicket(){
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
         TicketDTO ticketDTO = buildTicketDTO();
+        userDataBean.setActiveTicket(ticketDTO);
         userDataBean.terminateTicket(ticketDTO);
         verify(eventProducer, times(1)).produceHistoryEvent(anyLong(), any(HistoryAction.class), anyString());
+
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testTerminateTicketTutor(){
+
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        when(currentUserBean.getUserRole()).thenReturn(UserRole.TU);
+        TicketDTO ticketDTO = buildTicketDTO();
+        userDataBean.setActiveTicket(ticketDTO);
+        userDataBean.terminateTicket(ticketDTO);
+        verify(eventProducer, times(1)).produceHistoryEvent(anyLong(), any(HistoryAction.class), anyString());
+
+        RequestContext.releaseThreadLocalCache();
     }
 
     @Test
@@ -134,7 +156,7 @@ public class UserDataBeanPowerMockTest {
         doNothing().when(requestContext).execute(anyString());
         userDataBean.setActiveTicket(buildTicketDTO());
         userDataBean.resolveTicket();
-        assertEquals(TicketStatus.RES, userDataBean.getActiveTicket().getTicketStatus());
+        assertEquals(TicketStatus.RET, userDataBean.getActiveTicket().getTicketStatus());
         RequestContext.releaseThreadLocalCache();
     }
 
@@ -478,6 +500,48 @@ public class UserDataBeanPowerMockTest {
         userDataBean.changeCateogry();
 
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testAddMasterTicketToActiveTicketIdZero() throws NoSuchTicketException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        userDataBean.setActiveTicket(buildTicketDTO());
+        userDataBean.addMasterTicketToActiveTicket();
+
+        verify(ticketService, never()).createMasterTicket(anyLong(), anyLong());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testAddMasterTicketToActiveTicketOK() throws NoSuchTicketException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        when(ticketService.getTicketByID(anyLong())).thenReturn(buildTicketDTO());
+
+        userDataBean.setActiveTicket(buildTicketDTO());
+        userDataBean.setNewMasterTicketId(1L);
+        userDataBean.addMasterTicketToActiveTicket();
+
+        verify(ticketService, times(1)).createMasterTicket(anyLong(), anyLong());
+        RequestContext.releaseThreadLocalCache();
+    }
+
+    @Test
+    public void testAddMasterTicketToActiveTicketNoActiveTicket() throws NoSuchTicketException {
+        PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        userDataBean.addMasterTicketToActiveTicket();
+
+        PowerMockito.verifyStatic(VerificationModeFactory.times(2));
         FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
         RequestContext.releaseThreadLocalCache();
     }

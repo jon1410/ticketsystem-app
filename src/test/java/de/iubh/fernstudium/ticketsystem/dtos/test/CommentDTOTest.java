@@ -28,6 +28,7 @@ public class CommentDTOTest {
         assertEquals(ldt, commentDTO.getCreationDate());
         assertEquals(new Long(1), commentDTO.getId());
         assertEquals("Comment", commentDTO.getComment());
+        assertNotNull(commentDTO.getCreationDateAsString());
 
         assertFalse(commentDTO.hashCode() == 0);
         assertNotNull(commentDTO.toString());

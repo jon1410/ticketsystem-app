@@ -9,7 +9,6 @@ import de.iubh.fernstudium.ticketsystem.db.utils.QueryUtils;
 import de.iubh.fernstudium.ticketsystem.db.utils.TypedQueryParameters;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
-import sun.security.krb5.internal.Ticket;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

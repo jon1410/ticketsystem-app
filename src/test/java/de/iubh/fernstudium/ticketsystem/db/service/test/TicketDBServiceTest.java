@@ -11,6 +11,7 @@ import de.iubh.fernstudium.ticketsystem.db.services.impl.CategoryDBServiceImpl;
 import de.iubh.fernstudium.ticketsystem.db.services.impl.TicketDBServiceImpl;
 import de.iubh.fernstudium.ticketsystem.db.services.impl.UserDBServiceImpl;
 import de.iubh.fernstudium.ticketsystem.db.util.JPAHibernateTestManager;
+import de.iubh.fernstudium.ticketsystem.db.utils.CustomNativeQuery;
 import de.iubh.fernstudium.ticketsystem.domain.TicketStatus;
 import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
 import de.iubh.fernstudium.ticketsystem.domain.exception.NoSuchTicketException;
@@ -175,6 +176,50 @@ public class TicketDBServiceTest extends JPAHibernateTestManager {
         System.out.println(child.toDto().toString());
         System.out.println(child1.toDto().toString());
     }
+
+    @Test
+    public void test70getTicketsForUserId(){
+        List<TicketEntity> ticketEntities = ticketDBService.getTicketsForUserId(getUser("tutor"));
+        assertNotNull(ticketEntities);
+    }
+
+    @Test
+    public void test71getTicketsReportedByUserId(){
+        List<TicketEntity> ticketEntities = ticketDBService.getTicketsReportedByUserId(getUser("tutor"));
+        assertNotNull(ticketEntities);
+    }
+
+    @Test
+    public void test80searchByRepoter(){
+        List<TicketEntity> ticketEntities = ticketDBService.searchByReporter("tutor");
+        assertNotNull(ticketEntities);
+    }
+
+    @Test
+    public void test81searchByAssignee(){
+        List<TicketEntity> ticketEntities = ticketDBService.searchByAssignee("tutor");
+        assertNotNull(ticketEntities);
+    }
+
+    @Test
+    public void test82searchByStatus(){
+        List<TicketEntity> ticketEntities = ticketDBService.searchByStatus(TicketStatus.NEW);
+        assertNotNull(ticketEntities);
+    }
+
+    @Test
+    public void test83searchByTitle(){
+        List<TicketEntity> ticketEntities = ticketDBService.searchByTitle("Testticket");
+        assertNotNull(ticketEntities);
+    }
+
+    @Test
+    public void test84searchByCustomQuery(){
+        CustomNativeQuery q = CustomNativeQuery.builder().selectAll().from("TICKET").where("reporter_USERID").isEqualTo("tutor").buildQuery();
+        List<TicketEntity> ticketEntities = ticketDBService.searchByCustomQuery(q.getQueryString(), q.getParameters());
+        assertNotNull(ticketEntities);
+    }
+
 
     private UserEntity getUser(String id) {
         return userDBService.findById(id);

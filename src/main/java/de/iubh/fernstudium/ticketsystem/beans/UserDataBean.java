@@ -15,7 +15,6 @@ import de.iubh.fernstudium.ticketsystem.dtos.UserDTO;
 import de.iubh.fernstudium.ticketsystem.services.CategoryService;
 import de.iubh.fernstudium.ticketsystem.services.HistoryService;
 import de.iubh.fernstudium.ticketsystem.services.TicketService;
-import de.iubh.fernstudium.ticketsystem.services.UserService;
 import de.iubh.fernstudium.ticketsystem.services.impl.EventProducer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -133,14 +132,10 @@ public class UserDataBean implements Serializable {
         activeTicket.setAssignee(newAssignee);
         fireEvent(activeTicket.getId(), HistoryAction.AC, "Neuer Bearbeiter: " + newAssignee.getUserId());
         changeStatus(TicketStatus.RET);
-        //RequestContext requestContext = RequestContext.getCurrentInstance();
-        //requestContext.execute("$('.detailModal').modal('hide');");
     }
 
     public void finishTicket() {
         changeStatus(TicketStatus.CLO);
-       // RequestContext requestContext = RequestContext.getCurrentInstance();
-       // requestContext.execute("$('.detailModal').modal('hide');");
     }
 
     public void addTicket(TicketDTO ticketDTO) {
