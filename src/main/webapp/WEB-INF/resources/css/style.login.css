@@ -1,35 +1,38 @@
 @CHARSET "UTF-8";
 
+html {
+	height: 100%!important;
+	
+}
+
 body {
-	padding-top: 6%;
+	
+	padding-top: 10%;
+	background: linear-gradient(to bottom, #0e3b47 0%, #0e8f8f 100%);
+	
 }
 
-.iubhLogo {
-	margin: auto !important;
-	float: none !important;
-	width: 100% !important;
-	float: none !important;
+a{
+	color: white!important;
 }
 
-.logo {
-	margin-left: 22% !important;
-	width: 25%;
+.imgLogo {
+	width: 40%;
+	margin-left: 30%;
+	margin-right: 0%;
 }
+
 
 .loginHeader {
 	text-decoration: underline;
 	margin-bottom: 8%;
+	color: white;
 }
 
-.inputHover {
-	box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.3) !important;
-	transition: box-shadow 0.8s;
+#loginForm{
+	padding-top: 2%;
 }
 
-.inputHover:hover {
-	box-shadow: 0px 0px 8px #515151 !important;
-	transition: box-shadow 0.8s;
-}
 
 .loginPanel {
 	width: 45% !important;
@@ -37,6 +40,7 @@ body {
 }
 
 .loginButton {
+	color:black!important;
 	width: 100%;
 	background-color: rgba(0, 148, 146, 0.8) !important;
 	border: 0px;
@@ -50,7 +54,7 @@ body {
 
 .loginButton:hover {
 	border-color: rgb(31, 153, 214);
-	padding-right: 30px;
+	padding-right: 30px!;
 	color: #ffffff;
 	transition: all 0.9s ease;
 }
@@ -106,7 +110,7 @@ body {
 	border: 0px !important;
 }
 
-.btnPasswortVergessenBestätigen:hover , .btnRegistrieren:hover{
+.btnPasswortVergessenBestätigen:hover, .btnRegistrieren:hover {
 	background-color: rgba(0, 148, 146, 1) !important;
 }
 

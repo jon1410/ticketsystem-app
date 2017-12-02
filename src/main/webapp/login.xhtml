@@ -18,8 +18,7 @@
 	<title>IUBH | Login</title>
 </h:head>
 <h:body>
-	<b:container>
-
+	
 
 		<b:growl id="msg" placementFrom="top"></b:growl>
 
@@ -84,22 +83,20 @@
 
 
 
+		<b:container fluid="false">
 		<!-- LOGO -->
 		<b:row>
-			<b:column col-md="12" styleClass="iubhLogo center-block">
-				<b:image library="img" name="iubh-logo.jpg" styleClass="logo"></b:image>
-				<span class="sr-only">IUBH (International University Of
-					Applied Science) Logo</span>
-			</b:column>
+		<b:column col-md="12" col-xs="12">
+		         <b:image library="img" name="iubh.png" styleClass="imgLogo"></b:image>
+					</b:column>
 		</b:row>
 		<!--ENDE LOGO-->
 
 
 
 		<!-- LOGIN -->
-		<b:row styleClass="loginRow">
+		<b:row>
 			<h:form id="loginForm">
-
 				<b:column col-md="12" col-xs="12"
 					styleClass="loginPanel center-block">
 					<h3 class="loginHeader">Anmelden</h3>
@@ -125,7 +122,7 @@
 						<span class="sr-only">Am System anmelden</span>
 					</b:commandButton>
 					<hr />
-					<b:panelGrid colSpans="6,6">
+					<b:panelGrid colSpans="6,6" col-xs="12">
 						<b:navCommandLink value="Registrieren"
 							onclick="$('.registrierenModal').modal(); return false;" />
 						<h:link value="Passwort vergessen ?" styleClass="linkForgottPw"
