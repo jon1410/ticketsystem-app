@@ -227,6 +227,7 @@ public class UserDataBean implements Serializable {
     }
 
     public void showHistory() {
+        initHistoryOfActiveTicket(activeTicket.getId());
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("$('.histModal').modal('show');");
     }
@@ -255,7 +256,7 @@ public class UserDataBean implements Serializable {
 
     public void setActiveTicket(TicketDTO activeTicket) {
         this.activeTicket = activeTicket;
-        initHistoryOfActiveTicket(activeTicket.getId());
+        //initHistoryOfActiveTicket(activeTicket.getId());
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("$('.detailModal').modal('show');");
     }

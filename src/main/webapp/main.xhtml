@@ -151,7 +151,7 @@
 					tooltip="Beendet den aktuellen Vorgang des Tickets"
 					actionListener="#{userDataBean.terminateActiveTicket()}"
 					update=":yourTickets :formDetail :histDetail" style="margin-right:5px;"></b:commandButton>
-				<b:commandButton value="Historie" look="default"
+				<b:commandButton value="Historie" look="default" update=":histDetail"
 					actionListener="#{userDataBean.showHistory}" style="margin-right:5px;"
 					oncomplete="$('.detailModal').modal('hide');return false;"></b:commandButton>
 			<hr/>
@@ -446,7 +446,10 @@
 							<h:outputText value="#{ticket.category.categoryName}" />
 						</b:dataTableColumn>
 						<b:dataTableColumn label="Details">
-							
+							<b:commandButton look="info" value="Details"
+											 tooltip="Schau dir den Fortschritt des Tickets an"
+											 actionListener="#{userDataBean.setActiveTicket(ticket)}"
+											 oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
 						</b:dataTableColumn>
 					</b:dataTable>
 				</h:form>
@@ -480,7 +483,7 @@
 						</b:dataTableColumn>
 						<b:dataTableColumn label="Details">
 							<b:commandButton look="info" value="Details"
-								tooltip="Schau dir den fortschritt des Tickets an"
+								tooltip="Schau dir den Fortschritt des Tickets an"
 								actionListener="#{userDataBean.setActiveTicket(ticket)}"
 								oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
 						</b:dataTableColumn>
