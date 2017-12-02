@@ -11,6 +11,10 @@ background: linear-gradient(to bottom, #0e3b47 0%,#0e8f8f 100%); /* W3C, IE10+, 
 
 }
 
+.modal-lg {
+    width: 1000px;
+}
+
 /*The Navbar Settings*/
 
 
