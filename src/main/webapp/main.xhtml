@@ -55,7 +55,7 @@
 	<b:modal title="Suchergebnisse" styleClass="ergebnisModal fade"
 		closeOnEscape="true" id="ergebnis" backdrop="false" size="modal-lg">
 		<h:form id="formErgebnis">
-			<h3>Hier sind deine Suchergebnisse</h3>
+			<h3>Suchergebnisse</h3>
 			<b:panelGrid colSpans="12" id="ergebnisPanel">
 				<b:dataTable value="#{searchBean.foundTickets}" var="ergebnis" lang="de">
 					<b:dataTableColumn label="Titel" value="#{ergebnis.title}"></b:dataTableColumn>
@@ -457,7 +457,7 @@
 	<!-- ENDE TICKETS -->
 
 	<!-- TICKETS eingemeldet -->
-	<b:modal title="Deine eingereichten Tickets"
+	<b:modal title="Meine eingereichten Tickets"
 		styleClass="ticketsReported fade" closeOnEscape="true"
 		id="ticketsPanelReported" backdrop="false" size="modal-lg">
 		<h:form id="yourReportedTickets">
@@ -480,7 +480,7 @@
 						</b:dataTableColumn>
 						<b:dataTableColumn label="Details">
 							<b:commandButton look="info" value="Details"
-								tooltip="Schau dir den fortschritt deines Tickets an"
+								tooltip="Schau dir den fortschritt des Tickets an"
 								actionListener="#{userDataBean.setActiveTicket(ticket)}"
 								oncomplete="$('.detailModal').modal(); return false;"></b:commandButton>
 						</b:dataTableColumn>
@@ -494,7 +494,7 @@
 
 
 	<!-- PROFIL ÄNDERN -->
-	<b:modal title="Dein Profil" styleClass="profilModal fade"
+	<b:modal title="Mein Profil" styleClass="profilModal fade"
 		closeOnEscape="true" id="profil" backdrop="false">
 		<h:form id="profilForm" enctype="multipart/form-data">
 			<b:row>
@@ -724,7 +724,7 @@
 				<b:panel styleClass="panelTickets"
 					onclick="$('.ticketsReported').modal();">
 					<b:panelGrid colSpans="2,10" styleClass="panelQuick"
-						tooltip="Deine bisher eingereichten Tickets">
+						tooltip="Meine bisher eingereichten Tickets">
 						<h:outputText
 							style="font-size:5.0em;  margin:auto auto;display: inline-block;"
 							value="#{userDataBean.reportedByLoggedInUser.size() == null ? 0 : userDataBean.reportedByLoggedInUser.size()}"></h:outputText>
@@ -743,11 +743,11 @@
 				<b:panel styleClass="profilPanel"
 					onclick="$('.profilModal').modal();">
 					<b:panelGrid colSpans="2,10" styleClass="panelProfil"
-						tooltip="Dein Profil">
+						tooltip="Mein Profil">
 						<b:iconAwesome name="fa-user" styleClass="iconProfil"></b:iconAwesome>
 						<h:outputText id="txtDeinProfil"
 							style="margin-top:20px;font-size:1.8em;margin-top:20px;display: inline-block;position: relative;"
-							value="Dein Profil" />
+							value="Mein Profil" />
 					</b:panelGrid>
 
 				</b:panel>
