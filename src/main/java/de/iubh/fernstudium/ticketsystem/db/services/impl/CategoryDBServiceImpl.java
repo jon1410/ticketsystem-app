@@ -1,10 +1,15 @@
 package de.iubh.fernstudium.ticketsystem.db.services.impl;
 
 import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
+import de.iubh.fernstudium.ticketsystem.db.entities.TicketEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.CategoryDBService;
+import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
+import de.iubh.fernstudium.ticketsystem.db.utils.CustomNativeQuery;
 import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
+import org.apache.commons.collections.CollectionUtils;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +21,9 @@ public class CategoryDBServiceImpl implements CategoryDBService {
 
     @PersistenceContext
     private EntityManager em;
+
+    @EJB
+    private TicketDBService ticketDBService;
 
     @Override
     public CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException {
@@ -51,6 +59,15 @@ public class CategoryDBServiceImpl implements CategoryDBService {
     @Override
     public boolean deleteCategory(String categoryId) throws CategoryNotFoundException {
         CategoryEntity c = this.getCategoryById(categoryId);
+
+        CustomNativeQuery query = CustomNativeQuery.builder()
+                .selectAll().from("TICKET").where("category_CATEGID").isEqualTo(c.getCategoryId()).buildQuery();
+
+        List<TicketEntity> ticketEntityList = ticketDBService.searchByCustomQuery(query.getQueryString(), query.getParameters());
+        if(CollectionUtils.isNotEmpty(ticketEntityList)){
+            return false;
+        }
+
         em.remove(c);
         return true;
     }

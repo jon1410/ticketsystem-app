@@ -22,6 +22,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -70,12 +71,16 @@ public class CategoryRepositoryBean implements Serializable {
             if(categoryDTO == null){
                 throw new CategoryNotFoundException("DTO ist null!");
             }
-            categoryService.deleteCategoryById(categoryDTO.getCategoryId());
+            if(categoryService.deleteCategoryById(categoryDTO.getCategoryId())){
+                allCategories.remove(categoryDTO);
+            }else{
+                FacesContextUtils.resolveError(UITexts.DELETE_CATEGORY_DB_ERROR_DETAIL, UITexts.DELETE_CATEGORY_DB_ERROR_DETAIL, null);
+                RequestContext.getCurrentInstance().execute("$('.kategorienModal').modal('hide');");;
+            }
         } catch (CategoryNotFoundException e) {
             FacesContextUtils.resolveError(UITexts.DELETE_CATEGORY_ERROR_SUMMARY, UITexts.DELETE_CATEGORY_ERROR_DETAIL, null);
             return;
         }
-        allCategories.remove(categoryDTO);
     }
 
     /**

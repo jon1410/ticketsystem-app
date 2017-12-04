@@ -57,7 +57,7 @@
 		<h:form id="formErgebnis">
 			<h3>Suchergebnisse</h3>
 			<b:panelGrid colSpans="12" id="ergebnisPanel">
-				<b:dataTable value="#{searchBean.foundTickets}" var="ergebnis" lang="de">
+				<b:dataTable value="#{searchBean.foundTickets}" pageLength="5" pageLengthMenu="5,10" var="ergebnis" lang="de">
 					<b:dataTableColumn label="Titel" value="#{ergebnis.title}"></b:dataTableColumn>
 					<b:dataTableColumn label="Status"
 						value="#{ergebnis.ticketStatus.resolvedText}"></b:dataTableColumn>
@@ -109,16 +109,11 @@
 					<f:selectItems value="#{searchBean.stati}" />
 				</b:selectMultiMenu>
 
-				<!--p:selectCheckboxMenu value="#{searchBean.selectedStati}"
-                    style="width:100%;" appendTo="@this" label="Stati auswählen" multiple="true">
-                    <f:selectItems value="#{searchBean.stati}" />
-                </p:selectCheckboxMenu-->
-
 			</b:panelGrid>
 			<hr />
 
 			<b:commandButton value="übernehmen" styleClass="btnSuchekriterien"
-				update=":msgs :ergebnis :formErgebnis"
+				update=":ergebnis :formErgebnis"
 				actionListener="#{searchBean.searchDetails()}"
 				oncomplete="$('.sucheModal').modal('hide');return false;"></b:commandButton>
 
@@ -201,12 +196,6 @@
 							itemValue="#{kategory.categoryId}" />
 					</b:selectOneMenu>
 
-					<!--p:selectOneListbox id="katFilterTicket" value="#{userDataBean.newCategoryId}"
-                                        filter="true" filterMatchMode="contains" styleClass="listboxen">
-                        <f:selectItems value="#{categoryRepositoryBean.allCategories}"
-                                       var="kategory" itemLabel="#{kategory.categoryName}"
-                                       itemValue="#{kategory.categoryId}" />
-                    </p:selectOneListbox-->
 					<hr />
 					<b:commandButton value="Kategorie ändern"
 						styleClass="btnSuchekriterien"
@@ -340,13 +329,6 @@
 											itemValue="#{tutor.userId}" />
 									</b:selectOneMenu>
 
-									<!--p:selectOneListbox id="tutorFilter"
-                                        value="#{categoryBean.tutorUserId}" filter="true"
-                                        filterMatchMode="contains" styleClass="listboxen">
-                                        <f:selectItems value="#{tutorRepositroyBean.allTutors}"
-                                            var="tutor" itemLabel="#{tutor.lastName}"
-                                            itemValue="#{tutor.userId}" />
-                                    </p:selectOneListbox-->
 								</b:panelGrid>
 								<hr />
 								<b:commandButton value="speichern" styleClass="btnsKategorie"
@@ -384,7 +366,7 @@
 										<h:outputText value="#{category.tutor.lastName}" />
 									</b:dataTableColumn>
 									<b:dataTableColumn label="">
-										<b:commandButton value="löschen" look="danger"
+										<b:commandButton value="löschen" look="danger" update=":kategorie :msgs"
 											actionListener="#{categoryRepositoryBean.deleteCategory(category)}">
 										</b:commandButton>
 									</b:dataTableColumn>

@@ -206,13 +206,19 @@ public class CategoryRepositoryBeanNeedleTest {
     }
 
     @Test
-    public void test4DeleteCategoryOK(){
+    public void test4DeleteCategoryOK() throws CategoryNotFoundException {
         Whitebox.setInternalState(categoryRepositoryBean, "allCategories", testList);
+        PowerMockito.mockStatic(FacesContextUtils.class);
 
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
+        when(categoryService.deleteCategoryById(anyString())).thenReturn(true);
         CategoryDTO dto = new CategoryDTO("id1", "kat1" , buildUserDTO("Tutor1"));
         categoryRepositoryBean.deleteCategory(dto);
 
         assertTrue(categoryRepositoryBean.getAllCategories().size() == 4);
+        RequestContext.releaseThreadLocalCache();
     }
 
     @Test

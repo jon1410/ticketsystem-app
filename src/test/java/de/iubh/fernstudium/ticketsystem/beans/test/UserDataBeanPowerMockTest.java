@@ -365,8 +365,9 @@ public class UserDataBeanPowerMockTest {
         RequestContext.setCurrentInstance(requestContext, facesContext);
         doNothing().when(requestContext).execute(anyString());
 
+        userDataBean.setActiveTicket(buildTicketDTO());
         userDataBean.showHistory();
-        verify(requestContext, times(1)).execute(anyString());
+        verify(requestContext, times(2)).execute(anyString());
 
         RequestContext.releaseThreadLocalCache();
     }

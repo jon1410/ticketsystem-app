@@ -3,16 +3,15 @@ package de.iubh.fernstudium.ticketsystem.db.service.test;
 import de.iubh.fernstudium.ticketsystem.db.entities.CategoryEntity;
 import de.iubh.fernstudium.ticketsystem.db.entities.UserEntity;
 import de.iubh.fernstudium.ticketsystem.db.services.CategoryDBService;
-import de.iubh.fernstudium.ticketsystem.db.services.HistoryDBService;
+
 import de.iubh.fernstudium.ticketsystem.db.services.TicketDBService;
-import de.iubh.fernstudium.ticketsystem.db.services.UserDBService;
 import de.iubh.fernstudium.ticketsystem.db.services.impl.CategoryDBServiceImpl;
-import de.iubh.fernstudium.ticketsystem.db.services.impl.HistoryDBServiceImpl;
+
 import de.iubh.fernstudium.ticketsystem.db.services.impl.TicketDBServiceImpl;
-import de.iubh.fernstudium.ticketsystem.db.services.impl.UserDBServiceImpl;
 import de.iubh.fernstudium.ticketsystem.db.util.JPAHibernateTestManager;
 import de.iubh.fernstudium.ticketsystem.domain.UserRole;
 import de.iubh.fernstudium.ticketsystem.domain.exception.CategoryNotFoundException;
+import de.iubh.fernstudium.ticketsystem.services.TicketService;
 import org.h2.tools.RunScript;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
@@ -37,11 +36,15 @@ public class CategoryDBServiceTest extends JPAHibernateTestManager {
 
     private CategoryDBService categoryDBService = new CategoryDBServiceImpl();
 
+    private TicketDBService ticketDBService = new TicketDBServiceImpl();
+
     private static boolean isDataLoaded = false;
 
     @Before
     public void initEm(){
         Whitebox.setInternalState(categoryDBService, "em", super.em);
+        Whitebox.setInternalState(ticketDBService, "em", super.em);
+        Whitebox.setInternalState(categoryDBService, "ticketDBService", ticketDBService);
 
         if(!isDataLoaded) {
             Session session = em.unwrap(Session.class);

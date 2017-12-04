@@ -21,8 +21,13 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.primefaces.context.RequestContext;
+
+import javax.faces.context.FacesContext;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -35,6 +40,10 @@ public class CategoryRepositoryNegativeTests {
 
     @Mock
     private CategoryService categoryService;
+    @Mock
+    private RequestContext requestContext;
+    @Mock
+    private FacesContext facesContext;
 
     @Before
     public void init(){
@@ -46,22 +55,29 @@ public class CategoryRepositoryNegativeTests {
     public void testDeleteCategoriesWithCategoryNotFoundException() throws CategoryNotFoundException {
         PowerMockito.mockStatic(FacesContextUtils.class);
 
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
+
         Mockito.when(categoryService.deleteCategoryById(Mockito.anyString())).thenThrow(new CategoryNotFoundException("test"));
         PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         CategoryDTO categoryDTO = buildDTO();
         categoryRepositoryBean.deleteCategory(categoryDTO);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
     }
 
     @Test
     public void testDeleteCategoriesWithDTONull() throws CategoryNotFoundException {
         PowerMockito.mockStatic(FacesContextUtils.class);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+        doNothing().when(requestContext).execute(anyString());
 
         PowerMockito.when(FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn("Test");
         categoryRepositoryBean.deleteCategory(null);
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FacesContextUtils.resolveError(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        RequestContext.releaseThreadLocalCache();
     }
 
     @Test

@@ -206,12 +206,15 @@ public class SearchBean implements Serializable {
         }
         LOG.info("Size of Tickets in Detailsearch: " + foundTicketsFromSearch.size());
         this.foundTickets = foundTicketsFromSearch;
+        FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
+                UITexts.SEARCH_DETAIL, null);
 
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("$('.ergebnisModal').modal('show');");
 
-        return FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
-                UITexts.SEARCH_DETAIL, null);
+        return null;
+                //FacesContextUtils.resolveInfo(UITexts.SEARCH_SUMMARY,
+                //UITexts.SEARCH_DETAIL, null);
     }
 
     private void restoreSearchValuesToNull() {
