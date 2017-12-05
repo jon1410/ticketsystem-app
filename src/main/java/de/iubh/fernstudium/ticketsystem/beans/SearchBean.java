@@ -79,6 +79,12 @@ public class SearchBean implements Serializable {
         }
     }
 
+    /**
+     * Führt eine Schnellsuche durch. Ist der Suchbegriff numerisch, wird automatisch nach ID gesucht.
+     * Ansonsten wird nach Titel und Beschreibung gesucht mittels SQL-like Befehl gesucht.
+     *
+     * @return String
+     */
     public String searchSimple(){
 
         Set<TicketDTO> ticketSet = new HashSet<>();
@@ -122,6 +128,13 @@ public class SearchBean implements Serializable {
                 detailText, null);
     }
 
+    /**
+     * Detailsuche: Je nach eingegebenen Suchkriterien baut diese Methode die entsprechende SQL-Query.
+     * Sind Werte leer oder null, werden sie nicht berücksichtigt, andernfalls erfolgt eine UND-Verknüpfung
+     * zwischen dern ausgewählten Suchkriterien
+     *
+     * @return String
+     */
     public String searchDetails(){
 
         //um nicht den gesamten Code zu ändern, kleiner Hack

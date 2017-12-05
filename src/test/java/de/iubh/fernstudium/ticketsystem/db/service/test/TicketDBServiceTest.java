@@ -46,6 +46,8 @@ public class TicketDBServiceTest extends JPAHibernateTestManager {
 
     @Before
     public void initEntityManager(){
+        //initilisiert die Entitmanager-Klasse in den DB-Serivices, baut den
+        //Datenbestand neu auf (nur beim ersten initEm())
         Whitebox.setInternalState(ticketDBService, "em", super.em);
         Whitebox.setInternalState(userDBService, "em", super.em);
         Whitebox.setInternalState(categoryDBService, "em", super.em);

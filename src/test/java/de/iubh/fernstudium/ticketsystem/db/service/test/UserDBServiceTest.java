@@ -24,6 +24,7 @@ public class UserDBServiceTest extends JPAHibernateTestManager {
 
      @Before
      public void initEntityManager(){
+         //initilisiert die Entitmanager-Klasse in den DB-Serivices, baut den
          Whitebox.setInternalState(userDBService, "em", super.em);
      }
 

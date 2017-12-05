@@ -60,6 +60,10 @@ public class UserDataBean implements Serializable {
     private long newMasterTicketId;
     private List<Long> childTickets;
 
+    /**
+     * Prüft, ob eine Session aktiv ist.
+     * @return
+     */
     public String checkLoggedInUser() {
         if (currentUserBean == null || currentUserBean.getUserId() == null) {
             return FacesContextUtils.REDIRECT_LOGIN;
@@ -123,7 +127,6 @@ public class UserDataBean implements Serializable {
     }
 
     public void startProgress() {
-
         changeStatus(TicketStatus.IPU);
     }
 
@@ -324,6 +327,10 @@ public class UserDataBean implements Serializable {
         eventProducer.produceHistoryEvent(ticketId, historyAction, details);
     }
 
+    /**
+     * Ändert den Status und schreibt einen Historie-Eintrag
+     * @param newStatus
+     */
     private void changeStatus(TicketStatus newStatus) {
 
         if (hasActiveTicket()) {

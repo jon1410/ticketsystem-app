@@ -8,7 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Created by ivanj on 16.07.2017.
+ * Hilfsklasse, die den Hibernate-EntityManager für Tests korrekt initialisiert und wieder aufräumt
  */
 public class JPAHibernateTestManager {
 

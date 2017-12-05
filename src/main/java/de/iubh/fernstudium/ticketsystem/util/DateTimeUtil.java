@@ -36,6 +36,11 @@ public class DateTimeUtil {
         return localDate.atStartOfDay();
     }
 
+    /**
+     * Formattiert eine {@link LocalDateTime} als String für eine UI-Representation
+     * @param localDateTime
+     * @return
+     */
     public static String formatForUI(LocalDateTime localDateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         return formatter.format(localDateTime);
