@@ -243,6 +243,14 @@ public class UserDataBean implements Serializable {
                 break;
             }
         }
+
+        for (int i = 0; i < reportedByLoggedInUser.size(); i++) {
+            TicketDTO t = reportedByLoggedInUser.get(i);
+            if (t.getId() == dto.getId()) {
+                reportedByLoggedInUser.set(i, dto);
+                break;
+            }
+        }
     }
 
     public List<TicketDTO> getTickets() {

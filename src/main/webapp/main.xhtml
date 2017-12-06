@@ -131,21 +131,21 @@
 			<hr/>
 				<b:commandButton value="Bearbeitung starten" look="info"
 					actionListener="#{userDataBean.startProgress}"
-					update=":yourTickets :formDetail :histDetail" style="margin-right:5px;"
+					update=":yourTickets :yourReportedTickets :formDetail :histDetail" style="margin-right:5px;"
 					 rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}">
 				</b:commandButton>
 				<b:commandButton value="Ticket abschließen" look="info"
 					actionListener="#{userDataBean.finishTicket}"
-					update=":yourTickets :formDetail :histDetail" style="margin-right:5px;"></b:commandButton>
+					update=":yourTickets :yourReportedTickets :formDetail :histDetail" style="margin-right:5px;"></b:commandButton>
 				<b:commandButton value="Ticket zurückgeben" look="info"
 					actionListener="#{userDataBean.resolveTicket}"
-					update=":yourTickets :formDetail :histDetail" style="margin-right:5px;"
+					update=":yourTickets :yourReportedTickets :formDetail :histDetail" style="margin-right:5px;"
 					 rendered="#{currentUserBean.resolvedUserRole eq 'Administrator' or currentUserBean.resolvedUserRole eq 'Tutor'}">
 				</b:commandButton>
 				<b:commandButton look="danger" value="Ticket abbrechen"
 					tooltip="Beendet den aktuellen Vorgang des Tickets"
 					actionListener="#{userDataBean.terminateActiveTicket()}"
-					update=":yourTickets :formDetail :histDetail" style="margin-right:5px;"></b:commandButton>
+					update=":yourTickets :yourReportedTickets :formDetail :histDetail" style="margin-right:5px;"></b:commandButton>
 				<b:commandButton value="Historie" look="default" update=":histDetail"
 					actionListener="#{userDataBean.showHistory}" style="margin-right:5px;"
 					oncomplete="$('.detailModal').modal('hide');return false;"></b:commandButton>
@@ -169,7 +169,7 @@
 				</h:outputText>
 
 				<h:outputText value="Besitzer" />
-				<h:outputText value="#{userDataBean.activeTicket.reporter.lastName}" />
+				<h:outputText value="#{userDataBean.activeTicket.assignee.lastName}" />
 
 				<h:outputText value="Masterticket" />
 				<h:outputText value="#{userDataBean.activeTicket.masterTicketId}" />
@@ -290,7 +290,7 @@
 
 			<b:commandButton value="Änderungen übernehmen"
 				styleClass="btnAenderungen"
-				update=":kategorie :yourTickets :msgs :neuesTicketForm"
+				update=":kategorie :yourTickets :yourReportedTickets :msgs :neuesTicketForm"
 				actionListener="#{categoryRepositoryBean.changeCategory()}"
 				oncomplete="$('.katChgModal').modal('hide');return false;">
 			</b:commandButton>
@@ -511,7 +511,7 @@
 
 			<b:commandButton value="Änderungen übernehmen"
 				styleClass="btnAenderungen"
-				update=":kategorie :yourTickets :msgs :welcome"
+				update=":kategorie :yourTickets :yourReportedTickets :msgs :welcome"
 				actionListener="#{currentUserBean.changeUserData()}"
 				oncomplete="$('.profilModal').modal('hide');return false;">
 			</b:commandButton>
@@ -574,12 +574,12 @@
 		<h:form id="neuesTicketForm">
 			<b:panelGrid colSpans="12" id="ticketPanel">
 
-				<b:inputText placeholder="Ticketname" required="true"
+				<b:inputText placeholder="Ticketname" required="true" requiredMessage="Ticket nicht angelegt! Name des Tickets fehlt!"
 					id="ticketName" label="Ticketname" renderLabel="false"
 					value="#{ticketBean.title}"></b:inputText>
 
 				<b:inputTextarea placeholder="Beschreibung des Tickets"
-					id="beschreibung" required="true" label="Beschreibung"
+					id="beschreibung" required="true" requiredMessage="Ticket nicht angelegt! Beschreibung zum Ticket fehlt!" label="Beschreibung"
 					renderLabel="false" value="#{ticketBean.description}">
 				</b:inputTextarea>
 
@@ -590,12 +590,6 @@
 						itemValue="#{kategory.categoryId}" />
 				</b:selectOneMenu>
 
-				<!--p:selectOneListbox id="katFilter" value="#{ticketBean.categoryId}" label="Kategorie"
-                    filter="true" filterMatchMode="contains" styleClass="listboxen">
-                    <f:selectItems value="#{categoryRepositoryBean.allCategories}"
-                        var="kategory" itemLabel="#{kategory.categoryName}"
-                        itemValue="#{kategory.categoryId}" />
-                </p:selectOneListbox-->
 			</b:panelGrid>
 
 			<hr />
